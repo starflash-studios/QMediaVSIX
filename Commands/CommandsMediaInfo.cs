@@ -40,28 +40,28 @@ namespace QMediaVSIX.Commands {
 
             CommandID MenuCommandID = new CommandID(CommandSet, CommandId);
             OleMenuCommand MenuItem = new OleMenuCommand(Execute, MenuCommandID);
-            MenuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
+            //MenuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
 
             CommandService.AddCommand(MenuItem);
 
             //CommandsGlobal.OnSessionChange += OnMediaChanged;
         }
 
-        static void MenuItem_BeforeQueryStatus(object Sender, EventArgs E) {
-            if (Sender is OleMenuCommand OMC) {
-                ThreadHelper.JoinableTaskFactory.RunAsync(async () => {
-                    FuzzyMediaInfo FMI = await FuzzyMediaInfo.GetAsync(CommandsGlobal.TransportControls);
-                    string Display = FMI.ToString();
-                    Debug.WriteLine($"Will display: {Display} ({FMI})");
-                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                    OMC.Text = Display;
-                    foreach (object OMCProp in OMC.Properties) {
-                        Debug.WriteLine($"Got property: {OMCProp} ({OMCProp.GetType()})");
-                    }
-                    Debug.WriteLine("Done Display.");
-                });
-            }
-        }
+        //static void MenuItem_BeforeQueryStatus(object Sender, EventArgs E) {
+        //    if (Sender is OleMenuCommand OMC) {
+        //        ThreadHelper.JoinableTaskFactory.RunAsync(async () => {
+        //            FuzzyMediaInfo FMI = await FuzzyMediaInfo.GetAsync(CommandsGlobal.TransportControls);
+        //            string Display = FMI.ToString();
+        //            //Debug.WriteLine($"Will display: {Display} ({FMI})");
+        //            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+        //            OMC.Text = Display;
+        //            //foreach (object OMCProp in OMC.Properties) {
+        //            //    Debug.WriteLine($"Got property: {OMCProp} ({OMCProp.GetType()})");
+        //            //}
+        //            //Debug.WriteLine("Done Display.");
+        //        });
+        //    }
+        //}
 
         //~CommandsMediaInfo() {
         //    CommandsGlobal.OnSessionChange -= OnMediaChanged;

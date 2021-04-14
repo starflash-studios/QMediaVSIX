@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
@@ -52,8 +53,9 @@ namespace QMediaVSIX.Commands {
 
         public static async Task<FuzzyMediaInfo> GetCurrentMediaDetailsAsync() => await FuzzyMediaInfo.GetAsync(TransportControls);
 
-        internal static async Task CurrentSessionControlAsync(QMediaVSIXPackage? Package, Func<GSMTCSession, Task<bool>> SessionCommand, VirtualKey? FallbackKey, string FallbackMessage) {
-            (FuzzyMediaInfo Old, GSMTCSession? Session, _) = await FuzzyMediaInfo.GetAsyncEx(TransportControls);
+        internal static async Task CurrentSessionControlAsync(QMediaVSIXPackage? Package, Func<GSMTCSession, Task<bool>> SessionCommand, ITwoStageCheck FallbackCheck, VirtualKey? FallbackKey, string FallbackMessage) {
+            (FuzzyMediaInfo Old, GSMTCSession? Session, GSMTCMediaProperties? Props) = await FuzzyMediaInfo.GetAsyncEx(TransportControls);
+            await FallbackCheck.StageOneAsync(Old, Session, Props);
             int FallbackDelay = Package?.FallbackDelay ?? -1;
             Debug.WriteLine("Got Delay: " + FallbackDelay);
             if (FallbackDelay == 0) {
@@ -61,7 +63,10 @@ namespace QMediaVSIX.Commands {
                 SimulateKeypress(FallbackKey);
             } else if (Session != null && await SessionCommand.Invoke(Session)) {
                 Debug.WriteLine("Successfully invoked command. No fallback required." + (FallbackDelay > 0 ? $" Fuzzy equivalence checks will follow in {FallbackDelay} ms" : " Additionally, delay < 0, therefore no extra fuzzy equivalence checks will be made."));
-                if (FallbackDelay > 0 && await DelayedCheckAsync(async () => Old.Equals(await FuzzyMediaInfo.GetAsync(TransportControls)), FallbackDelay)) {
+                if (FallbackDelay > 0 && await DelayedCheckAsync(async () => {
+                    (FuzzyMediaInfo New, GSMTCSession? NewSession, GSMTCMediaProperties? NewProps) = await FuzzyMediaInfo.GetAsyncEx(TransportControls);
+                    return await FallbackCheck.StageTwoAsync(New, NewSession, NewProps);
+                }, FallbackDelay)) {
                     Debug.WriteLine("Session was not null, and the command completed successfully, however the media stayed the since. Since delay > 0, using fallback...");
                     Debug.WriteLine(FallbackMessage);
                     SimulateKeypress(FallbackKey);
@@ -74,15 +79,60 @@ namespace QMediaVSIX.Commands {
             }
         }
 
-        public static async Task CurrentSessionPlayPauseAsync(QMediaVSIXPackage? Package) => await CurrentSessionControlAsync(Package, async Session => await Session.TryTogglePlayPauseAsync(), VirtualKey.VK_MEDIA_PLAY_PAUSE, "Unable to attach to / toggle playback of media within current session.");
+        public interface ITwoStageCheck {
+            Task StageOneAsync(FuzzyMediaInfo Old, GSMTCSession? Session, GSMTCMediaProperties? Props);
+            Task<bool> StageTwoAsync(FuzzyMediaInfo New, GSMTCSession? Session, GSMTCMediaProperties? Props);
+        }
 
-        public static async Task CurrentSessionSkipPrevAsync(QMediaVSIXPackage? Package) => await CurrentSessionControlAsync(Package, async Session => await Session.TrySkipPreviousAsync(), VirtualKey.VK_MEDIA_PREV_TRACK, "Unable to attach to / skip to previous media within current session.");
+        public struct TwoStageCheck_MediaChange : ITwoStageCheck {
+            FuzzyMediaInfo _OldMedia;
+            public Task StageOneAsync(FuzzyMediaInfo Old, GSMTCSession? Session, GSMTCMediaProperties? Props) {
+                _OldMedia = Old;
+                return Task.CompletedTask;
+            }
 
-        public static async Task CurrentSessionSkipNextAsync(QMediaVSIXPackage? Package) => await CurrentSessionControlAsync(Package, async Session => await Session.TrySkipNextAsync(), VirtualKey.VK_MEDIA_NEXT_TRACK, "Unable to attach to / skip to next media within current session.");
+            public Task<bool> StageTwoAsync(FuzzyMediaInfo New, GSMTCSession? Session, GSMTCMediaProperties? Props) => Task.FromResult(_OldMedia.Equals(New));
+        }
 
-        public static async Task CurrentSessionShuffleAsync(QMediaVSIXPackage? Package) => await CurrentSessionControlAsync(Package, async Session => await Session.TryChangeShuffleActiveAsync(InvertShuffle(Session.GetPlaybackInfo().IsShuffleActive)), null, "Unable to attach to / toggle media shuffling within current session.");
+        public struct TwoStageCheck_PlaybackStatusChange : ITwoStageCheck {
+            GlobalSystemMediaTransportControlsSessionPlaybackStatus? _OldStatus;
+            public Task StageOneAsync(FuzzyMediaInfo Old, GSMTCSession? Session, GSMTCMediaProperties? Props) {
+                _OldStatus = Old.Status;
+                return Task.CompletedTask;
+            }
 
-        public static async Task CurrentSessionRepeatAsync(QMediaVSIXPackage? Package) => await CurrentSessionControlAsync(Package, async Session => await Session.TryChangeAutoRepeatModeAsync(InvertRepeatMode(Session.GetPlaybackInfo().AutoRepeatMode)), null, "Unable to attach to / toggle repeat (list mode) of media within current session.");
+            public Task<bool> StageTwoAsync( FuzzyMediaInfo New, GSMTCSession? Session, GSMTCMediaProperties? Props ) => Task.FromResult(EqualityComparer<GlobalSystemMediaTransportControlsSessionPlaybackStatus?>.Default.Equals(_OldStatus, New.Status));
+        }
+
+        public struct TwoStageCheck_RepeatModeChange : ITwoStageCheck {
+            MediaPlaybackAutoRepeatMode? _OldRepeatMode;
+            public Task StageOneAsync(FuzzyMediaInfo Old, GSMTCSession? Session, GSMTCMediaProperties? Props) {
+                _OldRepeatMode = Session?.GetPlaybackInfo()?.AutoRepeatMode;
+                return Task.CompletedTask;
+            }
+
+            public Task<bool> StageTwoAsync(FuzzyMediaInfo New, GSMTCSession? Session, GSMTCMediaProperties? Props) => Task.FromResult(EqualityComparer<MediaPlaybackAutoRepeatMode?>.Default.Equals(_OldRepeatMode, Session?.GetPlaybackInfo()?.AutoRepeatMode));
+        }
+
+        public struct TwoStageCheck_ShuffleModeChange : ITwoStageCheck {
+            bool? _OldShuffleActive;
+            public Task StageOneAsync(FuzzyMediaInfo Old, GSMTCSession? Session, GSMTCMediaProperties? Props) {
+                _OldShuffleActive = Session?.GetPlaybackInfo()?.IsShuffleActive;
+                return Task.CompletedTask;
+            }
+
+            public Task<bool> StageTwoAsync(FuzzyMediaInfo New, GSMTCSession? Session, GSMTCMediaProperties? Props) => Task.FromResult(EqualityComparer<bool?>.Default.Equals(_OldShuffleActive, Session?.GetPlaybackInfo()?.IsShuffleActive));
+        }
+
+        public static async Task CurrentSessionPlayPauseAsync(QMediaVSIXPackage? Package) => await CurrentSessionControlAsync(Package, async Session => await Session.TryTogglePlayPauseAsync(), new TwoStageCheck_PlaybackStatusChange(), VirtualKey.VK_MEDIA_PLAY_PAUSE, "Unable to attach to / toggle playback of media within current session.");
+
+        public static async Task CurrentSessionSkipPrevAsync(QMediaVSIXPackage? Package) => await CurrentSessionControlAsync(Package, async Session => await Session.TrySkipPreviousAsync(), new TwoStageCheck_MediaChange(), VirtualKey.VK_MEDIA_PREV_TRACK, "Unable to attach to / skip to previous media within current session.");
+
+        public static async Task CurrentSessionSkipNextAsync(QMediaVSIXPackage? Package) => await CurrentSessionControlAsync(Package, async Session => await Session.TrySkipNextAsync(), new TwoStageCheck_MediaChange(), VirtualKey.VK_MEDIA_NEXT_TRACK, "Unable to attach to / skip to next media within current session.");
+
+        public static async Task CurrentSessionShuffleAsync(QMediaVSIXPackage? Package) => await CurrentSessionControlAsync(Package, async Session => await Session.TryChangeShuffleActiveAsync(InvertShuffle(Session.GetPlaybackInfo().IsShuffleActive)), new TwoStageCheck_ShuffleModeChange(), null, "Unable to attach to / toggle media shuffling within current session.");
+
+        public static async Task CurrentSessionRepeatAsync(QMediaVSIXPackage? Package) => await CurrentSessionControlAsync(Package, async Session => await Session.TryChangeAutoRepeatModeAsync(InvertRepeatMode(Session.GetPlaybackInfo().AutoRepeatMode)), new TwoStageCheck_RepeatModeChange(), null, "Unable to attach to / toggle repeat (list mode) of media within current session.");
 
         internal static bool InvertShuffle(bool? Orig) => Orig switch {
             true => false,
