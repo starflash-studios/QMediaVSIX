@@ -85,7 +85,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Commands\Resources\CommandPlayPause.png" />
+    <Content Include="Resources\CommandPlayPause.png" />
     <Content Include="Resources\gpl-3.0.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
