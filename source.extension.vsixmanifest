@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="QMediaVSIX.51b65c0a-fbc0-4cee-8587-b7324a1a0028" Version="1.0" Language="en-US" Publisher="Neonalig" />
+        <DisplayName>QMediaVSIX</DisplayName>
+        <Description xml:space="preserve">Quickly play, pause and skip your currently playing media. </Description>
+        <License>Resources\gpl-3.0.txt</License>
+        <Icon>Resources\IconCircle.ico</Icon>
+        <PreviewImage>Resources\Preview.png</PreviewImage>
+        <Tags>media, media player</Tags>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    </Dependencies>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    </Assets>
+</PackageManifest>
