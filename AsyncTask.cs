@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2017-2020  Starflash Studios
+﻿#region Copyright (C) 2017-2021  Starflash Studios
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License (Version 3.0)
 // as published by the Free Software Foundation.
@@ -6,13 +6,17 @@
 // More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
 #endregion
 
+#region Using Directives
+
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Microsoft.VisualStudio.Shell;
-
 using Task = System.Threading.Tasks.Task;
+
+#endregion
 
 namespace QMediaVSIX {
 
@@ -30,15 +34,15 @@ namespace QMediaVSIX {
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "Operator Name")]
+        [SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "Operator Name")]
         public static implicit operator AsyncTask(Func<Task> Lambda) => (AsyncTask)Lambda.Invoke();
         public static implicit operator Func<Task>(AsyncTask ATask) => async () => await ATask.InvokeAsync().ConfigureAwait(false);
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "Operator Name")]
+        [SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "Operator Name")]
         public static implicit operator AsyncTask( Delegate Del ) => new AsyncTask(() => Del.DynamicInvoke());
     }
 
     public static class AsyncTask_Extensions {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "VSTHRD003:Avoid awaiting foreign Tasks", Justification = "<Pending>")]
+        [SuppressMessage("Usage", "VSTHRD003:Avoid awaiting foreign Tasks", Justification = "<Pending>")]
         public static void Invoke(this Task T, bool Block = false) {
             if (Block) {
                 ThreadHelper.JoinableTaskFactory.Run(async () => await T.ConfigureAwait(false));
@@ -121,11 +125,11 @@ namespace QMediaVSIX {
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "Operator Name")]
+        [SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "Operator Name")]
         public static implicit operator AsyncTask<T>(Func<Task> Lambda) => (AsyncTask<T>)Lambda.Invoke();
         public static implicit operator Func<Task>(AsyncTask<T> ATask) => async () => await ATask.InvokeAsync().ConfigureAwait(false);
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "<Pending>")]
+        [SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "<Pending>")]
         public static AsyncTask<T> GetAsyncTask( IAsyncOperation<T> Op ) => (AsyncTask<T>)Op.AsTask();
     }
 }

@@ -1,10 +1,20 @@
-﻿using System;
+﻿#region Copyright (C) 2017-2021  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System;
 using System.ComponentModel.Design;
-
 using Microsoft.VisualStudio.Shell;
-
-using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
+using QMediaVSIX.i18n;
 using Task = System.Threading.Tasks.Task;
+
+#endregion
 
 namespace QMediaVSIX.Commands {
     /// <summary>
@@ -37,7 +47,9 @@ namespace QMediaVSIX.Commands {
             CommandService = CommandService ?? throw new ArgumentNullException(nameof(CommandService));
 
             CommandID MenuCommandID = new CommandID(CommandSet, CommandId);
-            MenuCommand MenuItem = new MenuCommand((_, __) => CommandsGlobal.CurrentSessionShuffleAsync(_Package as QMediaVSIXPackage).Invoke(), MenuCommandID);
+            OleMenuCommand MenuItem = new OleMenuCommand((_, __) => CommandsGlobal.CurrentSessionShuffleAsync(_Package as QMediaVSIXPackage).Invoke(), MenuCommandID) {
+                Text = AppTranslations.CmdShuffle.TooltipText
+            };
             CommandService.AddCommand(MenuItem);
         }
 

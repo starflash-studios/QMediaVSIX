@@ -1,4 +1,15 @@
-﻿#nullable enable
+﻿#region Copyright (C) 2017-2021  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#nullable enable
+
+#region Using Directives
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,14 +17,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Media;
-using Microsoft.VisualStudio.Shell;
-
 using Windows.Media.Control;
-
+using Microsoft.VisualStudio.Shell;
 using GSMTCMediaProperties = Windows.Media.Control.GlobalSystemMediaTransportControlsSessionMediaProperties;
 using GSMTCSession = Windows.Media.Control.GlobalSystemMediaTransportControlsSession;
 using GSMTCSessionManager = Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager;
 using Task = System.Threading.Tasks.Task;
+
+#endregion
 
 namespace QMediaVSIX.Commands {
     public static class CommandsGlobal {
@@ -174,7 +185,7 @@ namespace QMediaVSIX.Commands {
         }
 
         public static void SimulateKeypress(VirtualKey? KeyCode, KeyEvent EventType = KeyEvent.KEYEVENTF_EXTENDEDKEY) {
-            [DllImport("user32.dll"), SuppressMessage("ReSharper", "InconsistentNaming"), SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+            [DllImport("user32.dll")][SuppressMessage("ReSharper", "InconsistentNaming")][SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
             static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
 
             if (KeyCode == null) { Debug.WriteLine("Attempted to send <null> keypress. Ignored."); return; }

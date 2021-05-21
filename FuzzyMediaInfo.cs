@@ -1,16 +1,27 @@
-﻿#nullable enable
+﻿#region Copyright (C) 2017-2021  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#nullable enable
+
+#region Using Directives
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
-
 using Windows.Media.Control;
-
 using GSMTCMediaProperties = Windows.Media.Control.GlobalSystemMediaTransportControlsSessionMediaProperties;
 using GSMTCSession = Windows.Media.Control.GlobalSystemMediaTransportControlsSession;
 using GSMTCSessionManager = Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager;
 
-namespace QMediaVSIX.Commands {
+#endregion
+
+namespace QMediaVSIX {
     public readonly struct FuzzyMediaInfo : IEquatable<FuzzyMediaInfo> {
         public readonly string? Title, Artist;
         public readonly GlobalSystemMediaTransportControlsSessionPlaybackStatus? Status;
@@ -44,7 +55,7 @@ namespace QMediaVSIX.Commands {
         /// <inheritdoc />
         public override int GetHashCode() {
             unchecked {
-                int HashCode = (Title != null ? StringComparer.InvariantCultureIgnoreCase.GetHashCode(Title) : 0);
+                int HashCode = Title                  != null ? StringComparer.InvariantCultureIgnoreCase.GetHashCode(Title) : 0;
                 HashCode = (HashCode * 397) ^ (Artist != null ? StringComparer.InvariantCultureIgnoreCase.GetHashCode(Artist) : 0);
                 HashCode = (HashCode * 397) ^ Status.GetHashCode();
                 //HashCode = (HashCode * 397) ^ CurrentTime.GetHashCode();

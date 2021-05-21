@@ -1,12 +1,26 @@
-﻿using System;
+﻿#region Copyright (C) 2017-2021  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
-
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Resources;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-
+using QMediaVSIX.i18n;
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
+
+#endregion
 
 namespace QMediaVSIX.Commands {
     /// <summary>
@@ -39,13 +53,32 @@ namespace QMediaVSIX.Commands {
             CommandService = CommandService ?? throw new ArgumentNullException(nameof(CommandService));
 
             CommandID MenuCommandID = new CommandID(CommandSet, CommandId);
-            OleMenuCommand MenuItem = new OleMenuCommand(Execute, MenuCommandID);
+            OleMenuCommand MenuItem = new OleMenuCommand(Execute, MenuCommandID) {
+                Text = AppTranslations.CmdMediaInfo.TooltipText
+            };
             //MenuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
+
+            //MenuItem.BeforeQueryStatus += OnBeforeQueryStatus;
+
 
             CommandService.AddCommand(MenuItem);
 
             //CommandsGlobal.OnSessionChange += OnMediaChanged;
         }
+
+        //void OnBeforeQueryStatus(object Sender, EventArgs E) {
+        //    if (Sender is not OleMenuCommand MC) { return; }
+
+        //    //ResourceManager RM = new ResourceManager("Strings", typeof(TransUtil).Assembly);
+        //    //Debug.WriteLine($"CurrentCulture: {CultureInfo.CurrentCulture}; CurrentUICulture: {CultureInfo.CurrentUICulture}; DefaultThreadCurrentCulture: {CultureInfo.DefaultThreadCurrentCulture}; DefaultThreadCurrentUICulture: {CultureInfo.DefaultThreadCurrentUICulture}");
+        //    //ResourceSet RS = RM.GetResourceSet(CultureInfo.CurrentUICulture, false, false);
+        //    //Debug.WriteLine($"The TestString for the current culture is as follows '{RS.GetString("TestString")}'");
+
+        //    //Debug.WriteLine($"en-au: {TransUtil.EnAU}; ja-jp: {TransUtil.JaJP}; current: {TransUtil.Current}; current ui: {TransUtil.CurrentUI}");
+        //    //Debug.WriteLine($"CmdMediaInfo: {AppTranslations.CmdMediaInfo}");
+        //    MC.Text = AppTranslations.CmdMediaInfo.ButtonText;
+        //    //MC.Text = 
+        //}
 
         //static void MenuItem_BeforeQueryStatus(object Sender, EventArgs E) {
         //    if (Sender is OleMenuCommand OMC) {
@@ -98,7 +131,7 @@ namespace QMediaVSIX.Commands {
         /// </summary>
         /// <param name="Sender">Event sender.</param>
         /// <param name="E">Event args.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "VSTHRD100:Avoid async void methods", Justification = "<Pending>")]
+        [SuppressMessage("Usage", "VSTHRD100:Avoid async void methods", Justification = "<Pending>")]
         async void Execute(object Sender, EventArgs E) {
             FuzzyMediaInfo FMI = await FuzzyMediaInfo.GetAsync(CommandsGlobal.TransportControls);
 
