@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2017-2020  Starflash Studios
+﻿#region Copyright (C) 2017-2021  Starflash Studios
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License (Version 3.0)
 // as published by the Free Software Foundation.
@@ -8,23 +8,43 @@
 
 #nullable enable
 
+#region Using Directives
+
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-//using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Text;
+//using System.Diagnostics;
+
+#endregion
 
 namespace QMediaVSIX.i18n {
     public static class TransUtil {
-        public static readonly Lang Current = new Lang(CultureInfo.CurrentCulture);
-        public static readonly Lang CurrentUI = new Lang(CultureInfo.CurrentUICulture);
         public static readonly Lang En = new Lang("en");
         public static readonly Lang EnUS = new Lang("en-us");
         public static readonly Lang EnGB = new Lang("en-gb");
         public static readonly Lang EnAU = new Lang("en-au", EnGB);
         public static readonly Lang JaJP = new Lang("ja-jp");
+
+        // ReSharper disable twice ConstantConditionalAccessQualifier
+        public static readonly Lang Current = /*TryGetCulture(CultureInfo.CurrentCulture?.Name, out CultureInfo CurrentCult) ? new Lang(CurrentCult) : En*/new Lang("pt-br");
+        public static readonly Lang CurrentUI = /*TryGetCulture(CultureInfo.CurrentUICulture?.Name, out CultureInfo CurrentCultUI) ? new Lang(CurrentCultUI) : En*/new Lang("pt-br");
+
+        public static bool TryGetCulture(string? Code, out CultureInfo Found) {
+            if (Code == null || string.IsNullOrWhiteSpace(Code)) {
+                Found = CultureInfo.CurrentCulture;
+                return false;
+            }
+            try {
+                Found = CultureInfo.GetCultureInfo(Code);
+                return true;
+            } catch (CultureNotFoundException) {
+                Found = CultureInfo.CurrentCulture;
+                return false;
+            }
+        }
     }
 
     public readonly struct Trans {
@@ -114,6 +134,8 @@ namespace QMediaVSIX.i18n {
         /// </remarks>
         /// <returns>A translated string.</returns>
         public string Get( Lang CurrentLang ) {
+            if (CurrentLang == null || string.IsNullOrWhiteSpace(CurrentLang.Family)) { return DefKey; }
+
             //All languages in the same family (i.e. 'en', 'en-au', 'en-gb', etc.)
             List<TransKey> Fam = new List<TransKey>();
             //The root of the language (i.e. 'en')
@@ -143,8 +165,6 @@ namespace QMediaVSIX.i18n {
                         //Debug.WriteLine("\t\tFamily.");
                         Fam.Add(Key);
                     }
-                } else {
-                    //Debug.WriteLine("\t\tDifferent Family.");
                 }
 
                 if (CurrentLang.Variants.Contains(Key.Expected)) {
@@ -206,7 +226,7 @@ namespace QMediaVSIX.i18n {
         public Lang[] Variants { get; }
         public Lang[] Related { get; }
 
-        public Lang( string Family, string Tag, params Lang[] Variants ) : this(Family: Family, Tag: Tag, Related: null, Variants: Variants) { }
+        public Lang( string Family, string Tag, params Lang[] Variants ) : this(Family, Tag, null, Variants) { }
 
         public Lang( string Family, string Tag, Lang[]? Related, params Lang[] Variants ) {
             this.Family = Family.ToUpperInvariant();
@@ -215,7 +235,7 @@ namespace QMediaVSIX.i18n {
             this.Variants = Variants;
         }
 
-        public Lang( string FullTag, params Lang[] Variants ) : this(FullTag: FullTag, Related: null, Variants: Variants) { }
+        public Lang( string FullTag, params Lang[] Variants ) : this(FullTag, Related: null, Variants: Variants) { }
 
         public Lang( string FullTag, Lang[]? Related, params Lang[] Variants ) {
             int HyphInd = FullTag.IndexOf('-');
@@ -231,7 +251,7 @@ namespace QMediaVSIX.i18n {
             this.Variants = Variants;
         }
 
-        public Lang( CultureInfo Cult, params Lang[] Variants ) : this(Cult: Cult, Related: null, Variants: Variants) { }
+        public Lang( CultureInfo Cult, params Lang[] Variants ) : this(Cult, null, Variants) { }
         public Lang( CultureInfo Cult, Lang[]? Related, params Lang[] Variants ) : this(Cult.Name, Related, Variants) { }
 
         public bool IsSameFamily( Lang L ) => Family == L.Family;

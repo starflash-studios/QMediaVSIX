@@ -115,8 +115,12 @@
     <VSCTCompile Include="Commands\QMediaVSIXPackage.ja-JP.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
-    <Content Include="i18n\ja-JP\Extension.vsixlangpack" />
-    <Content Include="i18n\en-US\Extension.vsixlangpack" />
+    <Content Include="i18n\ja-JP\Extension.vsixlangpack">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="i18n\en-US\Extension.vsixlangpack">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="i18n\ja-JP\gpl-3.0.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>

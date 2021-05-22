@@ -12,12 +12,8 @@ using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
-
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Threading;
-
 using QMediaVSIX.Commands;
-
 using Task = System.Threading.Tasks.Task;
 
 #endregion
@@ -40,12 +36,7 @@ namespace QMediaVSIX {
     /// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
     /// </para>
     /// </remarks>
-    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true),
-     Guid(PackageGuidString),
-     ProvideMenuResource("Menus.ctmenu", 1),
-     ProvideOptionPage(typeof(OptionPageGrid_English), "QMediaVSIX", "English", 0, 0, true),
-     ProvideOptionPage(typeof(OptionPageGrid_Japanese), "QMediaVSIX", "日本語", 0, 0, true)
-    ]
+    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)][Guid(PackageGuidString)][ProvideMenuResource("Menus.ctmenu", 1)][ProvideOptionPage(typeof(OptionPageGrid_English), "QMediaVSIX", "English", 0, 0, true)][ProvideOptionPage(typeof(OptionPageGrid_Japanese), "QMediaVSIX", "日本語", 0, 0, true)]
     public sealed class QMediaVSIXPackage : AsyncPackage {
         /// <summary>
         /// QMediaVSIXPackage GUID string.
@@ -111,9 +102,7 @@ namespace QMediaVSIX {
     }
 
     public class OptionPageGrid_English : OptionPageGrid_i18n {
-        [Category("English"),
-         DisplayName("Fallback Delay"),
-         Description("The delay before the extension falls back to media keys.\nIf controlling a media source fails, the extension waits for some time to ensure it wasn't just lagging, and then manually invokes keyboard media keys (which may control the wrong media source by accident.)\n\nSet to '0' to use exclusively media keys, and any negative values to disable the fallback entirely.")]
+        [Category("English")][DisplayName("Fallback Delay")][Description("The delay before the extension falls back to media keys.\nIf controlling a media source fails, the extension waits for some time to ensure it wasn't just lagging, and then manually invokes keyboard media keys (which may control the wrong media source by accident.)\n\nSet to '0' to use exclusively media keys, and any negative values to disable the fallback entirely.")]
         public override int FallbackDelay {
             get => Int_FallbackDelay;
             set => Int_FallbackDelay = value;
@@ -121,9 +110,7 @@ namespace QMediaVSIX {
     }
 
     public class OptionPageGrid_Japanese : OptionPageGrid_i18n {
-        [Category("日本語"),
-         DisplayName("フォールバック遅延"),
-         Description(">この設定は拡張機能がメディアキーにフォールバックするまでの遅延時間です。\nボタンコマンドが失敗した場合、エクステンションは遅延していないことを確認するためにしばらく待ちます。遅延後、メディアからの応答がない場合、拡張機能は手動でキーボードキーを押します。\nこれは、誤ったメディアソースを制御する可能性があるため、通常は避けます。\n\nキーボードキーのみを使用する場合は「0」に設定します。\nまた、負の値を設定すると、フォールバックを完全に無効にすることができます。")]
+        [Category("日本語")][DisplayName("フォールバック遅延")][Description(">この設定は拡張機能がメディアキーにフォールバックするまでの遅延時間です。\nボタンコマンドが失敗した場合、エクステンションは遅延していないことを確認するためにしばらく待ちます。遅延後、メディアからの応答がない場合、拡張機能は手動でキーボードキーを押します。\nこれは、誤ったメディアソースを制御する可能性があるため、通常は避けます。\n\nキーボードキーのみを使用する場合は「0」に設定します。\nまた、負の値を設定すると、フォールバックを完全に無効にすることができます。")]
         public override int FallbackDelay {
             get => Int_FallbackDelay;
             set => Int_FallbackDelay = value;

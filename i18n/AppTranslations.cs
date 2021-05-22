@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2017-2020  Starflash Studios
+﻿#region Copyright (C) 2017-2021  Starflash Studios
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License (Version 3.0)
 // as published by the Free Software Foundation.
@@ -6,9 +6,13 @@
 // More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
 #endregion
 
+#region Using Directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+
+#endregion
 
 namespace QMediaVSIX.i18n {
     public abstract class AppTranslations {
@@ -42,7 +46,7 @@ namespace QMediaVSIX.i18n {
             Type AppT = typeof(AppTranslations);
             // ReSharper disable once LoopCanBePartlyConvertedToQuery
             foreach(Type T in Assembly.GetExecutingAssembly().GetTypes()) {
-                if (AppT.IsAssignableFrom(T) && AppT != T) {
+                if (T != null && AppT.IsAssignableFrom(T) && AppT != T) {
                     AppTranslations Obj = T.GetConstructor(Type.EmptyTypes).Invoke(null) as AppTranslations;
                     AllTrans.Add(Obj.In_Lang, Obj);
                 }
@@ -91,6 +95,9 @@ namespace QMediaVSIX.i18n {
                 }
             }
             // ReSharper restore ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+
+            if (!FoundUI) { UITrans = Found ? Trans : new AppTranslations_English(); }
+            if (!Found) { Trans = FoundUI ? UITrans : new AppTranslations_English(); }
         }
     }
 }
