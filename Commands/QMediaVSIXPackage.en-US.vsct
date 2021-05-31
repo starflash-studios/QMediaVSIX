@@ -1,27 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable"
-              xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<!--  This is the file that defines the actual layout and type of the commands.
         It is divided in different sections (e.g. command definition, command
         placement, ...), with each defining a specific set of properties.
         See the comment before each section for more details about how to
         use it. -->
-
 	<!--  The VSCT compiler (the tool that translates this file into the binary
         format that VisualStudio will consume) has the ability to run a preprocessor
         on the vsct file; this preprocessor is (usually) the C++ preprocessor, so
         it is possible to define includes and macros with the same syntax used
         in C++ files. Using this ability of the compiler here, we include some files
         defining some of the constants that we will use inside the file. -->
-
 	<!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
-	<Extern href="stdidcmd.h" />
-
+	<Extern href="stdidcmd.h"/>
 	<!--This header contains the command ids for the menus provided by the shell. -->
-	<Extern href="vsshlids.h" />
-
+	<Extern href="vsshlids.h"/>
 	<!--The Commands section is where commands, menus, and menu groups are defined.
       This section uses a Guid to identify the package that provides the command defined inside it. -->
 	<Commands package="guidQMVPkg">
@@ -32,36 +25,30 @@
     called "command set" and is used to group different command inside a logically related
     group; your package should define its own command set in order to avoid collisions
     with command ids defined by other packages. -->
-
 		<Menus>
 			<Menu guid="guidQMVPkgCmdSet" id="Toolbar" type="Toolbar">
 				<CommandFlag>DefaultDocked</CommandFlag>
 				<CommandFlag>TextChanges</CommandFlag>
 				<Strings>
 					<ButtonText>QMediaVSIX Toolbar</ButtonText>
-					<CommandName>QMediaVSIX</CommandName> <!-- Toolbar Name -->
-				</Strings>
-				<!--<Strings>
-					<ButtonText>QMediaVSIXのツールバー</ButtonText>
 					<CommandName>QMediaVSIX</CommandName>
-				</Strings>-->
+					<!-- Toolbar Name -->
+				</Strings>
+				<!--<Strings><ButtonText>QMediaVSIXのツールバー</ButtonText><CommandName>QMediaVSIX</CommandName></Strings>-->
 			</Menu>
 		</Menus>
-
 		<!-- In this section you can define new menu groups. A menu group is a container for
          other menus or buttons (commands); from a visual point of view you can see the
          group as the part of a menu contained between two lines. The parent of a group
          must be a menu. -->
 		<Groups>
 			<Group guid="guidQMVPkgCmdSet" id="MyMenuGroup" priority="0x0600">
-				<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
 			</Group>
-
 			<Group guid="guidQMVPkgCmdSet" id="ToolbarGroup" priority="0x0000">
-				<Parent guid="guidQMVPkgCmdSet" id="Toolbar" />
+				<Parent guid="guidQMVPkgCmdSet" id="Toolbar"/>
 			</Group>
 		</Groups>
-
 		<!--Buttons section. -->
 		<!--This section defines the elements the user can interact with, like a menu command or a button
         or combo box in a toolbar. -->
@@ -70,101 +57,88 @@
           The command is visible and enabled by default. If you need to change the visibility, status, etc, you can use
           the CommandFlag node.
           You can add more than one CommandFlag node e.g.:
-              <CommandFlag>DefaultInvisible</CommandFlag>
-              <CommandFlag>DynamicVisibility</CommandFlag>
-          If you do not want an image next to your command, remove the Icon node /> -->
+              <CommandFlag>DefaultInvisible</CommandFlag><CommandFlag>DynamicVisibility</CommandFlag>If you do not want an image next to your command, remove the Icon node />-->
 			<Button guid="guidQMVPkgCmdSet" id="CommandMediaInfoId" priority="0x0100" type="Button">
-				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup" />
-				<Icon guid="guidImages" id="bmpInfo" />
+				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup"/>
+				<Icon guid="guidImages" id="bmpInfo"/>
 				<CommandFlag>TextChanges</CommandFlag>
 				<Strings>
-					<ButtonText>Info</ButtonText> <!-- Button Display Text -->
-					<CommandName>(Media) Info</CommandName> <!-- Commands Customiser Name -->
-					<ToolTipText>Get info about the currently playing media.</ToolTipText> <!-- Button ToolTip Text -->
+					<ButtonText>Info</ButtonText>
+					<!-- Button Display Text -->
+					<CommandName>(Media) Info</CommandName>
+					<!-- Commands Customiser Name -->
+					<ToolTipText>Get info about the currently playing media.</ToolTipText>
+					<!-- Button ToolTip Text -->
 				</Strings>
-				<!--<Strings>
-          <ButtonText>情報</ButtonText>
-          <CommandName>メディア再生情報</CommandName>
-          <ToolTipText>現在再生中のメディアに関する情報を受信します。</ToolTipText>
-        </Strings>-->
+				<!--<Strings><ButtonText>情報</ButtonText><CommandName>メディア再生情報</CommandName><ToolTipText>現在再生中のメディアに関する情報を受信します。</ToolTipText></Strings>-->
 			</Button>
 			<Button guid="guidQMVPkgCmdSet" id="CommandRevId" priority="0x0101" type="Button">
-				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup" />
-				<Icon guid="guidImages" id="bmpRev" />
+				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup"/>
+				<Icon guid="guidImages" id="bmpRev"/>
 				<CommandFlag>TextChanges</CommandFlag>
 				<Strings>
 					<ButtonText>Previous</ButtonText>
 					<CommandName>(Media) Skip Previous</CommandName>
 					<ToolTipText>Previous</ToolTipText>
 				</Strings>
-				<!--<Strings>
-          <ButtonText>前</ButtonText>
-		  <CommandName>前のメディア</CommandName>
-          <ToolTipText>前の再生メディアにスキップします。</ToolTipText>
-        </Strings>-->
+				<!--<Strings><ButtonText>前</ButtonText><CommandName>前のメディア</CommandName><ToolTipText>前の再生メディアにスキップします。</ToolTipText></Strings>-->
 			</Button>
 			<Button guid="guidQMVPkgCmdSet" id="CommandPlayPauseId" priority="0x0102" type="Button">
-				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup" />
-				<Icon guid="guidImages" id="bmpPlay" />
+				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup"/>
+				<Icon guid="guidImages" id="bmpPlay"/>
 				<CommandFlag>TextChanges</CommandFlag>
 				<Strings>
 					<ButtonText>Play / Pause</ButtonText>
 					<CommandName>(Media) Toggle Play Pause</CommandName>
 					<ToolTipText>Play / Pause</ToolTipText>
 				</Strings>
-				<!--<Strings>
-          <ButtonText>プレイ・ポーズ</ButtonText>
-          <CommandName>プレイ・ポーズ</CommandName>
-          <ToolTipText>再生・一時停止を切り替えります。</ToolTipText>
-        </Strings>-->
+				<!--<Strings><ButtonText>プレイ・ポーズ</ButtonText><CommandName>プレイ・ポーズ</CommandName><ToolTipText>再生・一時停止を切り替えります。</ToolTipText></Strings>-->
 			</Button>
 			<Button guid="guidQMVPkgCmdSet" id="CommandFwdId" priority="0x0103" type="Button">
-				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup" />
-				<Icon guid="guidImages" id="bmpFwd" />
+				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup"/>
+				<Icon guid="guidImages" id="bmpFwd"/>
 				<CommandFlag>TextChanges</CommandFlag>
 				<Strings>
 					<ButtonText>Skip</ButtonText>
 					<CommandName>(Media) Skip Next</CommandName>
 					<ToolTipText>Next</ToolTipText>
 				</Strings>
-				<!--<Strings>
-          <ButtonText>スキップ</ButtonText>
-          <CommandName>次のメディア</CommandName>
-          <ToolTipText>次の再生メディアにスキップします。</ToolTipText>
-        </Strings>-->
+				<!--<Strings><ButtonText>スキップ</ButtonText><CommandName>次のメディア</CommandName><ToolTipText>次の再生メディアにスキップします。</ToolTipText></Strings>-->
 			</Button>
 			<Button guid="guidQMVPkgCmdSet" id="CommandShuffleId" priority="0x0104" type="Button">
-				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup" />
-				<Icon guid="guidImages" id="bmpShuffle" />
+				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup"/>
+				<Icon guid="guidImages" id="bmpShuffle"/>
 				<CommandFlag>TextChanges</CommandFlag>
 				<Strings>
 					<ButtonText>Toggle Shuffle</ButtonText>
 					<CommandName>(Media) Toggle Shuffle</CommandName>
 					<ToolTipText>Toggle Shuffle</ToolTipText>
 				</Strings>
-				<!--<Strings>
-          <ButtonText>シャッフル</ButtonText>
-          <CommandName>メディアのシャッフル</CommandName>
-          <ToolTipText>メディアのシャッフルをトグルします。</ToolTipText>
-        </Strings>-->
+				<!--<Strings><ButtonText>シャッフル</ButtonText><CommandName>メディアのシャッフル</CommandName><ToolTipText>メディアのシャッフルをトグルします。</ToolTipText></Strings>-->
 			</Button>
 			<Button guid="guidQMVPkgCmdSet" id="CommandRepeatId" priority="0x0105" type="Button">
-				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup" />
-				<Icon guid="guidImages" id="bmpRepeat" />
+				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup"/>
+				<Icon guid="guidImages" id="bmpRepeat"/>
 				<CommandFlag>TextChanges</CommandFlag>
 				<Strings>
 					<ButtonText>Toggle Repeat</ButtonText>
 					<CommandName>(Media) Toggle List Repeat</CommandName>
 					<ToolTipText>Toggle List Repeat</ToolTipText>
 				</Strings>
-				<!--<Strings>
-          <ButtonText>リピート</ButtonText>
-          <CommandName>メディアのリピート</CommandName>
-          <ToolTipText>メディアのリピートをトグルします。</ToolTipText>
-        </Strings>-->
+				<!--<Strings><ButtonText>リピート</ButtonText><CommandName>メディアのリピート</CommandName><ToolTipText>メディアのリピートをトグルします。</ToolTipText></Strings>-->
+			</Button>
+			<Button guid="guidQMVPkgCmdSet" id="CommandVolume" priority="0x0106" type="Button">
+				<Parent guid="guidQMVPkgCmdSet" id="ToolbarGroup"/>
+				<Icon guid="guidImages" id="bmpVolume"/>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>Volume</ButtonText>
+					<CommandName>(Media) Change App Volumes</CommandName>
+					<ToolTipText>Change App Volumes</ToolTipText>
+				</Strings>
+				<!--<Strings><ButtonText>ボリューム</ButtonText><CommandName>アプリのボリューム</CommandName><ToolTipText>アプリのボリュームを変更します。</ToolTipText></Strings>-->
 			</Button>
 		</Buttons>
-
 		<!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
 		<Bitmaps>
 			<!--  The bitmap id is defined in a way that is a little bit different from the others:
@@ -172,36 +146,34 @@
             bitmap strip containing the bitmaps and then there are the numeric ids of the elements used
             inside a button definition. An important aspect of this declaration is that the element id
             must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
-			<Bitmap guid="guidImages" href="..\Resources\CommandPlayPause.png"
-			        usedList="bmpPlay, bmpPause, bmpFwd, bmpRev, bmpInfo, bmpShuffle, bmpRepeat" />
+			<Bitmap guid="guidImages" href="..\Resources\CommandPlayPause.png" usedList="bmpPlay, bmpPause, bmpFwd, bmpRev, bmpInfo, bmpShuffle, bmpRepeat, bmpVolume"/>
 		</Bitmaps>
 	</Commands>
-
 	<Symbols>
 		<!-- This is the package guid. -->
-		<GuidSymbol name="guidQMVPkg" value="{1ddfb4c3-5267-4a30-927d-62e83facb999}" />
-
+		<GuidSymbol name="guidQMVPkg" value="{1ddfb4c3-5267-4a30-927d-62e83facb999}"/>
 		<!-- This is the guid used to group the menu commands together -->
 		<GuidSymbol name="guidQMVPkgCmdSet" value="{c788a5b7-c225-48d4-b6a8-781976fc5ba2}">
-			<IDSymbol name="MyMenuGroup" value="0x1020" />
-			<IDSymbol name="CommandPlayPauseId" value="0x0100" />
-			<IDSymbol name="CommandMediaInfoId" value="0x0101" />
-			<IDSymbol name="CommandFwdId" value="0x0102" />
-			<IDSymbol name="CommandRevId" value="0x0103" />
-			<IDSymbol name="CommandShuffleId" value="0x0104" />
-			<IDSymbol name="CommandRepeatId" value="0x0105" />
-			<IDSymbol name="Toolbar" value="0x1000" />
-			<IDSymbol name="ToolbarGroup" value="0x1050" />
+			<IDSymbol name="MyMenuGroup" value="0x1020"/>
+			<IDSymbol name="CommandPlayPauseId" value="0x0100"/>
+			<IDSymbol name="CommandMediaInfoId" value="0x0101"/>
+			<IDSymbol name="CommandFwdId" value="0x0102"/>
+			<IDSymbol name="CommandRevId" value="0x0103"/>
+			<IDSymbol name="CommandShuffleId" value="0x0104"/>
+			<IDSymbol name="CommandRepeatId" value="0x0105"/>
+			<IDSymbol name="CommandVolume" value="0x0106"/>
+			<IDSymbol name="Toolbar" value="0x1000"/>
+			<IDSymbol name="ToolbarGroup" value="0x1050"/>
 		</GuidSymbol>
-
 		<GuidSymbol name="guidImages" value="{963fc996-5895-43f3-ac33-fa4c1e3b7232}">
-			<IDSymbol name="bmpPlay" value="1" />
-			<IDSymbol name="bmpPause" value="2" />
-			<IDSymbol name="bmpFwd" value="3" />
-			<IDSymbol name="bmpRev" value="4" />
-			<IDSymbol name="bmpInfo" value="5" />
-			<IDSymbol name="bmpShuffle" value="6" />
-			<IDSymbol name="bmpRepeat" value="7" />
+			<IDSymbol name="bmpPlay" value="1"/>
+			<IDSymbol name="bmpPause" value="2"/>
+			<IDSymbol name="bmpFwd" value="3"/>
+			<IDSymbol name="bmpRev" value="4"/>
+			<IDSymbol name="bmpInfo" value="5"/>
+			<IDSymbol name="bmpShuffle" value="6"/>
+			<IDSymbol name="bmpRepeat" value="7"/>
+			<IDSymbol name="bmpVolume" value="8"/>
 		</GuidSymbol>
 	</Symbols>
 </CommandTable>

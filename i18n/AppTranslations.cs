@@ -26,6 +26,8 @@ namespace QMediaVSIX.i18n {
         public static (string ButtonText, string CommandName, string TooltipText) CmdSkipFwd => AppTranslations_Helper.UITrans.In_CmdSkipFwd;
         public static (string ButtonText, string CommandName, string TooltipText) CmdShuffle => AppTranslations_Helper.UITrans.In_CmdShuffle;
         public static (string ButtonText, string CommandName, string TooltipText) CmdRepeat => AppTranslations_Helper.UITrans.In_CmdRepeat;
+        public static (string ButtonText, string CommandName, string TooltipText) CmdVolume => AppTranslations_Helper.UITrans.In_CmdVolume;
+
 
         public abstract Lang In_Lang { get; }
         public abstract (string ButtonText, string CommandSet) In_Toolbar { get; }
@@ -35,6 +37,7 @@ namespace QMediaVSIX.i18n {
         public abstract (string ButtonText, string CommandName, string TooltipText) In_CmdSkipFwd { get; }
         public abstract (string ButtonText, string CommandName, string TooltipText) In_CmdShuffle { get; }
         public abstract (string ButtonText, string CommandName, string TooltipText) In_CmdRepeat { get; }
+        public abstract (string ButtonText, string CommandName, string TooltipText) In_CmdVolume { get; }
     }
 
     public static class AppTranslations_Helper {

@@ -51,5 +51,11 @@ namespace QMediaVSIX.i18n {
             "(Media) Toggle List Repeat",
             "Toggle List Repeat"
         );
+
+        public override (string, string, string) In_CmdVolume { get; } = (
+            "Volume",
+            "(Media) Change App Volumes",
+            "Change App Volumes"
+        );
     }
 }

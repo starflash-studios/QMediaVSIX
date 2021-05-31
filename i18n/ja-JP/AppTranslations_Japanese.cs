@@ -51,5 +51,11 @@ namespace QMediaVSIX.i18n {
             "メディアのリピート",
             "メディアのリピートをトグルします。"
         );
+
+        public override (string, string, string) In_CmdVolume { get; } = (
+            "ボリューム",
+            "アプリのボリューム",
+            "アプリのボリュームを変更します。"
+        );
     }
 }

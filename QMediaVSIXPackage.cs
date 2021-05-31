@@ -70,6 +70,7 @@ namespace QMediaVSIX {
             await CommandsSkipRev.InitializeAsync(this);
             await CommandsShuffle.InitializeAsync(this);
             await CommandsRepeat.InitializeAsync(this);
+            await CommandsVolume.InitializeAsync(this);
 
             //_ = new ResMan();
             //Assembly Ass = Assembly.GetExecutingAssembly();
