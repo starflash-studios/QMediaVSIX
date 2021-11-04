@@ -5,10 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using AudioUtils;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
-
+using Microsoft.VisualStudio.Shell.Interop;
 using QMediaVSIX.i18n;
-
+using QMediaVSIX.Views;
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
@@ -44,21 +45,31 @@ namespace QMediaVSIX.Commands {
 
             CommandID MenuCommandID = new CommandID(CommandSet, CommandId);
             OleMenuCommand MenuItem = new OleMenuCommand((_, __) => {
-
-                //ThreadHelper.JoinableTaskFactory.Run(() => {
-                new Thread(() => {
-                    ThreadHelper.ThrowIfOnUIThread($"{nameof(CommandsVolume)}.cto(AsyncPackage, OleMenuCommandService)");
-                    Debug.WriteLine("Displaying volumes.");
-
-                    List<AudioProgram> LAP = AudioProgram.GetAudioPrograms().ToList();
-                    for (int I = 0; I < LAP.Count; I++) {
-                        Debug.WriteLine($"{I} ... {LAP[I]}");
+                Package.JoinableTaskFactory.RunAsync(async () => {
+                    ToolWindowPane Window = await Package.ShowToolWindowAsync(typeof(VolumeControlToolWindow), 0, true, Package.DisposalToken);
+                    if (Window?.Frame == null) {
+                        throw new NotSupportedException("Cannot create tool window");
                     }
 
-                    Debug.WriteLine("Displayed all volumes.");
+                    await Package.JoinableTaskFactory.SwitchToMainThreadAsync();
+                    IVsWindowFrame WindowFrame = (IVsWindowFrame)Window.Frame;
+                    ErrorHandler.ThrowOnFailure(WindowFrame.Show());
+                });
 
-                    //return Task.CompletedTask;
-                }).Start();
+                //ThreadHelper.JoinableTaskFactory.Run(() => {
+                //new Thread(() => {
+                //    ThreadHelper.ThrowIfOnUIThread($"{nameof(CommandsVolume)}.cto(AsyncPackage, OleMenuCommandService)");
+                //    Debug.WriteLine("Displaying volumes.");
+
+                //    List<AudioProgram> LAP = AudioProgram.GetAudioPrograms().ToList();
+                //    for (int I = 0; I < LAP.Count; I++) {
+                //        Debug.WriteLine($"{I} ... {LAP[I]}");
+                //    }
+
+                //    Debug.WriteLine("Displayed all volumes.");
+
+                //    //return Task.CompletedTask;
+                //}).Start();
                 
 
             }, MenuCommandID) {

@@ -10,10 +10,16 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+
 using QMediaVSIX.Commands;
+using QMediaVSIX.i18n;
+using QMediaVSIX.Views;
 using Task = System.Threading.Tasks.Task;
 
 #endregion
@@ -36,7 +42,12 @@ namespace QMediaVSIX {
     /// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
     /// </para>
     /// </remarks>
-    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)][Guid(PackageGuidString)][ProvideMenuResource("Menus.ctmenu", 1)][ProvideOptionPage(typeof(OptionPageGrid_English), "QMediaVSIX", "English", 0, 0, true)][ProvideOptionPage(typeof(OptionPageGrid_Japanese), "QMediaVSIX", "日本語", 0, 0, true)]
+    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true),
+     Guid(PackageGuidString),
+     ProvideMenuResource("Menus.ctmenu", 1),
+     ProvideOptionPage(typeof(OptionPageGrid_English), "QMediaVSIX", "English", 0, 0, true),
+     ProvideOptionPage(typeof(OptionPageGrid_Japanese), "QMediaVSIX", "日本語", 0, 0, true),
+     ProvideToolWindow(typeof(VolumeControlToolWindow))]
     public sealed class QMediaVSIXPackage : AsyncPackage {
         /// <summary>
         /// QMediaVSIXPackage GUID string.
@@ -71,6 +82,8 @@ namespace QMediaVSIX {
             await CommandsShuffle.InitializeAsync(this);
             await CommandsRepeat.InitializeAsync(this);
             await CommandsVolume.InitializeAsync(this);
+    await QMediaVSIX.Views.VolumeControlToolWindowCommand.InitializeAsync(this);
+            //await Views.VolumeWindowCommand.InitializeAsync(this);
 
             //_ = new ResMan();
             //Assembly Ass = Assembly.GetExecutingAssembly();
@@ -90,6 +103,51 @@ namespace QMediaVSIX {
 
         #endregion
 
+        #region ToolWindow Constructors
+
+        public override IVsAsyncToolWindowFactory GetAsyncToolWindowFactory(Guid ToolWindowType) {
+            Debug.WriteLine("Getting factory...");
+            ThreadHelper.ThrowIfNotOnUIThread();
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            if (ToolWindowType == typeof(VolumeControlToolWindow).GUID) {
+                Debug.WriteLine("\tWindow is VolumeControlToolWindow :D");
+                return this;
+            }
+
+            Debug.WriteLine("\tWindow is unimportant.");
+            return base.GetAsyncToolWindowFactory(ToolWindowType);
+        }
+
+        protected override string GetToolWindowTitle(Type ToolWindowType, int ID) {
+            Debug.WriteLine("Retrieving ToolWindow title...");
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            if (ToolWindowType == typeof(VolumeControlToolWindow)) {
+                Debug.WriteLine("\tType is VolumeControlToolWindow! :D");
+                return AppTranslations.TlbVolWindow.LoadingTitle;
+            }
+
+            Debug.WriteLine("\tType is irrelevant.");
+            return base.GetToolWindowTitle(ToolWindowType, ID);
+        }
+
+        protected override Task<object> InitializeToolWindowAsync(Type ToolWindowType, int ID, CancellationToken CancellationToken) {
+            Debug.WriteLine("Initialising ToolWindow (async)...");
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            if (ToolWindowType == typeof(VolumeControlToolWindow)) {
+                Debug.WriteLine("\tType is VolumeControlToolWindow! :D");
+                string WindowTitle = AppTranslations.TlbVolWindow.WindowTitle;
+                Debug.WriteLine($"\tUsing title '{WindowTitle}'");
+                return Task.FromResult<object>(WindowTitle);
+            }
+
+            Debug.WriteLine("\tType is irrelevant.");
+            return base.InitializeToolWindowAsync(ToolWindowType, ID, CancellationToken);
+            //ReSharper disable once ArrangeMethodOrOperatorBody
+            //return Task.FromResult(ToolWindowCreationContext.Unspecified);
+        }
+
+        #endregion
+
         public int FallbackDelay => OptionPageGrid_i18n.Int_FallbackDelay;
     }
 
@@ -103,7 +161,9 @@ namespace QMediaVSIX {
     }
 
     public class OptionPageGrid_English : OptionPageGrid_i18n {
-        [Category("English")][DisplayName("Fallback Delay")][Description("The delay before the extension falls back to media keys.\nIf controlling a media source fails, the extension waits for some time to ensure it wasn't just lagging, and then manually invokes keyboard media keys (which may control the wrong media source by accident.)\n\nSet to '0' to use exclusively media keys, and any negative values to disable the fallback entirely.")]
+        [Category("English"),
+         DisplayName("Fallback Delay"),
+         Description("The delay before the extension falls back to media keys.\nIf controlling a media source fails, the extension waits for some time to ensure it wasn't just lagging, and then manually invokes keyboard media keys (which may control the wrong media source by accident.)\n\nSet to '0' to use exclusively media keys, and any negative values to disable the fallback entirely.")]
         public override int FallbackDelay {
             get => Int_FallbackDelay;
             set => Int_FallbackDelay = value;
@@ -111,7 +171,9 @@ namespace QMediaVSIX {
     }
 
     public class OptionPageGrid_Japanese : OptionPageGrid_i18n {
-        [Category("日本語")][DisplayName("フォールバック遅延")][Description(">この設定は拡張機能がメディアキーにフォールバックするまでの遅延時間です。\nボタンコマンドが失敗した場合、エクステンションは遅延していないことを確認するためにしばらく待ちます。遅延後、メディアからの応答がない場合、拡張機能は手動でキーボードキーを押します。\nこれは、誤ったメディアソースを制御する可能性があるため、通常は避けます。\n\nキーボードキーのみを使用する場合は「0」に設定します。\nまた、負の値を設定すると、フォールバックを完全に無効にすることができます。")]
+        [Category("日本語"),
+         DisplayName("フォールバック遅延"),
+         Description(">この設定は拡張機能がメディアキーにフォールバックするまでの遅延時間です。\nボタンコマンドが失敗した場合、エクステンションは遅延していないことを確認するためにしばらく待ちます。遅延後、メディアからの応答がない場合、拡張機能は手動でキーボードキーを押します。\nこれは、誤ったメディアソースを制御する可能性があるため、通常は避けます。\n\nキーボードキーのみを使用する場合は「0」に設定します。\nまた、負の値を設定すると、フォールバックを完全に無効にすることができます。")]
         public override int FallbackDelay {
             get => Int_FallbackDelay;
             set => Int_FallbackDelay = value;

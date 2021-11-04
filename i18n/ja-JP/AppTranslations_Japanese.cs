@@ -57,5 +57,10 @@ namespace QMediaVSIX.i18n {
             "アプリのボリューム",
             "アプリのボリュームを変更します。"
         );
+
+        public override (string WindowTitle, string LoadingTitle) In_TlbVolWindow { get; } = (
+            "QMediaボリューム",
+            "QMediaボリュームがロード中です。"
+        );
     }
 }

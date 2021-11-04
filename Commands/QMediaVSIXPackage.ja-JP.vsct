@@ -60,6 +60,10 @@
 			<Group guid="guidQMediaVSIXPackageCmdSet" id="ToolbarGroup" priority="0x0000">
 				<Parent guid="guidQMediaVSIXPackageCmdSet" id="Toolbar" />
 			</Group>
+
+			<Group guid="guidQMediaVSIXPackageCmdSet" id="ToolbarGroup" priority="0x0000">
+				<Parent guid="guidQMediaVSIXPackageCmdSet" id="Toolbar" />
+			</Group>
 		</Groups>
 
 		<!--Buttons section. -->
@@ -78,9 +82,15 @@
 				<Icon guid="guidImages" id="bmpInfo" />
 				<CommandFlag>TextChanges</CommandFlag>
 				<!--<Strings>
-          <ButtonText>Info</ButtonText> --><!-- Button Display Text --><!--
-          <CommandName>(Media) Info</CommandName> --><!-- Commands Customiser Name --><!--
-          <ToolTipText>Get info about the currently playing media.</ToolTipText> --><!-- Button ToolTip Text --><!--
+          <ButtonText>Info</ButtonText> -->
+				<!-- Button Display Text -->
+				<!--
+          <CommandName>(Media) Info</CommandName> -->
+				<!-- Commands Customiser Name -->
+				<!--
+          <ToolTipText>Get info about the currently playing media.</ToolTipText> -->
+				<!-- Button ToolTip Text -->
+				<!--
         </Strings>-->
 				<Strings>
 					<ButtonText>情報</ButtonText>
@@ -173,6 +183,14 @@
 					<ToolTipText>アプリのボリュームを変更します。</ToolTipText>
 				</Strings>
 			</Button>
+
+			<Button guid="guidQMVPkgCmdSet" id="cmdidVolumeControlToolWindowCommand" priority="256" type="Button">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+				<Icon guid="guidImages" id="bmpVolume" />
+				<Strings>
+					<ButtonText>アプリのボリューム</ButtonText>
+				</Strings>
+			</Button>
 		</Buttons>
 
 		<!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -203,6 +221,10 @@
 			<IDSymbol name="CommandVolume" value="0x0106"/>
 			<IDSymbol name="Toolbar" value="0x1000" />
 			<IDSymbol name="ToolbarGroup" value="0x1050" />
+		</GuidSymbol>
+
+		<GuidSymbol value="{bbc379cd-65df-49db-a05c-756b6db0404b}" name="guidQMVPkgCmdSet">
+			<IDSymbol value="256" name="cmdidVolumeControlToolWindowCommand" />
 		</GuidSymbol>
 
 		<GuidSymbol name="guidImages" value="{963fc996-5895-43f3-ac33-fa4c1e3b7232}">

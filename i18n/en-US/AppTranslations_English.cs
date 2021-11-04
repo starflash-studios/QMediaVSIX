@@ -57,5 +57,10 @@ namespace QMediaVSIX.i18n {
             "(Media) Change App Volumes",
             "Change App Volumes"
         );
+
+        public override (string WindowTitle, string LoadingTitle) In_TlbVolWindow { get; } = (
+            "QMediaVolume",
+            "QMediaVolume loading..."
+        );
     }
 }
