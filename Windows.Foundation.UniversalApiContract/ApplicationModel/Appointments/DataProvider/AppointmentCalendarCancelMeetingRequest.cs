@@ -1,0 +1,56 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Windows.ApplicationModel.Appointments.DataProvider.AppointmentCalendarCancelMeetingRequest
+// Assembly: Windows.Foundation.UniversalApiContract, Version=14.0.0.0, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime
+// MVID: F62EFE2D-E4C7-4EB8-B17A-E7D33D1BB49F
+// Assembly location: C:\Users\codyc\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22000.196\ref\netstandard2.0\Windows.Foundation.UniversalApiContract.winmd
+
+using System.Runtime.CompilerServices;
+using Windows.Foundation;
+using Windows.Foundation.Metadata;
+
+namespace Windows.ApplicationModel.Appointments.DataProvider
+{
+  /// <summary>Represents the user's request to cancel a calendar meeting.</summary>
+  [ContractVersion(typeof (UniversalApiContract), 196608)]
+  [MarshalingBehavior(MarshalingType.Agile)]
+  [Threading(ThreadingModel.Both)]
+  public sealed class AppointmentCalendarCancelMeetingRequest : 
+    IAppointmentCalendarCancelMeetingRequest
+  {
+    /// <summary>Uniquely identifies the calendar on the local device.</summary>
+    /// <returns>A string that uniquely identifies the calendar on the local device.</returns>
+    public extern string AppointmentCalendarLocalId { [MethodImpl] get; }
+
+    /// <summary>Gets a string that uniquely identifies the appointment on the local device.</summary>
+    /// <returns>A string that uniquely identifies the appointment on the local device.</returns>
+    public extern string AppointmentLocalId { [MethodImpl] get; }
+
+    /// <summary>Gets the original starting time for a recurring appointment.</summary>
+    /// <returns>The original starting time for a recurring appointment.</returns>
+    public extern IReference<DateTime> AppointmentOriginalStartTime { [MethodImpl] get; }
+
+    /// <summary>Gets the subject of the response.</summary>
+    /// <returns>The subject of the response.</returns>
+    public extern string Subject { [MethodImpl] get; }
+
+    /// <summary>Gets a text comment the user may write regarding the cancellation of the meeting.</summary>
+    /// <returns>A text comment by the user regarding the meeting cancellation.</returns>
+    public extern string Comment { [MethodImpl] get; }
+
+    /// <summary>Gets a Boolean value indicating if invitees should be notified.</summary>
+    /// <returns>A Boolean value indicating if invitees should be notified.</returns>
+    public extern bool NotifyInvitees { [MethodImpl] get; }
+
+    /// <summary>Notifies the system that the task of cancelling a meeting has completed.</summary>
+    /// <returns>An asynchronous operation.</returns>
+    [RemoteAsync]
+    [MethodImpl]
+    public extern IAsyncAction ReportCompletedAsync();
+
+    /// <summary>Notifies the system that the task of cancelling a meeting has failed.</summary>
+    /// <returns>An asynchronous operation.</returns>
+    [RemoteAsync]
+    [MethodImpl]
+    public extern IAsyncAction ReportFailedAsync();
+  }
+}

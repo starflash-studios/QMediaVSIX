@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\codyc\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22000.196\ref\netstandard2.0\Windows.Foundation.FoundationContract.winmd-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{821D6611-F48B-4E45-806E-A5DA31654F27}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Windows.Foundation.FoundationContract</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ApplicationVersion>4.0.0.0</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>Windows.Foundation</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.ObjectModel" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.InteropServices.WindowsRuntime" />
+    <Reference Include="System.Runtime.WindowsRuntime" />
+    <Reference Include="System.Runtime.WindowsRuntime.UI.Xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AsyncActionCompletedHandler.cs" />
+    <Compile Include="AsyncActionProgressHandler`1.cs" />
+    <Compile Include="AsyncActionWithProgressCompletedHandler`1.cs" />
+    <Compile Include="AsyncOperationCompletedHandler`1.cs" />
+    <Compile Include="AsyncOperationProgressHandler`2.cs" />
+    <Compile Include="AsyncOperationWithProgressCompletedHandler`2.cs" />
+    <Compile Include="AsyncStatus.cs" />
+    <Compile Include="DateTime.cs" />
+    <Compile Include="Deferral.cs" />
+    <Compile Include="DeferralCompletedHandler.cs" />
+    <Compile Include="EventHandler`1.cs" />
+    <Compile Include="EventRegistrationToken.cs" />
+    <Compile Include="FoundationContract.cs" />
+    <Compile Include="HResult.cs" />
+    <Compile Include="IAsyncAction.cs" />
+    <Compile Include="IAsyncActionWithProgress`1.cs" />
+    <Compile Include="IAsyncInfo.cs" />
+    <Compile Include="IAsyncOperationWithProgress`2.cs" />
+    <Compile Include="IAsyncOperation`1.cs" />
+    <Compile Include="IClosable.cs" />
+    <Compile Include="IDeferral.cs" />
+    <Compile Include="IDeferralFactory.cs" />
+    <Compile Include="IPropertyValue.cs" />
+    <Compile Include="IPropertyValueStatics.cs" />
+    <Compile Include="IReferenceArray`1.cs" />
+    <Compile Include="IReference`1.cs" />
+    <Compile Include="IStringable.cs" />
+    <Compile Include="Metadata\GuidAttribute.cs" />
+    <Compile Include="PropertyType.cs" />
+    <Compile Include="PropertyValue.cs" />
+    <Compile Include="TimeSpan.cs" />
+    <Compile Include="TypedEventHandler`2.cs" />
+    <Compile Include="Collections\CollectionChange.cs" />
+    <Compile Include="Collections\IIterable`1.cs" />
+    <Compile Include="Collections\IIterator`1.cs" />
+    <Compile Include="Collections\IKeyValuePair`2.cs" />
+    <Compile Include="Collections\IMapChangedEventArgs`1.cs" />
+    <Compile Include="Collections\IMapView`2.cs" />
+    <Compile Include="Collections\IMap`2.cs" />
+    <Compile Include="Collections\IObservableMap`2.cs" />
+    <Compile Include="Collections\IObservableVector`1.cs" />
+    <Compile Include="Collections\IPropertySet.cs" />
+    <Compile Include="Collections\IVectorChangedEventArgs.cs" />
+    <Compile Include="Collections\IVectorView`1.cs" />
+    <Compile Include="Collections\IVector`1.cs" />
+    <Compile Include="Collections\MapChangedEventHandler`2.cs" />
+    <Compile Include="Collections\PropertySet.cs" />
+    <Compile Include="Collections\StringMap.cs" />
+    <Compile Include="Collections\ValueSet.cs" />
+    <Compile Include="Collections\VectorChangedEventHandler`1.cs" />
+    <Compile Include="Metadata\ActivatableAttribute.cs" />
+    <Compile Include="Metadata\AllowForWebAttribute.cs" />
+    <Compile Include="Metadata\AllowMultipleAttribute.cs" />
+    <Compile Include="Metadata\ApiContractAttribute.cs" />
+    <Compile Include="Metadata\ApiInformation.cs" />
+    <Compile Include="Metadata\AttributeNameAttribute.cs" />
+    <Compile Include="Metadata\AttributeTargets.cs" />
+    <Compile Include="Metadata\AttributeUsageAttribute.cs" />
+    <Compile Include="Metadata\ComposableAttribute.cs" />
+    <Compile Include="Metadata\CompositionType.cs" />
+    <Compile Include="Metadata\ContractVersionAttribute.cs" />
+    <Compile Include="Metadata\DefaultAttribute.cs" />
+    <Compile Include="Metadata\DefaultOverloadAttribute.cs" />
+    <Compile Include="Metadata\DeprecatedAttribute.cs" />
+    <Compile Include="Metadata\DeprecationType.cs" />
+    <Compile Include="Metadata\DualApiPartitionAttribute.cs" />
+    <Compile Include="Metadata\ExclusiveToAttribute.cs" />
+    <Compile Include="Metadata\ExperimentalAttribute.cs" />
+    <Compile Include="Metadata\FastAbiAttribute.cs" />
+    <Compile Include="Metadata\FeatureAttribute.cs" />
+    <Compile Include="Metadata\FeatureStage.cs" />
+    <Compile Include="Metadata\GCPressureAmount.cs" />
+    <Compile Include="Metadata\GCPressureAttribute.cs" />
+    <Compile Include="Metadata\HasVariantAttribute.cs" />
+    <Compile Include="Metadata\IApiInformationStatics.cs" />
+    <Compile Include="Metadata\InternalAttribute.cs" />
+    <Compile Include="Metadata\LengthIsAttribute.cs" />
+    <Compile Include="Metadata\MarshalingBehaviorAttribute.cs" />
+    <Compile Include="Metadata\MarshalingType.cs" />
+    <Compile Include="Metadata\MetadataMarshalAttribute.cs" />
+    <Compile Include="Metadata\MuseAttribute.cs" />
+    <Compile Include="Metadata\NoExceptionAttribute.cs" />
+    <Compile Include="Metadata\OverloadAttribute.cs" />
+    <Compile Include="Metadata\OverridableAttribute.cs" />
+    <Compile Include="Metadata\Platform.cs" />
+    <Compile Include="Metadata\PlatformAttribute.cs" />
+    <Compile Include="Metadata\PreviousContractVersionAttribute.cs" />
+    <Compile Include="Metadata\ProtectedAttribute.cs" />
+    <Compile Include="Metadata\RangeAttribute.cs" />
+    <Compile Include="Metadata\RemoteAsyncAttribute.cs" />
+    <Compile Include="Metadata\StaticAttribute.cs" />
+    <Compile Include="Metadata\ThreadingAttribute.cs" />
+    <Compile Include="Metadata\ThreadingModel.cs" />
+    <Compile Include="Metadata\VariantAttribute.cs" />
+    <Compile Include="Metadata\VersionAttribute.cs" />
+    <Compile Include="Metadata\WebHostHiddenAttribute.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

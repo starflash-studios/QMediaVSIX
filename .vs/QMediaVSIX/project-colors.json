@@ -1,0 +1,76 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    },
+    "194e26b7-925a-4ab6-8e67-268e6e03b1d3": {
+      "ProjectGuid": "194e26b7-925a-4ab6-8e67-268e6e03b1d3",
+      "DisplayName": "QMediaVSIX",
+      "ColorIndex": 0
+    },
+    "60889579-264f-4b0b-9ae6-1d4a9b202ba2": {
+      "ProjectGuid": "60889579-264f-4b0b-9ae6-1d4a9b202ba2",
+      "DisplayName": "QMediaVSIX.Core",
+      "ColorIndex": 1
+    },
+    "8d618961-d9d3-4172-a4cb-e1d8576ea225": {
+      "ProjectGuid": "8d618961-d9d3-4172-a4cb-e1d8576ea225",
+      "DisplayName": "QMediaVSIX.CLI",
+      "ColorIndex": 2
+    },
+    "b0861c25-29d0-4b30-b720-d8ca6834f915": {
+      "ProjectGuid": "b0861c25-29d0-4b30-b720-d8ca6834f915",
+      "DisplayName": "QMediaVSIX.Core",
+      "ColorIndex": 3
+    },
+    "0f3b84da-d986-4117-aa0d-e79f12b4c758": {
+      "ProjectGuid": "0f3b84da-d986-4117-aa0d-e79f12b4c758",
+      "DisplayName": "QMediaVSIX.Core",
+      "ColorIndex": 4
+    },
+    "07d417bb-8d6d-464d-b381-4d74565f9e4a": {
+      "ProjectGuid": "07d417bb-8d6d-464d-b381-4d74565f9e4a",
+      "DisplayName": "QMediaVSIX.Core",
+      "ColorIndex": 5
+    },
+    "689c8339-58c7-4fed-9b66-56197740891b": {
+      "ProjectGuid": "689c8339-58c7-4fed-9b66-56197740891b",
+      "DisplayName": "Control",
+      "ColorIndex": 6
+    },
+    "821d6611-f48b-4e45-806e-a5da31654f27": {
+      "ProjectGuid": "821d6611-f48b-4e45-806e-a5da31654f27",
+      "DisplayName": "Windows.Foundation.FoundationContract",
+      "ColorIndex": 7
+    },
+    "a611658b-676b-4697-b936-c0fc075b8aa8": {
+      "ProjectGuid": "a611658b-676b-4697-b936-c0fc075b8aa8",
+      "DisplayName": "Windows.Foundation.UniversalApiContract",
+      "ColorIndex": 8
+    },
+    "1675d5d4-9f88-41e1-ac56-4f74ed834039": {
+      "ProjectGuid": "1675d5d4-9f88-41e1-ac56-4f74ed834039",
+      "DisplayName": "Windows.Media.Control",
+      "ColorIndex": 9
+    },
+    "c668ef18-bc57-4bf0-8a7d-fecd36684306": {
+      "ProjectGuid": "c668ef18-bc57-4bf0-8a7d-fecd36684306",
+      "DisplayName": "Windows.Media.Control",
+      "ColorIndex": 10
+    },
+    "1b67440c-ec67-4e92-ba0a-4df980e5edbb": {
+      "ProjectGuid": "1b67440c-ec67-4e92-ba0a-4df980e5edbb",
+      "DisplayName": "WindowsEx",
+      "ColorIndex": 11
+    },
+    "9db52fa6-678f-4831-bba1-c093c33e5e4c": {
+      "ProjectGuid": "9db52fa6-678f-4831-bba1-c093c33e5e4c",
+      "DisplayName": "QDebug",
+      "ColorIndex": 12
+    }
+  },
+  "NextColorIndex": 13
+}

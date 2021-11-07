@@ -1,0 +1,30 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Windows.UI.Xaml.Controls.ISearchBoxStatics
+// Assembly: Windows.Foundation.UniversalApiContract, Version=14.0.0.0, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime
+// MVID: F62EFE2D-E4C7-4EB8-B17A-E7D33D1BB49F
+// Assembly location: C:\Users\codyc\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22000.196\ref\netstandard2.0\Windows.Foundation.UniversalApiContract.winmd
+
+using Windows.Foundation;
+using Windows.Foundation.Metadata;
+
+namespace Windows.UI.Xaml.Controls
+{
+  [ContractVersion(typeof (UniversalApiContract), 65536)]
+  [WebHostHidden]
+  [ExclusiveTo(typeof (SearchBox))]
+  [Guid(2971886415, 26737, 18637, 146, 223, 76, 255, 34, 69, 144, 130)]
+  internal interface ISearchBoxStatics
+  {
+    DependencyProperty SearchHistoryEnabledProperty { get; }
+
+    DependencyProperty SearchHistoryContextProperty { get; }
+
+    DependencyProperty PlaceholderTextProperty { get; }
+
+    DependencyProperty QueryTextProperty { get; }
+
+    DependencyProperty FocusOnKeyboardInputProperty { get; }
+
+    DependencyProperty ChooseSuggestionOnEnterProperty { get; }
+  }
+}

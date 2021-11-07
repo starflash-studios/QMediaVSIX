@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -16,12 +17,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{83339796-74C4-4CCB-8348-3B504DA3A5C5}</ProjectGuid>
+    <ProjectGuid>{194E26B7-925A-4AB6-8E67-268E6E03B1D3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>QMediaVSIX</RootNamespace>
     <AssemblyName>QMediaVSIX</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <UseCodebase>true</UseCodebase>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
@@ -41,7 +42,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>9</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -50,53 +51,26 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>9</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AsyncTask.cs" />
-    <Compile Include="Commands\CommandsMediaInfo.cs" />
-    <Compile Include="Commands\CommandsPlayPause.cs" />
-    <Compile Include="Commands\CommandsGlobal.cs" />
-    <Compile Include="Commands\CommandsRepeat.cs" />
-    <Compile Include="Commands\CommandsShuffle.cs" />
-    <Compile Include="Commands\CommandsSkipFwd.cs" />
-    <Compile Include="Commands\CommandsSkipRev.cs" />
-    <Compile Include="Commands\CommandsVolume.cs" />
-    <Compile Include="FuzzyMediaInfo.cs" />
-    <Compile Include="i18n\AppTranslations.cs" />
-    <Compile Include="i18n\ja-JP\AppTranslations_Japanese.cs" />
-    <Compile Include="i18n\en-US\AppTranslations_English.cs" />
-    <Compile Include="i18n\ResMan.cs" />
-    <Compile Include="i18n\TransUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="i18n\Resources.Designer.cs">
+    <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="QMediaVSIXPackage.cs" />
-    <Compile Include="Views\VolumeControlToolWindow.cs" />
-    <Compile Include="Views\VolumeControlToolWindowCommand.cs" />
-    <Compile Include="Views\VolumeControlToolWindowControl.xaml.cs">
-      <DependentUpon>VolumeControlToolWindowControl.xaml</DependentUpon>
+    <Compile Include="Controls\MediaDeviceView.xaml.cs">
+      <DependentUpon>MediaDeviceView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\VolumeControlToolWindowControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <DependentUpon>VolumeControlToolWindowControl.xaml.cs</DependentUpon>
-    </Page>
+    <Compile Include="ToolWindows\VolumeMixer.cs" />
+    <Compile Include="ToolWindows\VolumeMixerCommand.cs" />
+    <Compile Include="ToolWindows\VolumeMixerControl.xaml.cs">
+      <DependentUpon>VolumeMixerControl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include=".editorconfig" />
-    <Content Include="i18n\en-US\gpl-3.0.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="i18n\ja-JP\gpl-3.0.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <None Include="Key.snk" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -107,67 +81,43 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.SDK">
-      <Version>16.9.31025.194</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Windows.SDK.Contracts">
-      <Version>10.0.19041.1</Version>
-    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.0-previews-4-31709-430" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.5232" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="i18n\Strings.en-US.resx">
-      <MergeWithCTO>true</MergeWithCTO>
-      <LogicalName>VSPackage.en-US.Resources</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="i18n\Strings.ja-JP.resx" />
-    <EmbeddedResource Include="i18n\Resources.resx">
+    <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <VSCTCompile Include="Commands\QMediaVSIXPackage.ja-JP.vsct">
+    <VSCTCompile Include="QMediaVSIXPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
-    <Content Include="i18n\ja-JP\Extension.vsixlangpack">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="i18n\en-US\Extension.vsixlangpack">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="i18n\ja-JP\gpl-3.0.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="Resources\CommandPlayPause.png" />
-    <Content Include="i18n\en-US\gpl-3.0.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="Resources\Preview.png">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <VSCTCompile Include="Commands\QMediaVSIXPackage.en-US.vsct">
-      <ResourceName>Menus.ctmenu</ResourceName>
-    </VSCTCompile>
-    <Content Include="Resources\IconCircle.ico">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="Resources\IconCircle.png" />
+    <Resource Include="Resources\imageres_15.ico" />
+    <Resource Include="Resources\CommandPlayPause.png" />
+    <Resource Include="Resources\IconCircle.ico" />
+    <Content Include="Resources\IconCircle.svg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Lib\AudioUtils\AudioUtils.csproj">
-      <Project>{85b1ebc1-e472-4dcc-a9cc-25ebd19817be}</Project>
-      <Name>AudioUtils</Name>
-    </ProjectReference>
+    <Page Include="Controls\MediaDeviceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolWindows\VolumeMixerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />

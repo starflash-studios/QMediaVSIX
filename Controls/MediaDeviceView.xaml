@@ -1,0 +1,169 @@
+﻿<UserControl x:Class="QMediaVSIX.Views.MediaDeviceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vsShell="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+             mc:Ignorable="d" 
+             d:DesignHeight="70" d:DesignWidth="300">
+	<UserControl.Resources>
+		<Style x:Key="SpeedSliderThumbStyle" TargetType="{x:Type Thumb}">
+			<Setter Property="OverridesDefaultStyle" Value="True"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Thumb}">
+						<Grid>
+							<Border Name="outerBorder"
+                            Height="12"
+                            Width="12"
+                            Opacity="1" 
+                            BorderThickness="2"
+                            CornerRadius="20"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsEnabled" Value="True">
+								<!-- Thumb -->
+								<Setter TargetName="outerBorder" Property="Background" Value="{DynamicResource {x:Static vsShell:EnvironmentColors.ToolWindowTabBorderBrushKey}}"/>
+								<Setter TargetName="outerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static vsShell:EnvironmentColors.ToolWindowTabBorderBrushKey}}"/>
+							</Trigger>
+							<Trigger Property="IsMouseOver" Value="True">
+								<!-- Thumb Hover -->
+								<Setter TargetName="outerBorder" Property="Background" Value="{DynamicResource {x:Static vsShell:EnvironmentColors.ToolWindowTabMouseOverBorderBrushKey}}"/>
+								<Setter TargetName="outerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static vsShell:EnvironmentColors.ToolWindowTabMouseOverBorderBrushKey}}"/>
+							</Trigger>
+							<Trigger Property="IsEnabled" Value="False">
+								<!-- Thumb Disabled -->
+								<Setter TargetName="outerBorder" Property="Background" Value="{DynamicResource {x:Static vsShell:EnvironmentColors.ToolWindowTabSelectedTabBrushKey}}"/>
+								<Setter TargetName="outerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static vsShell:EnvironmentColors.ToolWindowTabSelectedTabBrushKey}}"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="SpeedSliderRepeatButtonStyle" TargetType="{x:Type RepeatButton}">
+			<Setter Property="OverridesDefaultStyle" Value="true"/>
+			<Setter Property="IsTabStop" Value="false"/>
+			<Setter Property="Focusable" Value="false"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type RepeatButton}">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" MaxWidth="15"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="Auto" MaxWidth="15"/>
+							</Grid.ColumnDefinitions>
+							<Grid x:Name="LeftButton" Grid.Column="0">
+								<Grid.Style>
+									<Style TargetType="Grid">
+										<Setter Property="Visibility" Value="Collapsed"/>
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding Path=Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RepeatButton}}"
+                                                Value="Left">
+												<Setter Property="Visibility" Value="Visible"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Grid.Style>
+								<!--Template for left button-->
+								<Rectangle Fill="Red"/>
+							</Grid>
+
+							<Rectangle Grid.Column="1"
+							           Height="{TemplateBinding FontSize}" 
+							           VerticalAlignment="Center"
+							           HorizontalAlignment="Stretch"
+							           StrokeThickness="0"
+							           Fill="{TemplateBinding BorderBrush}"/>
+
+							<Grid x:Name="RightColumn" Grid.Column="2">
+								<Grid.Style>
+									<Style TargetType="Grid">
+										<Setter Property="Visibility" Value="Collapsed"/>
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding Path=Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RepeatButton}}"
+                                                Value="Right">
+												<Setter Property="Visibility" Value="Visible"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Grid.Style>
+								<!--Template for right button-->
+								<Rectangle Fill="Red"/>
+							</Grid>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<ControlTemplate x:Key="HorizontalSlider" TargetType="{x:Type Slider}">
+			<Grid Margin="5">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TickBar x:Name="TopTick" Visibility="Collapsed" Fill="Green" Placement="Top" SnapsToDevicePixels="True" Height="4" Margin="0,0,0,2" />
+				<Border x:Name="TrackBackground"
+            Grid.Row="1"
+            Margin="10,0"
+            BorderThickness="0"
+            BorderBrush="{DynamicResource {x:Static vsShell:EnvironmentColors.ToolWindowTabBorderBrushKey}}"
+            VerticalAlignment="Center" 
+            Height="1" />
+				<Track x:Name="PART_Track" Grid.Row="1">
+					<Track.DecreaseRepeatButton>
+						<!-- Left (Filled) Bar -->
+						<RepeatButton Command="{x:Static Slider.DecreaseLarge}" BorderBrush="{DynamicResource {x:Static vsShell:EnvironmentColors.ToolWindowTabBorderBrushKey}}" BorderThickness="5" FontSize="5" Style="{StaticResource SpeedSliderRepeatButtonStyle}" />
+					</Track.DecreaseRepeatButton>
+					<Track.IncreaseRepeatButton>
+						<!-- Right (Unfilled) Bar -->
+						<RepeatButton Command="{x:Static Slider.IncreaseLarge}" BorderBrush="{DynamicResource {x:Static vsShell:EnvironmentColors.ScrollBarThumbGlyphBrushKey}}" BorderThickness="2" FontSize="2" Tag="Right" Style="{StaticResource SpeedSliderRepeatButtonStyle}"/>
+					</Track.IncreaseRepeatButton>
+					<Track.Thumb>
+						<Thumb x:Name="Thumb" Style="{StaticResource SpeedSliderThumbStyle}"/>
+					</Track.Thumb>
+				</Track>
+				<TickBar x:Name="BottomTick" Grid.Row="2" Visibility="Collapsed" Fill="Orange" Placement="Bottom" SnapsToDevicePixels="True" Height="4" Margin="0,2,0,0"/>
+			</Grid>
+			<ControlTemplate.Triggers>
+				<Trigger Property="TickPlacement" Value="TopLeft">
+					<Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+				</Trigger>
+				<Trigger Property="TickPlacement" Value="BottomRight">
+					<Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+				</Trigger>
+				<Trigger Property="TickPlacement" Value="Both">
+					<Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+					<Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+				</Trigger>
+			</ControlTemplate.Triggers>
+		</ControlTemplate>
+	</UserControl.Resources>
+	<SelectiveScrollingGrid Margin="5">
+		<SelectiveScrollingGrid.ColumnDefinitions>
+			<ColumnDefinition Width="55"/>
+			<ColumnDefinition Width="5"/>
+			<ColumnDefinition/>
+			<ColumnDefinition Width="5"/>
+			<ColumnDefinition Width="50"/>
+		</SelectiveScrollingGrid.ColumnDefinitions>
+		<Image Source="/QMediaVSIX;component/Resources/imageres_15.ico" MaxWidth="45" Stretch="Uniform" Grid.Column="0"/>
+		<!--<Slider Grid.Column="2" VerticalAlignment="Center" Minimum="0" Maximum="100" Value="35"/>-->
+		<!--<RepeatButton Command="{x:Static Slider.IncreaseLarge}" Grid.Column="2" BorderThickness="2" FontSize="2" Tag="Right">
+			<RepeatButton.Style>
+				<Style TargetType="RepeatButton" BasedOn="{StaticResource SpeedSliderRepeatButtonStyle}">
+					<Setter Property="BorderBrush" Value="#FF666666"/>
+					<Style.Triggers>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="BorderBrush" Value="#FF222222"/>
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+			</RepeatButton.Style>
+		</RepeatButton>-->
+		<Slider Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Template="{DynamicResource HorizontalSlider}"/>
+		<TextBlock Text="100" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="{DynamicResource {x:Static vsShell:EnvironmentColors.ToolWindowTextBrushKey}}"/>
+	</SelectiveScrollingGrid>
+</UserControl>

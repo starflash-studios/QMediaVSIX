@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows10.0.20348.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="MediaSource\Hardware\CoreAudio\**" />
+    <EmbeddedResource Remove="MediaSource\Hardware\CoreAudio\**" />
+    <None Remove="MediaSource\Hardware\CoreAudio\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CSCore" Version="1.2.1.2">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="EnvDTE" Version="16.10.31320.204" />
+    <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\QDebug\QDebug.csproj" />
+  </ItemGroup>
+
+</Project>
