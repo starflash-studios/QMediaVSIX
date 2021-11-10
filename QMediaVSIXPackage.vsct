@@ -1,85 +1,234 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <!--  This is the file that defines the actual layout and type of the commands.
-        It is divided in different sections (e.g. command definition, command
-        placement, ...), with each defining a specific set of properties.
-        See the comment before each section for more details about how to
-        use it. -->
+    <!--    This is the file that defines the actual layout and type of the commands.
+                It is divided in different sections (e.g. command definition, command
+                placement, ...), with each defining a specific set of properties.
+                See the comment before each section for more details about how to
+                use it. -->
 
-  <!--  The VSCT compiler (the tool that translates this file into the binary
-        format that VisualStudio will consume) has the ability to run a preprocessor
-        on the vsct file; this preprocessor is (usually) the C++ preprocessor, so
-        it is possible to define includes and macros with the same syntax used
-        in C++ files. Using this ability of the compiler here, we include some files
-        defining some of the constants that we will use inside the file. -->
+    <!--    The VSCT compiler (the tool that translates this file into the binary
+                format that VisualStudio will consume) has the ability to run a preprocessor
+                on the vsct file; this preprocessor is (usually) the C++ preprocessor, so
+                it is possible to define includes and macros with the same syntax used
+                in C++ files. Using this ability of the compiler here, we include some files
+                defining some of the constants that we will use inside the file. -->
 
-  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
-  <Extern href="stdidcmd.h"/>
+    <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+    <Extern href="stdidcmd.h" />
 
-  <!--This header contains the command ids for the menus provided by the shell. -->
-  <Extern href="vsshlids.h"/>
+    <!--This header contains the command ids for the menus provided by the shell. -->
+    <Extern href="vsshlids.h" />
 
-  <!--The Commands section is where commands, menus, and menu groups are defined.
-      This section uses a Guid to identify the package that provides the command defined inside it. -->
-  <Commands package="guidQMediaVSIXPackage">
-    <!-- Inside this section we have different sub-sections: one for the menus, another
-    for the menu groups, one for the buttons (the actual commands), one for the combos
-    and the last one for the bitmaps used. Each element is identified by a command id that
-    is a unique pair of guid and numeric identifier; the guid part of the identifier is usually
-    called "command set" and is used to group different command inside a logically related
-    group; your package should define its own command set in order to avoid collisions
-    with command ids defined by other packages. -->
+    <!--The Commands section is where commands, menus, and menu groups are defined.
+            This section uses a Guid to identify the package that provides the command defined inside it. -->
+    <Commands package="guidQMediaVSIXPackage">
+        <!-- Inside this section we have different sub-sections: one for the menus, another
+        for the menu groups, one for the buttons (the actual commands), one for the combos
+        and the last one for the bitmaps used. Each element is identified by a command id that
+        is a unique pair of guid and numeric identifier; the guid part of the identifier is usually
+        called "command set" and is used to group different command inside a logically related
+        group; your package should define its own command set in order to avoid collisions
+        with command ids defined by other packages. -->
 
-    <!--Buttons section. -->
-    <!--This section defines the elements the user can interact with, like a menu command or a button
-        or combo box in a toolbar. -->
-    <Buttons>
-      <!--To define a menu group you have to specify its ID, the parent menu and its display priority.
-          The command is visible and enabled by default. If you need to change the visibility, status, etc, you can use
-          the CommandFlag node.
-          You can add more than one CommandFlag node e.g.:
-              <CommandFlag>DefaultInvisible</CommandFlag>
-              <CommandFlag>DynamicVisibility</CommandFlag>
-          If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidQMediaVSIXPackageCmdSet" id="VolumeMixerCommandId" priority="0x0100" type="Button">
-        <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1"/>
-        <Icon guid="guidImages" id="bmpPlay" />
-        <Strings>
-          <ButtonText>VolumeMixer</ButtonText>
-        </Strings>
-      </Button>
-    </Buttons>
+        <Menus>
+            <Menu guid="guidQMediaVSIXPackageCmdSet1" id="Toolbar" type="Toolbar">
+                <CommandFlag>DefaultDocked</CommandFlag>
+                <Strings>
+                    <ButtonText>Test Toolbar</ButtonText>
+                    <CommandName>Test Toolbar</CommandName>
+                </Strings>
+            </Menu>
+            <!--<Menu guid="guidQMediaVSIXPackageCmdSet1" id="TestMenuController" priority="0x0100" type="MenuController">
+                <Parent guid="guidQMediaVSIXPackageCmdSet1" id="ToolbarGroup" />
+                <CommandFlag>IconAndText</CommandFlag>
+                <CommandFlag>TextChanges</CommandFlag>
+                <CommandFlag>TextIsAnchorCommand</CommandFlag>
+                <Strings>
+                    <ButtonText>Test Menu Controller</ButtonText>
+                    <CommandName>Test Menu Controller</CommandName>
+                </Strings>
+            </Menu>-->
+            <Menu guid="guidDynamicMenuPackageCmdSet" id="MyMenuController" priority="0x1000" type="MenuController">
+                <Parent guid="guidDynamicMenuPackageCmdSet" id="MyToolbarItemGroup" />
+                <CommandFlag>DynamicVisibility</CommandFlag>
+                <Strings>
+                    <ButtonText></ButtonText>
+                </Strings>
+            </Menu>
+        </Menus>
 
-    <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
-    <Bitmaps>
-      <!--  The bitmap id is defined in a way that is a little bit different from the others:
-            the declaration starts with a guid for the bitmap strip, then there is the resource id of the
-            bitmap strip containing the bitmaps and then there are the numeric ids of the elements used
-            inside a button definition. An important aspect of this declaration is that the element id
-            must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
-      <Bitmap guid="guidImages" href="Resources\CommandPlayPause.png" usedList="bmpPlay, bmpPause, bmpSkipNext, bmpSkipPrevious, bmpHelp, bmpShuffle, bmpRepeat, bmpVolume"/>
-    </Bitmaps>
-  </Commands>
+        <!--Buttons section. -->
+        <!--This section defines the elements the user can interact with, like a menu command or a button
+                or combo box in a toolbar. -->
+        <Buttons>
+            <!--To define a menu group you have to specify its ID, the parent menu and its display priority.
+                    The command is visible and enabled by default. If you need to change the visibility, status, etc, you can use
+                    the CommandFlag node.
+                    You can add more than one CommandFlag node e.g.:
+                            <CommandFlag>DefaultInvisible</CommandFlag>
+                            <CommandFlag>DynamicVisibility</CommandFlag>
+                    If you do not want an image next to your command, remove the Icon node /> -->
+            <Button guid="guidQMediaVSIXPackageCmdSet" id="cmdidVolumeMixerToolWindowCommand" priority="0x0100" type="Button">
+                <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
+                <Icon guid="guidImages" id="bmpPlay" />
+                <Strings>
+                    <ButtonText>VolumeMixer</ButtonText>
+                </Strings>
+            </Button>
 
-  <Symbols>
-    <!-- This is the package guid. -->
-    <GuidSymbol name="guidQMediaVSIXPackage" value="{9d9c8b04-c51f-455b-977c-79478bd8fcd0}" />
+            <Button guid="guidDynamicMenuPackageCmdSet" id="cmdidMyDynamicStartCommand" priority="0x1000" >
+                <Parent guid="guidDynamicMenuPackageCmdSet" id="MyMenuControllerGroup" />
+                <CommandFlag>DynamicItemStart</CommandFlag>
+                <CommandFlag>DynamicVisibility</CommandFlag>
+                <CommandFlag>TextChanges</CommandFlag>
+                <!-- This text does not appear. -->
+                <Strings>
+                    <ButtonText>Project</ButtonText>
+                </Strings>
+            </Button>
 
-    <!-- This is the guid used to group the menu commands together -->
-    <GuidSymbol name="guidQMediaVSIXPackageCmdSet" value="{f69ab04e-226e-425f-8f7c-4ea38da690a8}">
-      <IDSymbol name="VolumeMixerCommandId" value="0x0100" />
-    </GuidSymbol>
+            <Button guid="guidDynamicMenuPackageCmdSet" id="cmdidMyAnchorCommand" priority="0x0000" >
+                <Parent guid="guidDynamicMenuPackageCmdSet" id="MyMenuControllerGroup" />
+                <!-- This is the icon that appears on the Solution Explorer toolbar. -->
+                <Icon guid="guidImages" id="bmpRepeat"/>
+                <!-- Do not show on the menu controller's drop down list-->
+                <CommandFlag>NoShowOnMenuController</CommandFlag>
+                <!-- Become the permanent anchor item for the menu controller -->
+                <CommandFlag>FixMenuController</CommandFlag>
+                <!-- The text that appears in the tooltip.-->
+                <Strings>
+                    <ButtonText>Set Startup Project</ButtonText>
+                </Strings>
+            </Button>
 
-    <GuidSymbol name="guidImages" value="{8e4b8b17-9135-479d-9003-7c9d8a4d452f}" >
-      <IDSymbol name="bmpPlay" value="1" />
-      <IDSymbol name="bmpPause" value="2" />
-      <IDSymbol name="bmpSkipNext" value="3" />
-      <IDSymbol name="bmpSkipPrevious" value="4" />
-      <IDSymbol name="bmpHelp" value="5" />
-      <IDSymbol name="bmpShuffle" value="6" />
-      <IDSymbol name="bmpRepeat" value="7" />
-      <IDSymbol name="bmpVolume" value="8" />
-    </GuidSymbol>
-  </Symbols>
+            <Button guid="guidQMediaVSIXPackageCmdSet1" id="cmdidPlayCommand" priority="0x0100" type="Button">
+                <!--<Parent guid="guidQMediaVSIXPackageCmdSet1" id="MyMenuGroup" />-->
+                <Parent guid="guidQMediaVSIXPackageCmdSet1" id="ToolbarGroup" />
+                <Icon guid="guidImages" id="bmpPlay" />
+                <Strings>
+                    <ButtonText>Play/Pause</ButtonText>
+                </Strings>
+            </Button>
+
+            <!--<Button guid="guidQMediaVSIXPackageCmdSet1" id="cmdidMCItem1" priority="0x0000" type="Button">
+                <Parent guid="guidQMediaVSIXPackageCmdSet1" id="TestMenuControllerGroup" />
+                <Icon guid="guidImages" id="bmpSkipPrevious" />
+                <CommandFlag>IconAndText</CommandFlag>
+                <Strings>
+                    <ButtonText>MC Item 1</ButtonText>
+                    <CommandName>MC Item 1</CommandName>
+                </Strings>
+            </Button>
+            <Button guid="guidQMediaVSIXPackageCmdSet1" id="cmdidMCItem2" priority="0x0100" type="Button">
+                <Parent guid="guidQMediaVSIXPackageCmdSet1" id="TestMenuControllerGroup" />
+                <Icon guid="guidImages" id="bmpSkipNext" />
+                <CommandFlag>IconAndText</CommandFlag>
+                <Strings>
+                    <ButtonText>MC Item 2</ButtonText>
+                    <CommandName>MC Item 2</CommandName>
+                </Strings>
+            </Button>
+            <Button guid="guidQMediaVSIXPackageCmdSet1" id="cmdidMCItem3" priority="0x0200" type="Button">
+                <Parent guid="guidQMediaVSIXPackageCmdSet1" id="TestMenuControllerGroup" />
+                <Icon guid="guidImages" id="bmpShuffle" />
+                <CommandFlag>IconAndText</CommandFlag>
+                <Strings>
+                    <ButtonText>MC Item 3</ButtonText>
+                    <CommandName>MC Item 3</CommandName>
+                </Strings>
+            </Button>-->
+        </Buttons>
+
+        <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
+        <Bitmaps>
+            <!--    The bitmap id is defined in a way that is a little bit different from the others:
+                        the declaration starts with a guid for the bitmap strip, then there is the resource id of the
+                        bitmap strip containing the bitmaps and then there are the numeric ids of the elements used
+                        inside a button definition. An important aspect of this declaration is that the element id
+                        must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
+            <!--<Bitmap guid="guidImages" href="Resources\CommandPlayPause.png" usedList="bmpPlay, bmpPause, bmpSkipNext, bmpSkipPrevious, bmpHelp, bmpShuffle, bmpRepeat, bmpVolume" />-->
+            <Bitmap guid="guidImages" href="Resources\Commands16.png" usedList="bmpPlay, bmpPause, bmpSkipPrevious, bmpSkipNext, bmpShuffle, bmpRepeat, bmpVolumeMax, bmpVolumeMute" />
+        </Bitmaps>
+
+        <Groups>
+            <!--<Group guid="guidQMediaVSIXPackageCmdSet1" id="ToolbarGroup" priority="0x0000">
+                <Parent guid="guidQMediaVSIXPackageCmdSet1" id="Toolbar" />
+            </Group>
+            <Group guid="guidQMediaVSIXPackageCmdSet1" id="TestMenuControllerGroup" priority="0x0000">
+                <Parent guid="guidQMediaVSIXPackageCmdSet1" id="TestMenuController" />
+            </Group>-->
+            <!-- The group that adds the MenuController on the Solution Explorer toolbar.
+         The 0x4000 priority adds this group after the group that contains the
+         Preview Selected Items button, which is normally at the far right of the toolbar. -->
+            <Group guid="guidDynamicMenuPackageCmdSet" id="MyToolbarItemGroup" priority="0x4000" >
+                <Parent guid="guidSHLMainMenu" id="IDM_VS_TOOL_PROJWIN" />
+            </Group>
+            <!-- The group for the items on the MenuController drop-down. It is added to the MenuController submenu. -->
+            <Group guid="guidDynamicMenuPackageCmdSet" id="MyMenuControllerGroup" priority="0x4000" >
+                <Parent guid="guidDynamicMenuPackageCmdSet" id="MyMenuController" />
+            </Group>
+        </Groups>
+    </Commands>
+
+    <VisibilityConstraints>
+        <!--Make the MenuController show up only when there is a solution with more than one project loaded-->
+        <VisibilityItem guid="guidDynamicMenuPackageCmdSet" id="MyMenuController" context="UICONTEXT_SolutionHasMultipleProjects"/>
+    </VisibilityConstraints>
+
+    <Symbols>
+        <!-- This is the package guid. -->
+        <GuidSymbol name="guidQMediaVSIXPackage" value="{9d9c8b04-c51f-455b-977c-79478bd8fcd0}" />
+
+        <!-- This is the guid used to group the menu commands together -->
+        <GuidSymbol name="guidQMediaVSIXPackageCmdSet" value="{f69ab04e-226e-425f-8f7c-4ea38da690a8}">
+            <IDSymbol name="VolumeMixerCommandId" value="0x0100" />
+            <IDSymbol value="257" name="cmdidVolumeMixerToolWindowCommand" />
+        </GuidSymbol>
+
+        <GuidSymbol name="guidDynamicMenuPackageCmdSet" value="{6201e769-c57e-7f99-f12d-a71604f42187}">
+            <IDSymbol name="MyToolbarItemGroup" value="0x1020" />
+            <IDSymbol name="MyMenuControllerGroup" value="0x1025" />
+            <IDSymbol name="MyMenuController" value ="0x1030"/>
+            <IDSymbol name="cmdidMyAnchorCommand" value="0x0103" />
+            <!-- NOTE: The following command expands at run time to some number of ids.
+     Try not to place command ids after it (e.g. 0x0105, 0x0106).
+     If you must add a command id after it, make the gap very large (e.g. 0x200) -->
+            <IDSymbol name="cmdidMyDynamicStartCommand" value="0x0104" />
+        </GuidSymbol>
+
+        <GuidSymbol name="guidImages" value="{8e4b8b17-9135-479d-9003-7c9d8a4d452f}">
+            <IDSymbol name="bmpPlay" value="1" />
+            <IDSymbol name="bmpPause" value="2" />
+            <IDSymbol name="bmpSkipPrevious" value="3" />
+            <IDSymbol name="bmpSkipNext" value="4" />
+            <IDSymbol name="bmpShuffle" value="5" />
+            <IDSymbol name="bmpRepeat" value="6" />
+            <IDSymbol name="bmpVolumeMax" value="7" />
+            <IDSymbol name="bmpVolumeMute" value="8" />
+        </GuidSymbol>
+
+        <!--<GuidSymbol name="guidImages" value="{8e4b8b17-9135-479d-9003-7c9d8a4d452f}">
+            <IDSymbol name="bmpPlay" value="1" />
+            <IDSymbol name="bmpPause" value="2" />
+            <IDSymbol name="bmpSkipNext" value="3" />
+            <IDSymbol name="bmpSkipPrevious" value="4" />
+            <IDSymbol name="bmpHelp" value="5" />
+            <IDSymbol name="bmpShuffle" value="6" />
+            <IDSymbol name="bmpRepeat" value="7" />
+            <IDSymbol name="bmpVolume" value="8" />
+        </GuidSymbol>-->
+
+        <GuidSymbol value="{690fff23-ef42-44de-8421-46bc88d23bf9}" name="guidQMediaVSIXPackageCmdSet1">
+            <IDSymbol value="4128" name="MyMenuGroup" />
+            <IDSymbol value="256" name="cmdidPlayCommand" />
+            <IDSymbol value="0x1000" name="Toolbar" />
+            <IDSymbol value="0x1050" name="ToolbarGroup" />
+            <IDSymbol value="0x1300" name="TestMenuController" />
+            <IDSymbol value="0x1060" name="TestMenuControllerGroup" />
+            <IDSymbol value="0x0130" name="cmdidMCItem1" />
+            <IDSymbol value="0x0131" name="cmdidMCItem2" />
+            <IDSymbol value="0x0132" name="cmdidMCItem3" />
+        </GuidSymbol>
+    </Symbols>
 </CommandTable>

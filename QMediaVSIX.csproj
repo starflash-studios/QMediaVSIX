@@ -7,9 +7,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -43,6 +45,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,8 +55,39 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandPackageGuids.cs" />
+    <Compile Include="Commands\DynamicItemMenuCommand.cs" />
+    <Compile Include="Commands\DynamicMenu.cs" />
+    <Compile Include="Commands\PlayCommand.cs" />
+    <Compile Include="Controls\MediaDeviceViewModel.cs" />
+    <Compile Include="Controls\NotifyPropertyChange.cs" />
+    <Compile Include="Controls\ReactiveUserControl.cs" />
+    <Compile Include="Converters\BoolToDoubleConverter.cs" />
+    <Compile Include="Converters\FloatToPercentConverter.cs" />
+    <Compile Include="Converters\IconExtractor.cs" />
+    <Compile Include="Converters\IntToStringConverter.cs" />
+    <Compile Include="Converters\ImageConverters.cs" />
+    <Compile Include="Converters\ValueConverter.cs" />
+    <Compile Include="Converters\MultipleConverters.cs" />
+    <Compile Include="Environment\Brushes.cs" />
+    <Compile Include="Environment\Colours.cs" />
+    <Compile Include="Environment\Effects\InvertEffect.cs" />
+    <Compile Include="Environment\Images.cs" />
+    <Compile Include="Environment\Utilities\IconsExtractor.cs" />
+    <Compile Include="Environment\Utilities\Native\IImageList.cs" />
+    <Compile Include="Environment\Utilities\Native\ImageInfo.cs" />
+    <Compile Include="Environment\Utilities\Native\ImageListDrawParams.cs" />
+    <Compile Include="Environment\Utilities\Native\Point.cs" />
+    <Compile Include="Environment\Utilities\Native\Rect.cs" />
+    <Compile Include="Environment\Utilities\Native\Shell32.cs" />
+    <Compile Include="Environment\Utilities\Native\SHFileInfo.cs" />
+    <Compile Include="Environment\Utilities\Native\SHGFI.cs" />
+    <Compile Include="Environment\Utilities\Native\User32.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="GlobalUsings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -64,10 +98,10 @@
     <Compile Include="Controls\MediaDeviceView.xaml.cs">
       <DependentUpon>MediaDeviceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ToolWindows\VolumeMixer.cs" />
-    <Compile Include="ToolWindows\VolumeMixerCommand.cs" />
-    <Compile Include="ToolWindows\VolumeMixerControl.xaml.cs">
-      <DependentUpon>VolumeMixerControl.xaml</DependentUpon>
+    <Compile Include="ToolWindows\VolumeMixerToolWindow.cs" />
+    <Compile Include="ToolWindows\VolumeMixerToolWindowCommand.cs" />
+    <Compile Include="ToolWindows\VolumeMixerToolWindowControl.xaml.cs">
+      <DependentUpon>VolumeMixerToolWindowControl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -81,18 +115,19 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.0-previews-4-31709-430" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.5232" />
+    <PackageReference Include="ReactiveUI.WPF">
+      <Version>16.3.10</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -101,12 +136,21 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Individual\Pause.png" />
+    <Resource Include="Resources\Individual\Play.png" />
+    <Resource Include="Resources\Individual\Repeat.png" />
+    <Resource Include="Resources\Individual\Shuffle.png" />
+    <Resource Include="Resources\Individual\SkipNext.png" />
+    <Resource Include="Resources\Individual\SkipPrevious.png" />
+    <Resource Include="Resources\Individual\VolumeMax.png" />
+    <Resource Include="Resources\Individual\VolumeMute.png" />
     <VSCTCompile Include="QMediaVSIXPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
     <Resource Include="Resources\imageres_15.ico" />
     <Resource Include="Resources\CommandPlayPause.png" />
     <Resource Include="Resources\IconCircle.ico" />
+    <Resource Include="Resources\Commands16.png" />
     <Content Include="Resources\IconCircle.svg" />
   </ItemGroup>
   <ItemGroup>
@@ -114,11 +158,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ToolWindows\VolumeMixerControl.xaml">
+    <Page Include="ToolWindows\VolumeMixerToolWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="QDebug\QDebug.csproj">
+      <Project>{46b3b7c2-841e-4d17-92bd-250b91c5acd1}</Project>
+      <Name>QDebug</Name>
+    </ProjectReference>
+    <ProjectReference Include="QMediaVSIX.Core\QMediaVSIX.Core.csproj">
+      <Project>{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}</Project>
+      <Name>QMediaVSIX.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

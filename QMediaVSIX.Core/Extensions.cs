@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -115,13 +116,16 @@ public static class Extensions {
 	}
 
 	public static string CatchNull( this string? Str, string WhenNull ) => Str ?? WhenNull;
+
 	public static string CatchNull( this string? Str, string Fallback, params string?[] Alternatives ) => Str ?? FirstNotNull(Alternatives) ?? Fallback;
-	public static string CatchEmpty( this string? Str, string WhenNullOrEmpty ) => string.IsNullOrEmpty(Str) ? WhenNullOrEmpty : Str;
+
+	public static string CatchEmpty( this string? Str, string WhenNullOrEmpty ) => Str.IsNullOrEmpty() ? WhenNullOrEmpty : Str;
+
 	public static string CatchEmpty( this string? Str, string Fallback, params string?[] Alternatives ) {
-		if ( string.IsNullOrEmpty(Str) ) {
+		if ( Str.IsNullOrEmpty() ) {
 			// ReSharper disable once LoopCanBePartlyConvertedToQuery
 			foreach (string? Alt in Alternatives ) {
-				if ( !string.IsNullOrEmpty(Alt) ) {
+				if ( !Alt.IsNullOrEmpty() ) {
 					return Alt;
 				}
 			}
@@ -129,12 +133,14 @@ public static class Extensions {
 		}
 		return Str;
 	}
-	public static string CatchWhitespace( this string? Str, string WhenNullEmptyOrWhitespace ) => string.IsNullOrWhiteSpace(Str) ? WhenNullEmptyOrWhitespace : Str;
+
+	public static string CatchWhitespace( this string? Str, string WhenNullEmptyOrWhitespace ) => Str.IsNullOrWhiteSpace() ? WhenNullEmptyOrWhitespace : Str;
+
 	public static string CatchWhitespace( this string? Str, string Fallback, params string?[] Alternatives ) {
-		if ( string.IsNullOrWhiteSpace(Str) ) {
+		if ( Str.IsNullOrWhiteSpace() ) {
 			// ReSharper disable once LoopCanBePartlyConvertedToQuery
 			foreach ( string? Alt in Alternatives ) {
-				if ( !string.IsNullOrWhiteSpace(Alt) ) {
+				if ( !Alt.IsNullOrWhiteSpace() ) {
 					return Alt;
 				}
 			}
@@ -142,4 +148,42 @@ public static class Extensions {
 		}
 		return Str;
 	}
+
+	/// <summary>
+	/// <inheritdoc cref="string.IsNullOrEmpty(string)"/>
+	/// <para/>Implementation courtesy of <see href="https://stackoverflow.com/a/64066801/11519246">ims1234</see>.
+	/// </summary>
+	/// <remarks>
+	/// This code is licensed under Creative Commons Attribution-ShareAlike 4.0 Internal (CC BY-SA 4.0).
+	/// <br/>You are free to:
+	/// <list type="bullet"><item>
+	/// <term>Share</term>
+	/// <description> copy and redistribute the material in any medium or format</description>
+	/// </item><item>
+	/// <term>Adapt</term>
+	/// <description> remix, transform, and build upon the material for any purpose, even commercially.</description>
+	/// </item></list>
+	/// This is a human-readable summary of (and not a substitute for) the <see href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">license</see>.
+	/// <para/>For more information, please visit: <see href="https://creativecommons.org/licenses/by-sa/4.0/"/>
+	/// </remarks>
+	public static bool IsNullOrEmpty( [NotNullWhen(false)] this string? Data ) => string.IsNullOrEmpty(Data);
+
+	/// <summary>
+	/// <inheritdoc cref="string.IsNullOrWhiteSpace(string)"/>
+	/// <para/>Implementation courtesy of <see href="https://stackoverflow.com/a/64066801/11519246">ims1234</see>.
+	/// </summary>
+	/// <remarks>
+	/// This code is licensed under Creative Commons Attribution-ShareAlike 4.0 Internal (CC BY-SA 4.0).
+	/// <br/>You are free to:
+	/// <list type="bullet"><item>
+	/// <term>Share</term>
+	/// <description> copy and redistribute the material in any medium or format</description>
+	/// </item><item>
+	/// <term>Adapt</term>
+	/// <description> remix, transform, and build upon the material for any purpose, even commercially.</description>
+	/// </item></list>
+	/// This is a human-readable summary of (and not a substitute for) the <see href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">license</see>.
+	/// <para/>For more information, please visit: <see href="https://creativecommons.org/licenses/by-sa/4.0/"/>
+	/// </remarks>
+	public static bool IsNullOrWhiteSpace( [NotNullWhen(false)] this string? Data ) => string.IsNullOrWhiteSpace(Data);
 }

@@ -1,5 +1,7 @@
 ﻿namespace QDebug.Listeners;
 
+#nullable enable
+
 public class ConsoleListener : IDebugListener {
 	/// <inheritdoc />
 	public void WriteLine( string? Message = null ) => SysCon.WriteLine(Message);
@@ -8,7 +10,7 @@ public class ConsoleListener : IDebugListener {
 	public void WriteLine( string? Message, string Category ) => SysCon.WriteLine($"[{Category}]{Message}");
 
 	/// <inheritdoc />
-	public void WriteLine( string Format, params object?[]? Args ) => SysCon.WriteLine(Format, Args);
+	public void WriteLine( string Format, params object?[] Args ) => SysCon.WriteLine(Format, Args);
 
 	/// <inheritdoc />
 	public void Write( string? Message = null ) => SysCon.Write(Message);

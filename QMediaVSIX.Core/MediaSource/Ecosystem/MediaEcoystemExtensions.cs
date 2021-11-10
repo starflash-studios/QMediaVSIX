@@ -97,7 +97,7 @@ public static class MediaEcoystemExtensions {
 		//Process Proc = Process.GetProcessById(Id);
 		//Debug.WriteLine($"Running on: {Proc} ({Proc.MainWindowTitle})");
 		//Debug.WriteLine($"ID: {Id} (Self: {Environment.ProcessId})");
-		return Id == Environment.ProcessId ? null : GetApplicationUserModelId(Id);
+		return Id == Process.GetCurrentProcess().Id ? null : GetApplicationUserModelId(Id);
 	}
 
 	public static string GetApplicationUserModelId( this MediaSession MS ) => MS.Session.SourceAppUserModelId;
@@ -114,7 +114,7 @@ public static class MediaEcoystemExtensions {
 		foreach (MediaDevice Device in Devices ) {
 			Process P = Device.Control2.Process;
 			string ProcName = P.ProcessName.TrimEnd(".exe");
-			Debug.WriteLine($"Does {string.Join(',',SessionsDict.Keys)} contain {ProcName}?");
+			Debug.WriteLine($"Does {string.Join(",", SessionsDict.Keys)} contain {ProcName}?");
 			if ( SessionsDict.ContainsKey(ProcName) ) {
 				yield return (P.Id, SessionsDict[ProcName], Device);
 			}
@@ -149,7 +149,17 @@ public static class MediaEcoystemExtensions {
 		return Str;
 	}
 
-	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>( this IEnumerable<KeyValuePair<TKey, TValue>> Enumerable ) where TKey : notnull => new Dictionary<TKey, TValue>(Enumerable);
+	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>( this IEnumerable<KeyValuePair<TKey, TValue>> Enumerable ) where TKey : notnull {
+		Dictionary<TKey, TValue> Dict = new Dictionary<TKey, TValue>();
+		Dict.AddRange(Enumerable);
+		return Dict;
+	}
+
+	public static void AddRange<TKey, TValue>( this IDictionary<TKey, TValue> Dict, IEnumerable<KeyValuePair<TKey, TValue>> Pairs ) {
+		foreach( KeyValuePair<TKey, TValue> Pair in Pairs ) {
+			Dict.Add(Pair);
+		}
+	}
 
 	public static (int ProcessID, MediaSession MS, MediaDevice MD)? FindSingleLinked( this MediaSession Session, IList<MediaDevice> Devices ) {
 		string SearchProcName = Session.Session.SourceAppUserModelId.TrimEnd(".exe");

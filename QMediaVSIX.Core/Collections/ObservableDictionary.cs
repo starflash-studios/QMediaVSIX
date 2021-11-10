@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace QMediaVSIX.Core.Collections;
@@ -176,7 +175,7 @@ public class ObservableDictionary<TKey, TValue> : List<ObservableKeyValuePair<TK
 	/// <inheritdoc />
 	public bool Contains( KeyValuePair<TKey, TValue> Item ) => Contains(Item.Key, Item.Value);
 
-	public bool Contains( [DisallowNull] TKey Key, TValue Value ) {
+	public bool Contains( TKey Key, TValue Value ) {
 		foreach ( (TKey K, TValue V) in this ) {
 			if ( Key.Equals(K) && Value.SafeEquals(V) ) {
 				return true;
@@ -359,7 +358,7 @@ public class ObservableDictionary<TKey, TValue> : List<ObservableKeyValuePair<TK
 	}
 
 	/// <inheritdoc />
-	int IIntGetIndexer<TKey>.this[ [DisallowNull] TKey Key ] {
+	int IIntGetIndexer<TKey>.this[ TKey Key ] {
 		get {
 			if ( Key is null ) {
 				throw new KeyNullException(nameof(Key));

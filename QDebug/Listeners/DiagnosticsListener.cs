@@ -8,6 +8,7 @@
 
 #endregion
 
+using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -15,6 +16,8 @@ using System.Runtime.InteropServices.ComTypes;
 using EnvDTE80;
 
 namespace QDebug.Listeners;
+
+#nullable enable
 
 public class DiagnosticsListener : IDebugListener {
 	/// <inheritdoc />
@@ -24,7 +27,7 @@ public class DiagnosticsListener : IDebugListener {
 	public void WriteLine( string? Message, string Category ) => SysDbg.WriteLine(Message, Category);
 
 	/// <inheritdoc />
-	public void WriteLine( string Format, params object?[]? Args ) => SysCon.WriteLine(Format, Args);
+	public void WriteLine( string Format, params object?[] Args ) => SysCon.WriteLine(Format, Args);
 
 	/// <inheritdoc />
 	public void Write( string? Message = null ) => SysDbg.Write(Message);

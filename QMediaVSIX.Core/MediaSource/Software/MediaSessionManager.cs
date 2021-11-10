@@ -1,4 +1,6 @@
-﻿using QMediaVSIX.Core.Collections;
+﻿using System.Threading.Tasks;
+
+using QMediaVSIX.Core.Collections;
 
 namespace QMediaVSIX.Core.MediaSource.Software;
 
@@ -75,6 +77,7 @@ public static class MediaSessionManager {
 	#endregion
 
 	static MediaSessionManager() {
+		Debug.WriteLine("Constructing session manager.");
 		SM = null!;
 		static void KeyAdded( ObservableDictionary<Guid, MediaSession> Dict, Guid Key ) => OnSessionConnected(Dict[Key], Key);
 		Sessions.KeyAdded += KeyAdded;

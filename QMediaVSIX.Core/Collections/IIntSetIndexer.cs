@@ -2,6 +2,6 @@
 
 namespace QMediaVSIX.Core.Collections;
 
-public interface IIntSetIndexer<in T> {
-	int this[[DisallowNull] T Key] { set; }
+public interface IIntSetIndexer<in T> where T : notnull {
+	int this[T Key] { set; }
 }

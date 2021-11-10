@@ -1,4 +1,8 @@
-﻿namespace QDebug;
+﻿using System;
+
+namespace QDebug;
+
+#nullable enable
 
 public class Console {
 	/// <inheritdoc cref="SysCon.Read()"/>

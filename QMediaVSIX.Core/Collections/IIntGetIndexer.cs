@@ -1,7 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿namespace QMediaVSIX.Core.Collections;
 
-namespace QMediaVSIX.Core.Collections;
-
-public interface IIntGetIndexer<in T> {
-	int this[[DisallowNull] T Key] { get; }
+public interface IIntGetIndexer<in T> where T : notnull {
+	int this[T Key] { get; }
 }

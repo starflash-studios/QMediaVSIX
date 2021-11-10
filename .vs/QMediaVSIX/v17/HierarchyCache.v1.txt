@@ -1,0 +1,273 @@
+﻿++Solution 'QMediaVSIX' ‎(4 of 4 projects)
+i:{00000000-0000-0000-0000-000000000000}:QMediaVSIX.sln
+++QDebug
+i:{00000000-0000-0000-0000-000000000000}:QDebug
+i:{29f90665-77a2-4a70-a04b-2a3e9a4803b9}:
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:
+++Properties
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:e:\projects\visual studio\qmediavsix\qdebug\properties\
+i:{29f90665-77a2-4a70-a04b-2a3e9a4803b9}:e:\projects\visual studio\qmediavsix\qmediavsix.cli\properties\
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\properties\
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\properties\
+++References
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:
+i:{29f90665-77a2-4a70-a04b-2a3e9a4803b9}:
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:
+++Listeners
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:e:\projects\visual studio\qmediavsix\qdebug\listeners\
+++.editorconfig
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:e:\projects\visual studio\qmediavsix\.editorconfig
+++Console.cs
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:e:\projects\visual studio\qmediavsix\qdebug\console.cs
+++Debug.cs
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:e:\projects\visual studio\qmediavsix\qdebug\debug.cs
+++GlobalUsings.cs
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:e:\projects\visual studio\qmediavsix\qdebug\globalusings.cs
+i:{29f90665-77a2-4a70-a04b-2a3e9a4803b9}:e:\projects\visual studio\qmediavsix\qmediavsix.cli\globalusings.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\globalusings.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\globalusings.cs
+++AssemblyInfo.cs
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:e:\projects\visual studio\qmediavsix\qdebug\properties\assemblyinfo.cs
+i:{29f90665-77a2-4a70-a04b-2a3e9a4803b9}:e:\projects\visual studio\qmediavsix\qmediavsix.cli\properties\assemblyinfo.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\properties\assemblyinfo.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\properties\assemblyinfo.cs
+++EnvDTE80
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:
+++Microsoft.CSharp
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+++System
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:
+i:{29f90665-77a2-4a70-a04b-2a3e9a4803b9}:
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:
+++System.Core
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:
+i:{29f90665-77a2-4a70-a04b-2a3e9a4803b9}:
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:
+++ConsoleListener.cs
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:e:\projects\visual studio\qmediavsix\qdebug\listeners\consolelistener.cs
+++DiagnosticsListener.cs
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:e:\projects\visual studio\qmediavsix\qdebug\listeners\diagnosticslistener.cs
+++IDebugListener.cs
+i:{46b3b7c2-841e-4d17-92bd-250b91c5acd1}:e:\projects\visual studio\qmediavsix\qdebug\listeners\idebuglistener.cs
+++QMediaVSIX.CLI
+i:{00000000-0000-0000-0000-000000000000}:QMediaVSIX.CLI
+++App.config
+i:{29f90665-77a2-4a70-a04b-2a3e9a4803b9}:e:\projects\visual studio\qmediavsix\qmediavsix.cli\app.config
+++Program.cs
+i:{29f90665-77a2-4a70-a04b-2a3e9a4803b9}:e:\projects\visual studio\qmediavsix\qmediavsix.cli\program.cs
+++QMediaVSIX.Core
+i:{29f90665-77a2-4a70-a04b-2a3e9a4803b9}:
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+i:{00000000-0000-0000-0000-000000000000}:QMediaVSIX.Core
+++QMediaVSIX
+i:{00000000-0000-0000-0000-000000000000}:QMediaVSIX
+++Microsoft.VisualStudio.SDK
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+++Microsoft.VSSDK.BuildTools
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+++PresentationCore
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+++PresentationFramework
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+++ReactiveUI.WPF
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+++System.Design
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+++System.Drawing
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+++System.Xaml
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+++System.Xml
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+++WindowsBase
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:
+++Controls
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\controls\
+++MediaDeviceView.xaml
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\controls\mediadeviceview.xaml
+++MediaDeviceViewModel.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\controls\mediadeviceviewmodel.cs
+++NotifyPropertyChange.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\controls\notifypropertychange.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\notifypropertychange.cs
+++Converters
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\converters\
+++BoolToDoubleConverter.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\converters\booltodoubleconverter.cs
+++FloatToPercentConverter.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\converters\floattopercentconverter.cs
+++IntToStringConverter.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\converters\inttostringconverter.cs
+++MultipleConverters.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\converters\multipleconverters.cs
+++ValueConverter.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\converters\valueconverter.cs
+++Environment
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\environment\
+++Brushes.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\environment\brushes.cs
+++Colours.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\environment\colours.cs
+++Resources
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\
+++Individual
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\individual\
+++CommandPlayPause.png
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\commandplaypause.png
+++Commands16.png
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\commands16.png
+++IconCircle.ico
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\iconcircle.ico
+++IconCircle.svg
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\iconcircle.svg
+++imageres_15.ico
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\imageres_15.ico
+++ToolWindows
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\toolwindows\
+++Extensions.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\extensions.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\extensions.cs
+++QMediaVSIXPackage.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\qmediavsixpackage.cs
+++QMediaVSIXPackage.vsct
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\qmediavsixpackage.vsct
+++source.extension.vsixmanifest
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\source.extension.vsixmanifest
+++Resources.resx
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\properties\resources.resx
+++MediaDeviceView.xaml.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\controls\mediadeviceview.xaml.cs
+++Pause.png
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\individual\pause.png
+++Play.png
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\individual\play.png
+++Repeat.png
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\individual\repeat.png
+++Shuffle.png
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\individual\shuffle.png
+++SkipNext.png
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\individual\skipnext.png
+++SkipPrevious.png
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\individual\skipprevious.png
+++VolumeMax.png
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\individual\volumemax.png
+++VolumeMute.png
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\resources\individual\volumemute.png
+++VolumeMixerToolWindow.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\toolwindows\volumemixertoolwindow.cs
+++VolumeMixerToolWindowCommand.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\toolwindows\volumemixertoolwindowcommand.cs
+++VolumeMixerToolWindowControl.xaml
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\toolwindows\volumemixertoolwindowcontrol.xaml
+++Resources.Designer.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\properties\resources.designer.cs
+++VolumeMixerToolWindowControl.xaml.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\toolwindows\volumemixertoolwindowcontrol.xaml.cs
+++Collections
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\
+++MediaSource
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\
+++Capability.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\capability.cs
+++Capability`1.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\capability`1.cs
+++ICapability.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\icapability.cs
+++ICapability`1.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\icapability`1.cs
+++NotNullWhenAttribute.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\notnullwhenattribute.cs
+++CSCore
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:
+++IndexRange
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:
+++Microsoft.Bcl.HashCode
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:
+++Microsoft.Windows.SDK.Contracts
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:
+++ICustomGetIndexer.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\icustomgetindexer.cs
+++ICustomGetSetIndexer.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\icustomgetsetindexer.cs
+++ICustomSetIndexer.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\icustomsetindexer.cs
+++IIntGetIndexer.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\iintgetindexer.cs
+++IIntGetSetIndexer.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\iintgetsetindexer.cs
+++IIntSetIndexer.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\iintsetindexer.cs
+++INotifyCollectionChange.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\inotifycollectionchange.cs
+++INotifyCollectionChange`1.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\inotifycollectionchange`1.cs
+++INotifyCollectionChanged.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\inotifycollectionchanged.cs
+++INotifyCollectionChanged`1.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\inotifycollectionchanged`1.cs
+++INotifyCollectionChanging.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\inotifycollectionchanging.cs
+++INotifyCollectionChanging`1.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\inotifycollectionchanging`1.cs
+++INotifyPropertyChange.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\inotifypropertychange.cs
+++KeyCollisionException.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\keycollisionexception.cs
+++KeyNotFoundException.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\keynotfoundexception.cs
+++KeyNullException.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\keynullexception.cs
+++NotifyPropertyChange_Extensions.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\notifypropertychange_extensions.cs
+++NullSafeObservableDictionary.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\nullsafeobservabledictionary.cs
+++ObservableDictionary.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\observabledictionary.cs
+++ObservableKeyValuePair.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\collections\observablekeyvaluepair.cs
+++Ecosystem
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\ecosystem\
+++Hardware
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\hardware\
+++Software
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\software\
+++IMediaSource.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\imediasource.cs
+++MediaSourceManager.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\mediasourcemanager.cs
+++IMediaEcosystem.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\ecosystem\imediaecosystem.cs
+++MediaEcosystem.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\ecosystem\mediaecosystem.cs
+++MediaEcoystemExtensions.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\ecosystem\mediaecoystemextensions.cs
+++IMediaDevice.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\hardware\imediadevice.cs
+++MediaDevice.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\hardware\mediadevice.cs
+++MediaDeviceManager.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\hardware\mediadevicemanager.cs
+++IMediaSession.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\software\imediasession.cs
+++MediaSession.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\software\mediasession.cs
+++MediaSessionManager.cs
+i:{e0dfe3c8-b2cb-45e8-92d1-21a5c3926831}:e:\projects\visual studio\qmediavsix\qmediavsix.core\mediasource\software\mediasessionmanager.cs
+++ThumbnailStreamReferenceToBitmapImage.cs
+++StreamExtensions.cs
+++ImageConverters.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\converters\imageconverters.cs
+++Images.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\environment\images.cs
+++NewFolder1
+++Units
+++ImagesResources.xaml
+++ImagesResources.xaml.cs
+++Effects
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\environment\effects\
+++InvertEffect.cs
+i:{194e26b7-925a-4ab6-8e67-268e6e03b1d3}:e:\projects\visual studio\qmediavsix\environment\effects\inverteffect.cs

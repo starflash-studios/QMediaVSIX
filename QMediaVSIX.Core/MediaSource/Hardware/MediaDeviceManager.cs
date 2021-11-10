@@ -57,13 +57,20 @@ public static class MediaDeviceManager {
 	public static readonly ObservableDictionary<Guid, MediaDevice> Devices = new ObservableDictionary<Guid, MediaDevice>();
 
 	static MediaDeviceManager() {
+		Debug.WriteLine("Constructing device manager.");
 		using ( MMDeviceEnumerator Enumerator = new MMDeviceEnumerator() ) {
+			Debug.WriteLine("A");
 			using ( MMDevice? Device = Enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia) ) {
+				Debug.WriteLine("B");
 				using ( AudioSessionManager2 SessionManager = AudioSessionManager2.FromMMDevice(Device) ) {
+					Debug.WriteLine("C");
 					SessionManager.SessionCreated += SessionManager_SessionCreated;
+					Debug.WriteLine("D");
 					using ( AudioSessionEnumerator SessionEnumerator = SessionManager.GetSessionEnumerator() ) {
+						Debug.WriteLine("E");
 						// ReSharper disable once LoopCanBePartlyConvertedToQuery
 						foreach ( AudioSessionControl Control in SessionEnumerator ) {
+							Debug.WriteLine("F");
 							Add(Control);
 						}
 					}

@@ -62,6 +62,7 @@ public static class MediaSourceManager {
 	static MediaSourceManager() => Initialise();
 
 	public static void Initialise() {
+		Debug.WriteLine("Constructing managers.");
 		RuntimeHelpers.RunClassConstructor(typeof(MediaSessionManager).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(MediaDeviceManager).TypeHandle);
 

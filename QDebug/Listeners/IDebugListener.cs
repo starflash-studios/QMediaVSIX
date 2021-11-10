@@ -1,5 +1,7 @@
 ﻿namespace QDebug.Listeners;
 
+#nullable enable
+
 public interface IDebugListener {
 	/// <summary>
 	/// Writes the line to the listener trace.
@@ -19,7 +21,7 @@ public interface IDebugListener {
 	/// </summary>
 	/// <param name="Format">A composite format string that contains text intermixed with zero or more format items, which correspond to objects in the args array.</param>
 	/// <param name="Args">An object array that contains zero or more objects to format.</param>
-	void WriteLine( string Format, params object?[]? Args );
+	void WriteLine( string Format, params object?[] Args );
 
 	/// <summary>
 	/// Writes the text to the listener trace.

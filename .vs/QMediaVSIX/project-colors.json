@@ -70,7 +70,27 @@
       "ProjectGuid": "9db52fa6-678f-4831-bba1-c093c33e5e4c",
       "DisplayName": "QDebug",
       "ColorIndex": 12
+    },
+    "1e97edda-b463-44c0-94e9-ab43f9807225": {
+      "ProjectGuid": "1e97edda-b463-44c0-94e9-ab43f9807225",
+      "DisplayName": "QMediaVSIX.Core.Framework",
+      "ColorIndex": 13
+    },
+    "46b3b7c2-841e-4d17-92bd-250b91c5acd1": {
+      "ProjectGuid": "46b3b7c2-841e-4d17-92bd-250b91c5acd1",
+      "DisplayName": "QDebug",
+      "ColorIndex": 14
+    },
+    "e0dfe3c8-b2cb-45e8-92d1-21a5c3926831": {
+      "ProjectGuid": "e0dfe3c8-b2cb-45e8-92d1-21a5c3926831",
+      "DisplayName": "QMediaVSIX.Core",
+      "ColorIndex": 15
+    },
+    "29f90665-77a2-4a70-a04b-2a3e9a4803b9": {
+      "ProjectGuid": "29f90665-77a2-4a70-a04b-2a3e9a4803b9",
+      "DisplayName": "QMediaVSIX.CLI",
+      "ColorIndex": 0
     }
   },
-  "NextColorIndex": 13
+  "NextColorIndex": 1
 }

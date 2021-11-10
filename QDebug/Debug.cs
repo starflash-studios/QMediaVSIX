@@ -1,6 +1,10 @@
-﻿using QDebug.Listeners;
+﻿using System.Collections.Generic;
 
-namespace QDebug; 
+using QDebug.Listeners;
+
+namespace QDebug;
+
+#nullable enable
 
 public class Debug {
 	/// <summary>

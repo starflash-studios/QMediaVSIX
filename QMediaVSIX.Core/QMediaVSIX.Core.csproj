@@ -1,27 +1,104 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <TargetFramework>net6.0-windows10.0.20348.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E0DFE3C8-B2CB-45E8-92D1-21A5C3926831}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>QMediaVSIX.Core</RootNamespace>
+    <AssemblyName>QMediaVSIX.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>10</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>10</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="MediaSource\Hardware\CoreAudio\**" />
-    <EmbeddedResource Remove="MediaSource\Hardware\CoreAudio\**" />
-    <None Remove="MediaSource\Hardware\CoreAudio\**" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="CSCore" Version="1.2.1.2">
-      <NoWarn>NU1701</NoWarn>
+    <Compile Include="Capability.cs" />
+    <Compile Include="Capability`1.cs" />
+    <Compile Include="Collections\ICustomGetIndexer.cs" />
+    <Compile Include="Collections\ICustomGetSetIndexer.cs" />
+    <Compile Include="Collections\ICustomSetIndexer.cs" />
+    <Compile Include="Collections\IIntGetIndexer.cs" />
+    <Compile Include="Collections\IIntGetSetIndexer.cs" />
+    <Compile Include="Collections\IIntSetIndexer.cs" />
+    <Compile Include="Collections\INotifyCollectionChange.cs" />
+    <Compile Include="Collections\INotifyCollectionChanged.cs" />
+    <Compile Include="Collections\INotifyCollectionChanged`1.cs" />
+    <Compile Include="Collections\INotifyCollectionChange`1.cs" />
+    <Compile Include="Collections\INotifyCollectionChanging.cs" />
+    <Compile Include="Collections\INotifyCollectionChanging`1.cs" />
+    <Compile Include="Collections\INotifyPropertyChange.cs" />
+    <Compile Include="Collections\KeyCollisionException.cs" />
+    <Compile Include="Collections\KeyNotFoundException.cs" />
+    <Compile Include="Collections\KeyNullException.cs" />
+    <Compile Include="Collections\NotifyPropertyChange.cs" />
+    <Compile Include="Collections\NotifyPropertyChange_Extensions.cs" />
+    <Compile Include="Collections\NullSafeObservableDictionary.cs" />
+    <Compile Include="Collections\ObservableDictionary.cs" />
+    <Compile Include="Collections\ObservableKeyValuePair.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="GlobalUsings.cs" />
+    <Compile Include="ICapability.cs" />
+    <Compile Include="ICapability`1.cs" />
+    <Compile Include="MediaSource\Ecosystem\IMediaEcosystem.cs" />
+    <Compile Include="MediaSource\Ecosystem\MediaEcosystem.cs" />
+    <Compile Include="MediaSource\Ecosystem\MediaEcoystemExtensions.cs" />
+    <Compile Include="MediaSource\Hardware\IMediaDevice.cs" />
+    <Compile Include="MediaSource\Hardware\MediaDevice.cs" />
+    <Compile Include="MediaSource\Hardware\MediaDeviceManager.cs" />
+    <Compile Include="MediaSource\IMediaSource.cs" />
+    <Compile Include="MediaSource\MediaSourceManager.cs" />
+    <Compile Include="MediaSource\Software\IMediaSession.cs" />
+    <Compile Include="MediaSource\Software\MediaSession.cs" />
+    <Compile Include="MediaSource\Software\MediaSessionManager.cs" />
+    <Compile Include="NotNullWhenAttribute.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CSCore">
+      <Version>1.2.1.2</Version>
     </PackageReference>
-    <PackageReference Include="EnvDTE" Version="16.10.31320.204" />
-    <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
+    <PackageReference Include="IndexRange">
+      <Version>1.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Bcl.HashCode">
+      <Version>1.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts">
+      <Version>10.0.22000.196</Version>
+    </PackageReference>
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\QDebug\QDebug.csproj" />
+    <ProjectReference Include="..\QDebug\QDebug.csproj">
+      <Project>{46b3b7c2-841e-4d17-92bd-250b91c5acd1}</Project>
+      <Name>QDebug</Name>
+    </ProjectReference>
   </ItemGroup>
-
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

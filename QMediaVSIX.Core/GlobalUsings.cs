@@ -1,5 +1,9 @@
 ﻿global using Debug = QDebug.Debug;
 
+global using System;
+global using System.Linq;
+global using System.Collections.Generic;
+
 global using WMCSessionManager = Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager;
 global using WMCSession = Windows.Media.Control.GlobalSystemMediaTransportControlsSession;
 global using WMCMediaProperties = Windows.Media.Control.GlobalSystemMediaTransportControlsSessionMediaProperties;
