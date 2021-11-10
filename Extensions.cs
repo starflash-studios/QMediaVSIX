@@ -18,8 +18,6 @@ public static class Extensions {
     //		_                => default
     //	};
 
-    public static async Task<OleMenuCommandService> GetMenuCommandServiceAsync( this AsyncPackage Pkg ) => (await Pkg.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService)!;
-
     public static string? GetFriendlyName( this TypeCode TC ) =>
         TC switch {
             TypeCode.Empty => "null",
@@ -52,6 +50,8 @@ public static class Extensions {
 
     public static string GetName<T>( bool FullName = false ) => GetName(typeof(T), FullName);
 
+    public static string GetTypeName( this Type? T, bool FullName = false ) => GetName(T, FullName);
+
     public static string GetName( this Type? T, bool FullName = false ) {
         TypeCode TC = Type.GetTypeCode(T);
         return TC switch {
@@ -83,6 +83,8 @@ public static class Extensions {
         };
         return Coll;
     }
+
+    public static async Task<OleMenuCommandService?> GetMenuCommandServiceAsync( this AsyncPackage Pkg ) => await GetServiceAsync<IMenuCommandService, OleMenuCommandService>(Pkg);
 
     public static async Task<T?> GetServiceAsync<T>(this IAsyncServiceProvider Provider) =>
         await Provider.GetServiceAsync(typeof(T)) switch {

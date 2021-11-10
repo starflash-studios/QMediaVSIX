@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
+﻿
 using Microsoft.VisualStudio.Shell;
 
 using QMediaVSIX.Core.MediaSource;

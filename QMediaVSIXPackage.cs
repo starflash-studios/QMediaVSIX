@@ -4,6 +4,8 @@ using System.Threading;
 
 using Microsoft.VisualStudio.Shell;
 
+using QMediaVSIX.Commands;
+
 using ReactiveUI;
 
 using Splat;
@@ -35,10 +37,19 @@ namespace QMediaVSIX;
  ProvideToolWindow(typeof(ToolWindows.VolumeMixerToolWindow)),
  SuppressMessage("Performance", "VSSDK003:Support async tool windows")]
 public sealed class QMediaVSIXPackage : AsyncPackage {
+
+    #region GUIDs
+
     /// <summary>
     /// QMediaVSIXPackage GUID string.
     /// </summary>
     public const string PackageGuidString = "9d9c8b04-c51f-455b-977c-79478bd8fcd0";
+
+    public const string
+        guidQMediaVSIXPackageToolWindowCmdSet = "f69ab04e-226e-425f-8f7c-4ea38da690a8",
+        guidQMediaVSIXPackageToolbarItemCmdSet = "a36c982e-236d-489b-8703-7e1fc268d77c";
+
+    #endregion
 
     #region Package Members
 
@@ -61,16 +72,13 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
         }, CancellationToken);
         await JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken);
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
-        await ToolWindows.VolumeMixerToolWindowCommand.InitializeAsync(this);
-        await Commands.PlayCommand.InitializeAsync(this);
+        //await ToolWindows.VolumeMixerToolWindowCommand.InitializeAsync(this);
+        await SimpleCommandExtensions.InitializeAllInAssemblyAsync(this);
+        //await SimpleCommand<
+        //await Commands.PlayPauseCommand.InitializeAsync(this);
+        //await Commands.SkipPreviousCommand.InitializeAsync(this);
+        //await Commands.SkipNextCommand.InitializeAsync(this);
     }
-
-    #endregion
-
-    #region GUIDs
-
-    public const string guidDynamicMenuPackageCmdSet = "6201e769-c57e-7f99-f12d-a71604f42187";
-    public const uint cmdidMyCommand = 0x104;
 
     #endregion
 }

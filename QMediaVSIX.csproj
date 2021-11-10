@@ -58,10 +58,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commands\CommandPackageGuids.cs" />
-    <Compile Include="Commands\DynamicItemMenuCommand.cs" />
-    <Compile Include="Commands\DynamicMenu.cs" />
-    <Compile Include="Commands\PlayCommand.cs" />
+    <Compile Include="Commands\PlayPauseCommand.cs" />
+    <Compile Include="Commands\SessionCommand.cs" />
+    <Compile Include="Commands\SimpleCommand.cs" />
+    <Compile Include="Commands\SimpleCommandExtensions.cs" />
+    <Compile Include="Commands\SimpleCommand`1.cs" />
+    <Compile Include="Commands\SkipNextCommand.cs" />
+    <Compile Include="Commands\SkipPreviousCommand.cs" />
     <Compile Include="Controls\MediaDeviceViewModel.cs" />
     <Compile Include="Controls\NotifyPropertyChange.cs" />
     <Compile Include="Controls\ReactiveUserControl.cs" />
