@@ -1,16 +1,19 @@
 ﻿#region Copyright (C) 2017-2021  Starflash Studios
-
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License (Version 3.0)
 // as published by the Free Software Foundation.
 // 
 // More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
-
 #endregion
 
+#region Using Directives
+
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Text;
+
+#endregion
 
 namespace QMediaVSIX.Converters;
 
@@ -20,7 +23,7 @@ public static class IconExtractor {
     // Prepare blank canvas.
     IntPtr IconHdc = CreateDC("Display", null!, null!, IntPtr.Zero);
     IntPtr IconHdcDest = CreateCompatibleDC(IconHdc);
-    Bitmap IconBMP = new Bitmap(256, 256, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+    Bitmap IconBMP = new Bitmap(256, 256, PixelFormat.Format32bppPArgb);
     using ( Graphics G = Graphics.FromImage(IconBMP) ) {
       G.Clear(Color.Transparent);
     }
@@ -127,10 +130,10 @@ public static class IconExtractor {
     const int DWAttr = 0;
     Shfileinfo Shfi = new Shfileinfo();
     uint ShfiSize = (uint)Marshal.SizeOf(Shfi.GetType());
-    IntPtr RetVal = SHGetFileInfo(FileName, DWAttr, ref Shfi, ShfiSize, ((uint)(DWFlags)));
+    IntPtr RetVal = SHGetFileInfo(FileName, DWAttr, ref Shfi, ShfiSize, (uint)DWFlags);
 
     if ( RetVal.Equals(IntPtr.Zero) ) {
-      System.Diagnostics.Debug.Assert((!RetVal.Equals(IntPtr.Zero)), "Failed to get icon index");
+      System.Diagnostics.Debug.Assert(!RetVal.Equals(IntPtr.Zero), "Failed to get icon index");
       return 0;
     }
     return Shfi.iIcon;
@@ -164,7 +167,7 @@ public static class IconExtractor {
   [DllImport("comctl32")]
   static extern IntPtr ImageList_GetIcon( IntPtr Himl, int I, int Flags );
 
-  [ComImport()]
+  [ComImport]
   [Guid("46EB5926-582E-4017-9FDF-E8998DAA0950")]
   [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
   interface IImageList {
@@ -321,7 +324,7 @@ public static class IconExtractor {
     int GetOverlayImage(
       int Overlay,
       ref int PIIndex );
-  };
+  }
 
   [DllImport("gdi32.dll", EntryPoint = "SelectObject")]
   internal static extern IntPtr SelectObject( IntPtr Hdc, IntPtr BMP );

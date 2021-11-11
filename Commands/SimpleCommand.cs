@@ -1,18 +1,20 @@
 ﻿#region Copyright (C) 2017-2021  Starflash Studios
-
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License (Version 3.0)
 // as published by the Free Software Foundation.
 // 
 // More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
-
 #endregion
+
+#region Using Directives
 
 using System.ComponentModel.Design;
 using System.Globalization;
 
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
+#endregion
 
 namespace QMediaVSIX.Commands;
 
@@ -56,7 +58,8 @@ internal abstract class SimpleCommand {
     /// <summary>
     /// Gets the instance of the command.
     /// </summary>
-    protected static SimpleCommand? Instance { get; set; }
+    // ReSharper disable once ReplaceAutoPropertyWithComputedProperty
+    protected static SimpleCommand? Instance { get; } = null;
 
     /// <summary>
     /// Gets the service provider from the owner package.

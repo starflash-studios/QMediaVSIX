@@ -114,7 +114,7 @@ public static class MediaEcoystemExtensions {
 		foreach (MediaDevice Device in Devices ) {
 			Process P = Device.Control2.Process;
 			string ProcName = P.ProcessName.TrimEnd(".exe");
-			Debug.WriteLine($"Does {string.Join(",", SessionsDict.Keys)} contain {ProcName}?");
+			//Debug.WriteLine($"Does {string.Join(",", SessionsDict.Keys)} contain {ProcName}?");
 			if ( SessionsDict.ContainsKey(ProcName) ) {
 				yield return (P.Id, SessionsDict[ProcName], Device);
 			}

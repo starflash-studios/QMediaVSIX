@@ -6,15 +6,21 @@ namespace QDebug;
 
 #nullable enable
 
-public class Debug {
+public static class Debug {
 	/// <summary>
 	/// The collection of trace listeners to output debug statements to.
 	/// </summary>
-	public static readonly List<IDebugListener> Listeners = new List<IDebugListener> {
-		new DiagnosticsListener(),
-		new ConsoleListener()
-	};
+	public static readonly List<IDebugListener> Listeners;
 
+
+	static Debug() {
+		Listeners = new List<IDebugListener>() {
+			new DiagnosticsListener()
+		};
+		if ( Console.HasConsoleAttached ) {
+			Listeners.Add(new ConsoleListener());
+		}
+	}
 	/// <summary>
 	/// Queries the collection of listeners for trace listeners of the requested type.
 	/// </summary>
@@ -54,4 +60,7 @@ public class Debug {
 
 	/// <inheritdoc cref="SysCon.Clear()"/>
 	public static void Clear() => Listeners.ForEach(L => L.Clear());
+
+	/// <inheritdoc cref="System.Diagnostics.Debugger.Break()"/>
+	public static void Break() => Listeners.ForEach(L => L.Break());
 }

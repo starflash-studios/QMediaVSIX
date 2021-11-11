@@ -13,3 +13,4 @@ global using WMCPlaybackStatus = Windows.Media.Control.GlobalSystemMediaTranspor
 global using WMCTimelineProperties = Windows.Media.Control.GlobalSystemMediaTransportControlsSessionTimelineProperties;
 
 global using WMCSessionsChangedEventArgs = Windows.Media.Control.SessionsChangedEventArgs;
+global using WMCCurrentSessionChangedEventArgs = Windows.Media.Control.CurrentSessionChangedEventArgs;

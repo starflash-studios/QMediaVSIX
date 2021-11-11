@@ -1,13 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿#region Copyright (C) 2017-2021  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
 
-using Microsoft.VisualStudio.Shell;
+#region Using Directives
+
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 
 using QMediaVSIX.Core.Collections;
+
+#endregion
 
 namespace QMediaVSIX;
 
@@ -110,4 +124,41 @@ public static class Extensions {
 
     [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Extension Method")]
     public static void RunInBackground( this JoinableTaskFactory JTF, Func<Action> Tk ) => _ = Task.Run(Tk.Invoke());
+
+    public static T? GetCustomAttribute<T>( this Type Tp, bool CanReturnInherited = true ) where T : Attribute {
+        foreach( object Attr in Tp.GetCustomAttributes(typeof(T), CanReturnInherited) ) {
+            if ( Attr is T RetVal ) {
+                return RetVal;
+            }
+        }
+        return null;
+    }
+
+    //[DoesNotReturn]
+    public static void ThrowIfNull( [/*[NotNull*/NotNullWhen(false)] this object? Param, [/*CallerArgumentExpression(nameof(Param))*/CallerMemberName] string? ParamName = null, [CallerLineNumber] int? LineNumber = null, [CallerFilePath] string? FilePath = null ) {
+        if ( Param is null ) {
+            throw new ArgumentNullException(ParamName, $"Parameter {ParamName} is null ({FilePath}@{LineNumber})");
+        }
+    }
+
+    public static bool IsEqualOrSubclassOf( this Type Derived, Type Base ) => Derived == Base || Derived.IsSubclassOf(Base);
+
+    public static ConstructorInfo? GetConstructor(this Type Tp, BindingFlags Flags, params Type[] ParamTypes ) {
+        if ( ParamTypes.Length <= 0 ) {
+            throw new NotSupportedException("Parameters must be present. For parameterless searches, utilise other existing extension methods.");
+        }
+        foreach ( ConstructorInfo CI in Tp.GetConstructors(Flags) ) {
+            int I = 0;
+            // ReSharper disable once LoopCanBePartlyConvertedToQuery
+            foreach(ParameterInfo PI in CI.GetParameters() ) {
+                if (PI.GetType().IsEqualOrSubclassOf(ParamTypes[I])) {
+                    I++;
+                    if (I >= ParamTypes.Length ) {
+                        return CI;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

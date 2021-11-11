@@ -1,4 +1,7 @@
-﻿using QMediaVSIX.Core.MediaSource;
+﻿using System.Security.Cryptography;
+using System.Text;
+
+using QMediaVSIX.Core.MediaSource;
 using QMediaVSIX.Core.MediaSource.Ecosystem;
 using QMediaVSIX.Core.MediaSource.Hardware;
 using QMediaVSIX.Core.MediaSource.Software;
@@ -64,6 +67,7 @@ public class Program {
 			Debug.WriteLine("-------------");
 		}
 
+		Console.WriteLine(GenerateUniqueGuid());
 		while ( true ) {
 			Change();
 			Console.ReadKey();
@@ -71,5 +75,32 @@ public class Program {
 		}
 
 		// ReSharper disable once FunctionNeverReturns
+	}
+
+	public static Guid GenerateUniqueGuid( string Unique = "guidDynamicMenuPackageCmdSet" ) {
+		const string NM = "QMediaVSIX";
+		return Combine(Generate(Unique), Generate(NM));
+	}
+
+	internal static Guid Generate( string Str ) {
+		using ( MD5 Md = MD5.Create() ) {
+			byte[] Bytes = Encoding.Default.GetBytes(Str);
+			byte[] CryptoBytes = Md.ComputeHash(Bytes);
+			return new Guid(CryptoBytes);
+		}
+	}
+
+	internal static Guid Combine( Guid A, Guid B ) {
+		byte[] BytesA = A.ToByteArray();
+		byte[] BytesB = B.ToByteArray();
+		byte[] Data = new byte[16];
+		for ( int I = 0; I < 16; I++ ) {
+			if ( I % 2 == 1 ) {
+				Data[I] = BytesA[I];
+			} else {
+				Data[I] = BytesB[I];
+			}
+		}
+		return new Guid(Data);
 	}
 }

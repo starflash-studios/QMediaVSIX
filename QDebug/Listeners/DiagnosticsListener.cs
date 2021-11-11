@@ -64,6 +64,9 @@ public class DiagnosticsListener : IDebugListener {
 		}
 	}
 
+	/// <inheritdoc />
+	public void Break() => System.Diagnostics.Debugger.Break();
+
 	/// <summary>
 	/// Determines whether clearing of Visual Studio's output window is enabled.
 	/// </summary>

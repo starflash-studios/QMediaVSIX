@@ -1,16 +1,29 @@
-﻿using System.Reflection;
+﻿#region Copyright (C) 2017-2021  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Shell;
 
 using QMediaVSIX.Commands;
+using QMediaVSIX.Core.MediaSource;
+using QMediaVSIX.ToolWindows;
 
 using ReactiveUI;
 
 using Splat;
 
-using Task = System.Threading.Tasks.Task;
+#endregion
 
 namespace QMediaVSIX;
 
@@ -31,11 +44,11 @@ namespace QMediaVSIX;
 /// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
 /// </para>
 /// </remarks>
-[PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true),
- Guid(PackageGuidString),
- ProvideMenuResource("Menus.ctmenu", 1),
- ProvideToolWindow(typeof(ToolWindows.VolumeMixerToolWindow)),
- SuppressMessage("Performance", "VSSDK003:Support async tool windows")]
+[ PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true),
+  Guid(PackageGuidString),
+  ProvideMenuResource("Menus.ctmenu", 1),
+  ProvideToolWindow(typeof(VolumeMixerToolWindow)),
+  SuppressMessage("Performance", "VSSDK003:Support async tool windows")]
 public sealed class QMediaVSIXPackage : AsyncPackage {
 
     #region GUIDs
@@ -67,13 +80,14 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
             Debug.WriteLine("Initialising listeners...");
             ThreadHelper.ThrowIfOnUIThread();
             Debug.WriteLine("On background thread.");
-            Core.MediaSource.MediaSourceManager.Initialise();
+            MediaSourceManager.Initialise();
             Debug.WriteLine("Initialised listeners.");
         }, CancellationToken);
         await JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken);
-        Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         //await ToolWindows.VolumeMixerToolWindowCommand.InitializeAsync(this);
         await SimpleCommandExtensions.InitializeAllInAssemblyAsync(this);
+        await InstanceProviderAttribute.ConstructAllInstanceTypesAsync();
+        Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         //await SimpleCommand<
         //await Commands.PlayPauseCommand.InitializeAsync(this);
         //await Commands.SkipPreviousCommand.InitializeAsync(this);

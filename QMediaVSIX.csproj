@@ -6,11 +6,11 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <LangVersion>latest</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <LangVersion>latest</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -58,8 +58,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Types\AsynchronousInstancedType.cs" />
+    <Compile Include="Types\InstancedType.cs" />
+    <Compile Include="Types\InstanceProviderAttribute.cs" />
     <Compile Include="Commands\PlayPauseCommand.cs" />
     <Compile Include="Commands\SessionCommand.cs" />
+    <Compile Include="Commands\SessionCommandManager.cs" />
     <Compile Include="Commands\SimpleCommand.cs" />
     <Compile Include="Commands\SimpleCommandExtensions.cs" />
     <Compile Include="Commands\SimpleCommand`1.cs" />
@@ -128,6 +132,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.0-previews-4-31709-430" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.5232" />
+    <PackageReference Include="Mono.Reflection">
+      <Version>2.0.0</Version>
+    </PackageReference>
     <PackageReference Include="ReactiveUI.WPF">
       <Version>16.3.10</Version>
     </PackageReference>

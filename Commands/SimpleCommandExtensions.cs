@@ -1,18 +1,20 @@
 ﻿#region Copyright (C) 2017-2021  Starflash Studios
-
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License (Version 3.0)
 // as published by the Free Software Foundation.
 // 
 // More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
-
 #endregion
+
+#region Using Directives
 
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Shell;
+
+#endregion
 
 namespace QMediaVSIX.Commands;
 
@@ -27,7 +29,7 @@ public static class SimpleCommandExtensions {
             if ( !Tp.IsAbstract && Tp.IsSubclassOf(WantedType) && Tp.IsSubClassOfGeneric(WantedGenericType) ) {
                 //First IsSubclassOf check speeds iteration of type members as it first checks if it's a command, then does a more expensive check to see if it is a strongly-typed command.
                 //This helps with performance as the more expensive check is run less times, and only on likely candidates as opposed to every type in the assembly.
-                Task Tk = (Task)Tp.GetMethod("InitializeAsync", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy).Invoke(null, Params);
+                Task Tk = (Task)Tp.GetMethod(nameof(SessionCommand.InitializeAsync), BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy).Invoke(null, Params);
                 await Tk;
             }
         }
@@ -45,11 +47,11 @@ public static class SimpleCommandExtensions {
         Type? Ch = Child;
 
         Type[] Parameters = Parent.GetGenericArguments();
-        bool IsParameterLessGeneric = !(Parameters is { Length: > 0 } && ((Parameters[0].Attributes & TypeAttributes.BeforeFieldInit) == TypeAttributes.BeforeFieldInit));
+        bool IsParameterLessGeneric = !(Parameters is { Length: > 0 } && (Parameters[0].Attributes & TypeAttributes.BeforeFieldInit) == TypeAttributes.BeforeFieldInit);
 
         while ( Ch is not null && Ch != typeof(object) ) {
             Type Cur = GetFullTypeDefinition(Ch);
-            if ( Parent == Cur || (IsParameterLessGeneric && Cur.GetInterfaces().Select(GetFullTypeDefinition).Contains(GetFullTypeDefinition(Parent))) ) {
+            if ( Parent == Cur || IsParameterLessGeneric && Cur.GetInterfaces().Select(GetFullTypeDefinition).Contains(GetFullTypeDefinition(Parent)) ) {
                 return true;
             }
             if ( !IsParameterLessGeneric ) {

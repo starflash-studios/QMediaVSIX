@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace QDebug;
 
 #nullable enable
 
-public class Console {
+public static class Console {
 	/// <inheritdoc cref="SysCon.Read()"/>
 	public static int Read() => SysCon.Read();
 
@@ -18,10 +19,21 @@ public class Console {
 	/// <inheritdoc cref="SysCon.ReadLine()"/>
 	public static string? ReadLine() => SysCon.ReadLine();
 
+	/// <summary>
+	/// Returns <see langword="true"/> if <see cref="GetConsoleWindow()"/> does not return <see cref="IntPtr.Zero"/>.
+	/// </summary>
+	public static bool HasConsoleAttached => GetConsoleWindow() != IntPtr.Zero;
+
+	[DllImport("kernel32.dll")]
+	static extern IntPtr GetConsoleWindow();
+
 	#region Redirected Methods
 
 	/// <inheritdoc cref="SysCon.Clear()"/>
 	public static void Clear() => Debug.Clear();
+
+	/// <inheritdoc cref="System.Diagnostics.Debugger.Break()"/>
+	public static void Break() => Debug.Break();
 
 	/// <inheritdoc cref="SysCon.WriteLine(string?)"/>
 	public static void WriteLine( string? Message = null ) => Debug.WriteLine(Message);

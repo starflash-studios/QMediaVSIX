@@ -1,5 +1,17 @@
-﻿using System.ComponentModel;
+﻿#region Copyright (C) 2017-2021  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System.ComponentModel;
 using System.Windows.Media.Imaging;
+
+using CSCore.CoreAudioAPI;
 
 using QMediaVSIX.Converters;
 using QMediaVSIX.Core.MediaSource.Hardware;
@@ -7,7 +19,9 @@ using QMediaVSIX.Environment;
 
 using ReactiveUI;
 
-namespace QMediaVSIX.Views;
+#endregion
+
+namespace QMediaVSIX.Controls;
 
 public class MediaDeviceViewModel : NotifyPropertyChange {
 	public MediaDeviceViewModel() {
@@ -86,7 +100,7 @@ public class MediaDeviceViewModel : NotifyPropertyChange {
 		}
 	}
 
-	void Control_IconPathChanged( object Sender, CSCore.CoreAudioAPI.AudioSessionIconPathChangedEventArgs E ) {
+	void Control_IconPathChanged( object Sender, AudioSessionIconPathChangedEventArgs E ) {
 		Debug.WriteLine("The icon was changed!");
 		//E.NewIconPath
 		Image = new BitmapImage(new Uri(E.NewIconPath));

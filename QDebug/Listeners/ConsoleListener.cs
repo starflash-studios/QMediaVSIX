@@ -20,4 +20,10 @@ public class ConsoleListener : IDebugListener {
 
 	/// <inheritdoc />
 	public void Clear() => SysCon.Clear();
+
+	/// <inheritdoc />
+	public void Break() {
+		SysCon.WriteLine("[[BREAK]]");
+		SysCon.Beep();
+	}
 }

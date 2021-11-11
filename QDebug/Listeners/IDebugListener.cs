@@ -40,4 +40,9 @@ public interface IDebugListener {
 	/// Clears the listener trace.
 	/// </summary>
 	void Clear();
+
+	/// <summary>
+	/// Sets the listener into a broken state.
+	/// </summary>
+	void Break();
 }

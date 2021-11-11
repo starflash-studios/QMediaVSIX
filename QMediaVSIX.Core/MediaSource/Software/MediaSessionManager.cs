@@ -74,27 +74,83 @@ public static class MediaSessionManager {
 
 	#endregion
 
+	#region CurrentSessionChanged Event
+
+	/// <summary>
+	/// Event arguments for the <see cref="CurrentSessionChanged"/> event (<inheritdoc cref="CurrentSessionChanged"/>).
+	/// </summary>
+	/// <param name="Sender">The event raiser.</param>
+	/// <param name="E">The raised event arguments.</param>
+	public delegate void CurrentSessionChangedEventArgs( Guid Sender, MediaSession? E );
+
+	/// <summary>
+	/// Invoked when the current session windows believes the user wishes to control changes.
+	/// </summary>
+	public static event CurrentSessionChangedEventArgs CurrentSessionChanged = delegate { };
+
+	/// <summary>
+	/// Raises the <see cref="CurrentSessionChanged"/> event (<inheritdoc cref="CurrentSessionChanged"/>)
+	/// </summary>
+	/// <param name="Sender">The event raiser.</param>
+	/// <param name="E">The raised event arguments.</param>
+	public static void OnCurrentSessionChanged( Guid Sender, MediaSession? E ) => CurrentSessionChanged(Sender, E);
+
 	#endregion
+
+	#endregion
+
+	static MediaSession? _Current;
+	public static MediaSession? Current {
+		get => _Current;
+		private set {
+			if ( _Current == value ) { return; }
+			_Current = value;
+			OnCurrentSessionChanged(value?.Identifier ?? Guid.Empty, value);
+		}
+	}
 
 	static MediaSessionManager() {
 		Debug.WriteLine("Constructing session manager.");
 		SM = null!;
 		static void KeyAdded( ObservableDictionary<Guid, MediaSession> Dict, Guid Key ) => OnSessionConnected(Dict[Key], Key);
 		Sessions.KeyAdded += KeyAdded;
+		static void KeyRemoved( ObservableDictionary<Guid, MediaSession> _, Guid __, MediaSession Session ) => OnSessionDisconnected(Session);
+		Sessions.KeyAdded += KeyAdded;
+		Sessions.KeyRemoved += KeyRemoved;
 		InitAsync();
 	}
 
 	static async void InitAsync() {
-		Debug.WriteLine("Retrieving manager...");
+		//Debug.WriteLine("Retrieving manager...");
 		SM = await RequestSessionManagerAsync();
-		Debug.WriteLine("Manager found.");
+		//Debug.WriteLine("Manager found.");
 		SM.SessionsChanged += SM_SessionsChanged;
-		Debug.WriteLine("Refreshing sessions...");
+		//Debug.WriteLine("Refreshing sessions...");
 		RefreshSessions();
-		Debug.WriteLine("Sessions refreshed.");
+		//Debug.WriteLine("Sessions refreshed.");
+		SM.CurrentSessionChanged += SM_CurrentSessionChanged;
 		OnAcquiredSessionManager(SM);
 	}
 
+	static void SM_CurrentSessionChanged( WMCSessionManager Sender, WMCCurrentSessionChangedEventArgs Args ) => RefreshCurrentSession();
+
+	public static void RefreshCurrentSession() {
+		switch ( SM.GetCurrentSession() ) {
+			case { } NewCurrent:
+				Guid NewSessionIdentifier = MediaSession.GetIdentifier(NewCurrent);
+				foreach ( (Guid Identifier, MediaSession Session) in Sessions ) {
+					if ( Identifier == NewSessionIdentifier ) {
+						Debug.WriteLine($"Current session changed to {Session}.");
+						Current = Session;
+						//OnCurrentSessionChanged(Identifier, Session);
+					}
+				}
+				break;
+			default:
+				Current = null;
+				break;
+		}
+	}
 
 	public static Task<WMCSessionManager> RequestSessionManagerAsync() => WMCSessionManager.RequestAsync().AsTask();
 
@@ -117,11 +173,12 @@ public static class MediaSessionManager {
 		}
 		foreach( Guid Removed in Known ) { //Remove no longer existing sessions
 			Debug.WriteLine($"\tRemoved: {Removed}");
-			MediaSession RemovedSession = Sessions[Removed];
+			//MediaSession RemovedSession = Sessions[Removed];
 			Sessions.Remove(Removed);
-			SessionDisconnected(RemovedSession);
+			//SessionDisconnected(RemovedSession);
 		}
 		Debug.WriteLine("-----------------");
+		RefreshCurrentSession();
 	}
 
 	public static readonly ObservableDictionary<Guid, MediaSession> Sessions = new ObservableDictionary<Guid, MediaSession>();
