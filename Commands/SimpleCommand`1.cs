@@ -32,31 +32,29 @@ internal abstract class SimpleCommand<T> : SimpleCommand where T : SimpleCommand
     /// <summary>
     /// Initialises the singleton instance of the command.
     /// </summary>
-    /// <param name="Package">Owner package, not null.</param>
-    public static async Task<SimpleCommand<T>> InitializeAsync( AsyncPackage Package ) {
+    public static async Task<object> InitializeAsync() {
+        //Debug.WriteLine("Will initialise...");
+        if (typeof(T).IsAbstract || typeof(T).IsInterface ) {
+            //Debug.WriteLine("...or not.");
+            return null!;
+        }
+
+        AsyncPackage Package = QMediaVSIXPackage.Instance;
         // Switch to the main thread - the call to AddCommand in SkipNextCommand's constructor requires
         // the UI thread.
+        //Debug.WriteLine("Switching main...");
         await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(Package.DisposalToken);
 
-        OleMenuCommandService CommandService = await Package.GetServiceAsync<IMenuCommandService, OleMenuCommandService>() ?? throw new ArgumentNullException(nameof(CommandService));
+        //Debug.WriteLine("Retrieving service...");
+        OleMenuCommandService CommandService = await Package.GetServiceAsync<IMenuCommandService, OleMenuCommandService>() ?? throw new ArgumentNullException(nameof(CommandService), "No CommandService could be created at this time.");
 
+        //Debug.WriteLine("Constructing...");
         Type Tp = typeof(T);
-        Debug.WriteLine($"Type: {Tp.GetTypeName()}");
-        //foreach(ConstructorInfo CI in Tp.GetConstructors(ConstructorSearchFlags) ) {
-        //    int I = 0;
-        //    foreach(ParameterInfo PI in CI.GetParameters() ) {
-        //        if (PI.ParameterType)
-        //    }
-        //}
         ConstructorInfo? CI = Tp.GetConstructor(ConstructorSearchFlags, typeof(AsyncPackage), typeof(OleMenuCommandService));
-        Debug.WriteLine($"Constructor: {CI}"); //Constructor returns null, consider manual checking of all constructors and comparing required parameter types. ;; Perhaps it's because the type is 'protected' 'private' in SessionCommand.
         object? Constructed = CI?.Invoke(new object[] { Package, CommandService });
-        Debug.WriteLine($"Constructed: {Constructed}");
-        return Constructed as SimpleCommand<T>;
-
-        Debug.WriteLine($"Constructing: {typeof(T)}");
-        return (SimpleCommand<T>)typeof(SimpleCommand<T>).GetConstructor(new[] { typeof(AsyncPackage), typeof(OleMenuCommandService) }).Invoke(new object[] {Package, CommandService});
-        //Instance = new SimpleCommand<T>(Package, CommandService);
+        //Debug.WriteLine($"Type: {Tp}\n\tCI: {CI}\n\tConstructed: {Constructed}");
+        //Debug.WriteLine($"Constructing: {Tp.GetTypeName()}");
+        return Constructed ?? throw new ArgumentNullException(nameof(Tp), "Constructor method returned null.");
     }
 
     const BindingFlags ConstructorSearchFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy;

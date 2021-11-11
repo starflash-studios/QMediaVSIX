@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -56,17 +55,17 @@ public static class Extensions {
         };
 
 
-    public static string GetTypeName<T>( this object? _, bool FullName = false ) => GetName(typeof(T), FullName);
+    public static string GetTypeName<T>( this object? _, bool FullName = true ) => GetName(typeof(T), FullName);
 
-    public static string GetTypeName( this object? Obj, bool FullName = false ) => GetName(Obj?.GetType(), FullName);
+    public static string GetTypeName( this object? Obj, bool FullName = true ) => GetName(Obj?.GetType(), FullName);
 
-    public static string GetTypeName<T>( this T? _, bool FullName = false ) => GetName(typeof(T), FullName);
+    public static string GetTypeName<T>( this T? _, bool FullName = true ) => GetName(typeof(T), FullName);
 
-    public static string GetName<T>( bool FullName = false ) => GetName(typeof(T), FullName);
+    public static string GetName<T>( bool FullName = true ) => GetName(typeof(T), FullName);
 
-    public static string GetTypeName( this Type? T, bool FullName = false ) => GetName(T, FullName);
+    public static string GetTypeName( this Type? T, bool FullName = true ) => GetName(T, FullName);
 
-    public static string GetName( this Type? T, bool FullName = false ) {
+    public static string GetName( this Type? T, bool FullName = true ) {
         TypeCode TC = Type.GetTypeCode(T);
         return TC switch {
             TypeCode.Object => null,
@@ -147,18 +146,48 @@ public static class Extensions {
         if ( ParamTypes.Length <= 0 ) {
             throw new NotSupportedException("Parameters must be present. For parameterless searches, utilise other existing extension methods.");
         }
+        //Debug.WriteLine($"Checking {Tp} for constructors...");
         foreach ( ConstructorInfo CI in Tp.GetConstructors(Flags) ) {
+            //Debug.WriteLine($"\tFound: {CI} -- does this match the {ParamTypes.Length} parameters?");
             int I = 0;
             // ReSharper disable once LoopCanBePartlyConvertedToQuery
             foreach(ParameterInfo PI in CI.GetParameters() ) {
-                if (PI.GetType().IsEqualOrSubclassOf(ParamTypes[I])) {
+                //Debug.WriteLine($"\t\t{I}]{PI.ParameterType} {PI.Name} == {ParamTypes[I]}?");
+                if (PI.ParameterType.IsEqualOrSubclassOf(ParamTypes[I])) {
                     I++;
                     if (I >= ParamTypes.Length ) {
+                        //Debug.WriteLine("\tAbove was found to be valid.");
                         return CI;
                     }
                 }
             }
         }
         return null;
+    }
+
+    public static PropertyInfo? GetMostDerivedProperty( this Type Tp, string PropertyName, BindingFlags Flags ) {
+        PropertyInfo? RetProp = null;
+        // ReSharper disable once LoopCanBePartlyConvertedToQuery
+        foreach (PropertyInfo PI in Tp.GetProperties(Flags) ) {
+            if (PI.Name == PropertyName ) {
+                if (RetProp is null || PI.PropertyType.IsSubclassOf(RetProp.PropertyType) ) {
+                    RetProp = PI;
+                }
+            }
+        }
+        return RetProp;
+    }
+
+    public static FieldInfo? GetMostDerivedField( this Type Tp, string PropertyName, BindingFlags Flags ) {
+        FieldInfo? RetField = null;
+        // ReSharper disable once LoopCanBePartlyConvertedToQuery
+        foreach ( FieldInfo FI in Tp.GetFields(Flags) ) {
+            if ( FI.Name == PropertyName ) {
+                if ( RetField is null || FI.FieldType.IsSubclassOf(RetField.FieldType) ) {
+                    RetField = FI;
+                }
+            }
+        }
+        return RetField;
     }
 }

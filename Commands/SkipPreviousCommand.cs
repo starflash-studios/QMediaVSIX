@@ -17,7 +17,7 @@ namespace QMediaVSIX.Commands;
 /// <summary>
 /// Command handler
 /// </summary>
-internal sealed class SkipPreviousCommand : /*SimpleCommand<SkipPreviousCommand>*/SessionCommand {
+internal sealed class SkipPreviousCommand : SessionCommand<SkipPreviousCommand> {
     /// <summary>
     /// Command ID.
     /// </summary>
@@ -52,4 +52,9 @@ internal sealed class SkipPreviousCommand : /*SimpleCommand<SkipPreviousCommand>
 
     /// <inheritdoc />
     public override string Title => "Skip Previous";
+
+    public override void Execute( object Sender, EventArgs E ) {
+        Debug.WriteLine($"Skipping previous in {Current?.ToString() ?? "<NULL>"}");
+        Current?.SkipPrevious();
+    }
 }

@@ -17,7 +17,7 @@ namespace QMediaVSIX.Commands;
 /// <summary>
 /// Command handler
 /// </summary>
-internal sealed class SkipNextCommand : /*SimpleCommand<SkipNextCommand>*/SessionCommand {
+internal sealed class SkipNextCommand : SessionCommand<SkipNextCommand> {
     /// <summary>
     /// Command ID.
     /// </summary>
@@ -52,4 +52,9 @@ internal sealed class SkipNextCommand : /*SimpleCommand<SkipNextCommand>*/Sessio
     /// The title of the command.
     /// </summary>
     public override string Title => "Skip Next";
+
+    public override void Execute( object Sender, EventArgs E ) {
+        Debug.WriteLine($"Skipping to next in {Current?.ToString() ?? "<NULL>"}");
+        Current?.SkipNext();
+    }
 }

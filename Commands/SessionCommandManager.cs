@@ -8,6 +8,10 @@
 
 #endregion
 
+using System.Threading.Tasks;
+
+using Microsoft.VisualStudio.Shell;
+
 using QMediaVSIX.Controls;
 using QMediaVSIX.Core.MediaSource.Software;
 
@@ -32,13 +36,26 @@ public class SessionCommandManager : NotifyPropertyChange {
             }
             if ( value != _Active ) {
                 Instance.RaisePropertyChanging();
+                Debug.WriteLine($"Active session changed to {value}");
                 _Active = value;
                 Instance.RaisePropertyChanged();
             }
         }
     }
 
+    public static Action<Func<Task>> AsyncRunner = null!;
+
     public SessionCommandManager() {
+        if ( Instance is not null ) {
+            throw new NotSupportedException("May not create multiple instances.");
+        }
+        AsyncRunner = Tk => _ = ThreadHelper.JoinableTaskFactory.RunAsync(Tk);
+        foreach (MediaSession Session in MediaSessionManager.Sessions.Values ) {
+            Session.AsyncRunner = AsyncRunner;
+        }
+        MediaSessionManager.SessionConnected += ( S, _ ) => {
+            S.AsyncRunner = AsyncRunner;
+        };
         MediaSessionManager.CurrentSessionChanged += ( _, E ) => Active = E;
     }
 }

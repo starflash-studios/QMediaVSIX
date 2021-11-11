@@ -17,8 +17,6 @@ using QMediaVSIX.Converters;
 using QMediaVSIX.Core.MediaSource.Hardware;
 using QMediaVSIX.Environment;
 
-using ReactiveUI;
-
 #endregion
 
 namespace QMediaVSIX.Controls;
@@ -27,38 +25,38 @@ public class MediaDeviceViewModel : NotifyPropertyChange {
 	public MediaDeviceViewModel() {
 		_Device = null;
 
-		Debug.WriteLine("Constructing viewmodel...");
+		//Debug.WriteLine("Constructing viewmodel...");
 		PropertyChanged += ( S, E ) => {
 			Debug.WriteLine($"{S.GetType().FullName}.{E.PropertyName} changed...");
 
 			if ( _Device is not { } D ) {
-				Debug.WriteLine("Ignored. (Device was null)");
+				//Debug.WriteLine("Ignored. (Device was null)");
 				return;
 			}
 			switch ( E.PropertyName ) {
 				case nameof(Volume):
-					Debug.WriteLine($"\tNew value: {Volume}");
+					//Debug.WriteLine($"\tNew value: {Volume}");
 					_PropChangeFromSelf = true;
 					D.Volume = Volume;
 					break;
 				case nameof(Mute):
-					Debug.WriteLine($"\tNew value: {Mute}");
+					//Debug.WriteLine($"\tNew value: {Mute}");
 					_PropChangeFromSelf = true;
 					D.Mute = Mute;
 					break;
 			}
 		};
-		PropertyChanging += ( S, E ) => {
-			Debug.WriteLine($"{S.GetType().FullName}.{E.PropertyName} changing...");
-			switch ( E.PropertyName ) {
-				case nameof(Volume):
-					Debug.WriteLine($"\tOld value: {_Volume}");
-					break;
-				case nameof(Mute):
-					Debug.WriteLine($"\tOld value: {Mute}");
-					break;
-			}
-		};
+		//PropertyChanging += ( S, E ) => {
+		//	Debug.WriteLine($"{S.GetType().FullName}.{E.PropertyName} changing...");
+		//	switch ( E.PropertyName ) {
+		//		case nameof(Volume):
+		//			Debug.WriteLine($"\tOld value: {_Volume}");
+		//			break;
+		//		case nameof(Mute):
+		//			Debug.WriteLine($"\tOld value: {Mute}");
+		//			break;
+		//	}
+		//};
 	}
 
 	public void SetDevice( MediaDevice Device ) {
@@ -101,7 +99,7 @@ public class MediaDeviceViewModel : NotifyPropertyChange {
 	}
 
 	void Control_IconPathChanged( object Sender, AudioSessionIconPathChangedEventArgs E ) {
-		Debug.WriteLine("The icon was changed!");
+		//Debug.WriteLine("The icon was changed!");
 		//E.NewIconPath
 		Image = new BitmapImage(new Uri(E.NewIconPath));
 	}

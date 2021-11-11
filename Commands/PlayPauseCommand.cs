@@ -17,7 +17,7 @@ namespace QMediaVSIX.Commands;
 /// <summary>
 /// Command handler
 /// </summary>
-internal sealed class PlayPauseCommand : /*SimpleCommand<PlayPauseCommand>*/SessionCommand {
+internal sealed class PlayPauseCommand : SessionCommand<PlayPauseCommand> {
     /// <summary>
     /// Command ID.
     /// </summary>
@@ -49,4 +49,9 @@ internal sealed class PlayPauseCommand : /*SimpleCommand<PlayPauseCommand>*/Sess
 
     /// <inheritdoc />
     public override string Title => "Play / Pause";
+
+    public override void Execute( object Sender, EventArgs E ) {
+        Debug.WriteLine($"Toggling play/pause in {Current?.ToString() ?? "<NULL>"}");
+        Current?.TogglePlayPause();
+    }
 }

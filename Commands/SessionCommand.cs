@@ -16,7 +16,7 @@ using QMediaVSIX.Core.MediaSource.Software;
 
 namespace QMediaVSIX.Commands;
 
-internal abstract class SessionCommand : SimpleCommand<SessionCommand> {
+internal abstract class SessionCommand<T> : SimpleCommand<T> where T : SimpleCommand<T> {
     /// <inheritdoc />
     protected SessionCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) { }
 

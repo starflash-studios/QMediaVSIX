@@ -1,12 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 using Windows.Foundation;
+
+using QMediaVSIX.Core.Collections;
+
 using Windows.Media;
 using Windows.Media.Control;
 using Windows.Storage.Streams;
-
-using QMediaVSIX.Core.Collections;
 
 namespace QMediaVSIX.Core.MediaSource.Software;
 
@@ -14,6 +16,7 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 	public WMCSession Session { get; }
 
 	public MediaSession( WMCSession Session ) {
+		AsyncRunner = FakeAsync;
 		PropertyChanged += ( _, E ) => {
 			switch ( E.PropertyName ) {
 				case nameof(Controls):
@@ -34,32 +37,50 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 
 	//internal static async void FakeAsync( Task Tk ) => await Tk;
 	//internal static async void FakeAsync( IAsyncAction Aa ) => await Aa;
-	internal static async void FakeAsync<T>( IAsyncOperation<T> Ao ) => _ = await Ao;
-	//internal static async void FakeAsync( Func<Task> FuncTk ) => await FuncTk();
-	//internal static async void FakeAsync( Func<IAsyncAction> FuncAa ) => await FuncAa();
-	internal static async void FakeAsync<T>( Func<IAsyncOperation<T>> FuncAo ) => _ = await FuncAo();
-	//internal static async void FakeAsync<T>( T Val, Func<T, IAsyncOperation<T>> FuncAo ) => _ = await FuncAo(Val);
-	//internal static async void FakeAsync<T>( Task<T> Tk, Action<T> Act ) {
-	//	await Tk.ContinueWith(Completed => {
-	//		Act.Invoke(Completed.Result);
-	//	});
+	//internal static async void FakeAsync<T>( IAsyncOperation<T> Ao ) => _ = await Ao;
+	////internal static async void FakeAsync( Func<Task> FuncTk ) => await FuncTk();
+	////internal static async void FakeAsync( Func<IAsyncAction> FuncAa ) => await FuncAa();
+	//internal static async void FakeAsync<T>( Func<IAsyncOperation<T>> FuncAo ) => _ = await FuncAo();
+	////internal static async void FakeAsync<T>( T Val, Func<T, IAsyncOperation<T>> FuncAo ) => _ = await FuncAo(Val);
+	////internal static async void FakeAsync<T>( Task<T> Tk, Action<T> Act ) {
+	////	await Tk.ContinueWith(Completed => {
+	////		Act.Invoke(Completed.Result);
+	////	});
+	////}
+	////internal static async void FakeAsync<T>( IAsyncOperation<T> Ao, Action<T> Act ) {
+	////	await Ao.AsTask().ContinueWith(Completed => {
+	////		Act.Invoke(Completed.Result);
+	////	});
+	////}
+	//internal static async void FakeAsync<T>( T? Val, Func<T, IAsyncOperation<bool>> Act ) where T : class {
+	//	if ( Val is null ) { throw new NullVal(nameof(Val)); }
+	//	_ = await Act(Val);
 	//}
-	//internal static async void FakeAsync<T>( IAsyncOperation<T> Ao, Action<T> Act ) {
-	//	await Ao.AsTask().ContinueWith(Completed => {
-	//		Act.Invoke(Completed.Result);
-	//	});
-	//}
-	internal static async void FakeAsync<T>( T? Val, Func<T, IAsyncOperation<bool>> Act ) where T : class {
-		if ( Val is null ) { throw new NullVal(nameof(Val)); }
-		_ = await Act(Val);
-	}
 
-	internal static async void FakeAsync<T>( T? Val, Func<T, IAsyncOperation<bool>> Act ) where T : struct {
-		if ( Val is null ) { throw new NullVal(nameof(Val)); }
-		_ = await Act(Val.Value);
-	}
+	//internal static async void FakeAsync<T>( T? Val, Func<T, IAsyncOperation<bool>> Act ) where T : struct {
+	//	if ( Val is null ) { throw new NullVal(nameof(Val)); }
+	//	_ = await Act(Val.Value);
+	//}
 
 	#endregion
+
+	public Action<Func<Task>> AsyncRunner;
+
+	public void RunAsyncMethod( Task Tk ) {
+		Task GetTk() => Task.FromResult(Tk);
+		AsyncRunner(GetTk);
+	}
+
+	public void RunAsyncMethod<T>( IAsyncOperation<T> Tk ) => RunAsyncMethod(Tk.AsTask);
+
+	public void RunAsyncMethod<T>( Func<IAsyncOperation<T>> Tk ) {
+		Func<Task> GetTk() => () => Tk.Invoke().AsTask();
+		RunAsyncMethod(GetTk());
+	}
+
+	public void RunAsyncMethod( Func<Task> Tk ) => AsyncRunner(Tk);
+
+	protected internal static async void FakeAsync( Func<Task> Tk ) => await Tk.Invoke();
 
 	#region Timeline Properties
 
@@ -119,7 +140,7 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 	public TimeSpan Position {
 		get => _Position;
 		//private set => SetValue(ref _Position, value);
-		set => FakeAsync<TimeSpan>(value, TS => Session.TryChangePlaybackPositionAsync(TS.Ticks));
+		set => SetPosition(value.Ticks);
 	}
 
 	#endregion
@@ -136,7 +157,7 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 
 	#region Method Invocations
 
-	public void SetPosition( long Ticks ) => FakeAsync<long>(Ticks, Session.TryChangePlaybackPositionAsync);
+	public void SetPosition( long Ticks ) => RunAsyncMethod(Session.TryChangePlaybackPositionAsync(Ticks));
 
 	#endregion
 
@@ -159,7 +180,13 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 	MediaPlaybackAutoRepeatMode? _AutoRepeatMode;
 	public MediaPlaybackAutoRepeatMode? AutoRepeatMode {
 		get => _AutoRepeatMode;
-		set => FakeAsync(Ao: Session.TryChangeAutoRepeatModeAsync(value ?? throw new NullVal(nameof(value))));
+		set {
+			async Task Set() {
+				await Session.TryChangeAutoRepeatModeAsync(value ?? throw new NullVal(nameof(value)));
+			}
+
+			RunAsyncMethod(Set);
+		}
 	}
 
 	#endregion
@@ -177,9 +204,16 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 	#region IsShuffleActive Property
 
 	bool? _IsShuffleActive;
+
 	public bool? IsShuffleActive {
 		get => _IsShuffleActive;
-		set => FakeAsync(value, Session.TryChangeShuffleActiveAsync);
+		set {
+			async Task Set() {
+				await Session.TryChangeShuffleActiveAsync(value ?? throw new NullVal(nameof(value)));
+			}
+
+			RunAsyncMethod(Set);
+		}
 	}
 
 	#endregion
@@ -189,7 +223,13 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 	double? _PlaybackRate;
 	public double? PlaybackRate {
 		get => _PlaybackRate;
-		set => FakeAsync(value, Session.TryChangePlaybackRateAsync);
+		set { 
+			async Task Set() {
+				await Session.TryChangePlaybackRateAsync(value ?? throw new NullVal(nameof(value)));
+			}
+
+			RunAsyncMethod(Set);
+		}
 	}
 
 	#endregion
@@ -204,15 +244,15 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 				case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Closed:
 				case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Opened:
 				case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Changing:
-					throw new NotSupportedException($"Changing session status type {value} is unsupported.");
+					throw new NotSupportedException($"Changing session status type to {value} is unsupported.");
 				case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Stopped:
-					FakeAsync(Session.TryStopAsync);
+					RunAsyncMethod(Session.TryStopAsync);
 					break;
 				case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing:
-					FakeAsync(Session.TryPlayAsync);
+					RunAsyncMethod(Session.TryPlayAsync);
 					break;
 				case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Paused:
-					FakeAsync(Session.TryPauseAsync);
+					RunAsyncMethod(Session.TryPauseAsync);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(value), value, null);
@@ -417,17 +457,17 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 
 	#region Method Invocations
 
-	public void ChannelDown() => FakeAsync(Session.TryChangeChannelDownAsync);
-	public void ChannelUp() => FakeAsync(Session.TryChangeChannelUpAsync);
-	public void FastForward() => FakeAsync(Session.TryFastForwardAsync);
-	public void Record() => FakeAsync(Session.TryRecordAsync);
-	public void Rewind() => FakeAsync(Session.TryRewindAsync);
-	public void SkipNext() => FakeAsync(Session.TrySkipNextAsync);
-	public void SkipPrevious() => FakeAsync(Session.TrySkipPreviousAsync);
-	public void Play() => FakeAsync(Session.TryPlayAsync);
-	public void Pause() => FakeAsync(Session.TryPauseAsync);
-	public void Stop() => FakeAsync(Session.TryStopAsync);
-	public void TogglePlayPause() => FakeAsync(Session.TryTogglePlayPauseAsync);
+	public void ChannelDown() => RunAsyncMethod(Session.TryChangeChannelDownAsync());
+	public void ChannelUp() => RunAsyncMethod(Session.TryChangeChannelUpAsync());
+	public void FastForward() => RunAsyncMethod(Session.TryFastForwardAsync());
+	public void Record() => RunAsyncMethod(Session.TryRecordAsync());
+	public void Rewind() => RunAsyncMethod(Session.TryRewindAsync());
+	public void SkipNext() => RunAsyncMethod(Session.TrySkipNextAsync());
+	public void SkipPrevious() => RunAsyncMethod(Session.TrySkipPreviousAsync());
+	public void Play() => RunAsyncMethod(Session.TryPlayAsync());
+	public void Pause() => RunAsyncMethod(Session.TryPauseAsync());
+	public void Stop() => RunAsyncMethod(Session.TryStopAsync());
+	public void TogglePlayPause() => RunAsyncMethod(Session.TryTogglePlayPauseAsync());
 
 	#endregion
 

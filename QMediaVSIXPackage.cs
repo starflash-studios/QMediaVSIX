@@ -51,6 +51,8 @@ namespace QMediaVSIX;
   SuppressMessage("Performance", "VSSDK003:Support async tool windows")]
 public sealed class QMediaVSIXPackage : AsyncPackage {
 
+    public static AsyncPackage Instance { get; private set; } = null!;
+
     #region GUIDs
 
     /// <summary>
@@ -74,6 +76,7 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
     /// <param name="Progress">A provider for progress updates.</param>
     /// <returns>A task representing the async work of package initialisation, or an already completed task if there is none. Do not return null from this method.</returns>
     protected override async Task InitializeAsync( CancellationToken CancellationToken, IProgress<ServiceProgressData> Progress ) {
+        Instance = this;
         // When initialised asynchronously, the current thread may be a background thread at this point.
         // Do any initialisation that requires the UI thread after switching to the UI thread.
         await Task.Run(() => {
@@ -85,7 +88,7 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
         }, CancellationToken);
         await JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken);
         //await ToolWindows.VolumeMixerToolWindowCommand.InitializeAsync(this);
-        await SimpleCommandExtensions.InitializeAllInAssemblyAsync(this);
+        //await SimpleCommandExtensions.InitializeAllInAssemblyAsync(this);
         await InstanceProviderAttribute.ConstructAllInstanceTypesAsync();
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         //await SimpleCommand<
