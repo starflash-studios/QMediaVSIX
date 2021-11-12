@@ -14,11 +14,13 @@ using System.Globalization;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using QMediaVSIX.Controls;
+
 #endregion
 
 namespace QMediaVSIX.Commands;
 
-internal abstract class SimpleCommand {
+internal abstract class SimpleCommand : NotifyPropertyChange {
     /// <summary>
     /// The title of the command.
     /// </summary>
@@ -48,8 +50,11 @@ internal abstract class SimpleCommand {
     protected SimpleCommand( AsyncPackage Package, OleMenuCommandService CommandService ) {
         this.Package = Package          ?? throw new ArgumentNullException(nameof(Package));
         CommandService = CommandService ?? throw new ArgumentNullException(nameof(CommandService));
+        // ReSharper disable once VirtualMemberCallInConstructor
+        CtoAddToMenu(Package, CommandService);
+    }
 
-        // ReSharper disable twice VirtualMemberCallInConstructor
+    public virtual void CtoAddToMenu( AsyncPackage Package, OleMenuCommandService CommandService ) {
         CommandID MenuCommandID = new CommandID(SelfCommandSet, SelfCommandId);
         MenuCommand MenuItem = new MenuCommand(Execute, MenuCommandID);
         CommandService.AddCommand(MenuItem);

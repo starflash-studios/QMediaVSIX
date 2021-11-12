@@ -28,9 +28,15 @@ public class InstanceProviderAttribute : Attribute {
     /// </summary>
     public string? ConstructorMethodName { get; }
 
-    public InstanceProviderAttribute( string InstanceFieldName, string ConstructorMethodName ) {
+    /// <summary>
+    /// The name of the static method to invoke (if any) once construction is finished.
+    /// </summary>
+    public string? FinishedMethodName { get; }
+
+    public InstanceProviderAttribute( string InstanceFieldName, string ConstructorMethodName, string? FinishedMethodName = null ) {
         this.InstanceFieldName = InstanceFieldName;
         this.ConstructorMethodName = ConstructorMethodName;
+        this.FinishedMethodName = FinishedMethodName;
     }
 
     public static async Task ConstructAllInstanceTypesAsync( bool AllowAttributeInheritance = true ) {
@@ -96,6 +102,10 @@ public class InstanceProviderAttribute : Attribute {
                         InstProp.GetBackingField().SetValue(null, RetVal);
                     } else {
                         throw new ArgumentNullException(nameof(InstField), "No static instance property/field was found.");
+                    }
+
+                    if ( Attr.FinishedMethodName is { } FM ) {
+                        Tp.GetMethod(FM, AllowedFlags).Invoke(null, null);
                     }
                     break;
                 default:

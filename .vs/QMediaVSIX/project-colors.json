@@ -90,7 +90,12 @@
       "ProjectGuid": "29f90665-77a2-4a70-a04b-2a3e9a4803b9",
       "DisplayName": "QMediaVSIX.CLI",
       "ColorIndex": 0
+    },
+    "e6280070-36fe-40f1-b6ae-f382410c47dd": {
+      "ProjectGuid": "e6280070-36fe-40f1-b6ae-f382410c47dd",
+      "DisplayName": "TestCore",
+      "ColorIndex": 1
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 2
 }

@@ -47,8 +47,25 @@ namespace QMediaVSIX;
 [ PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true),
   Guid(PackageGuidString),
   ProvideMenuResource("Menus.ctmenu", 1),
-  ProvideToolWindow(typeof(VolumeMixerToolWindow)),
-  SuppressMessage("Performance", "VSSDK003:Support async tool windows")]
+  ProvideToolWindow(typeof(VolumeMixerToolWindow))]
+/// <summary>
+/// This is the class that implements the package exposed by this assembly.
+/// </summary>
+/// <remarks>
+/// <para>
+/// The minimum requirement for a class to be considered a valid package for Visual Studio
+/// is to implement the IVsPackage interface and register itself with the shell.
+/// This package uses the helper classes defined inside the Managed Package Framework (MPF)
+/// to do it: it derives from the Package class that provides the implementation of the
+/// IVsPackage interface and uses the registration attributes defined in the framework to
+/// register itself and its components with the shell. These attributes tell the pkgdef creation
+/// utility what data to put into .pkgdef file.
+/// </para>
+/// <para>
+/// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
+/// </para>
+/// </remarks>
+[ProvideMenuResource("Menus.ctmenu", 1)]
 public sealed class QMediaVSIXPackage : AsyncPackage {
 
     public static AsyncPackage Instance { get; private set; } = null!;
@@ -80,21 +97,17 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
         // When initialised asynchronously, the current thread may be a background thread at this point.
         // Do any initialisation that requires the UI thread after switching to the UI thread.
         await Task.Run(() => {
-            Debug.WriteLine("Initialising listeners...");
+            //Debug.WriteLine("Initialising listeners...");
             ThreadHelper.ThrowIfOnUIThread();
-            Debug.WriteLine("On background thread.");
+            //Debug.WriteLine("On background thread.");
             MediaSourceManager.Initialise();
-            Debug.WriteLine("Initialised listeners.");
+            //Debug.WriteLine("Initialised listeners.");
         }, CancellationToken);
         await JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken);
         //await ToolWindows.VolumeMixerToolWindowCommand.InitializeAsync(this);
         //await SimpleCommandExtensions.InitializeAllInAssemblyAsync(this);
         await InstanceProviderAttribute.ConstructAllInstanceTypesAsync();
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
-        //await SimpleCommand<
-        //await Commands.PlayPauseCommand.InitializeAsync(this);
-        //await Commands.SkipPreviousCommand.InitializeAsync(this);
-        //await Commands.SkipNextCommand.InitializeAsync(this);
     }
 
     #endregion

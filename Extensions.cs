@@ -190,4 +190,22 @@ public static class Extensions {
         }
         return RetField;
     }
+
+    public static string TrimEnd( this string Str, string Trim ) {
+        int L = Trim.Length;
+        while ( Str.EndsWith(Trim) ) {
+            Str = Str[..^L];
+        }
+        return Str;
+    }
+
+    public static IEnumerable<T> UpTo<T>( this IEnumerable<T> Enum, int MaxAmount ) {
+        int I = 0;
+        // ReSharper disable once LoopCanBePartlyConvertedToQuery
+        foreach( T Item in Enum ) {
+            if (I >= MaxAmount ) { yield break; }
+            yield return Item;
+            I++;
+        }
+    }
 }

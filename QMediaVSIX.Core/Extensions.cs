@@ -134,6 +134,14 @@ public static class Extensions {
 		return Str;
 	}
 
+	public static string TrimEnd( this string Str, string Trim ) {
+		int L = Trim.Length;
+		while ( Str.EndsWith(Trim) ) {
+			Str = Str[..^L];
+		}
+		return Str;
+	}
+
 	public static string CatchWhitespace( this string? Str, string WhenNullEmptyOrWhitespace ) => Str.IsNullOrWhiteSpace() ? WhenNullEmptyOrWhitespace : Str;
 
 	public static string CatchWhitespace( this string? Str, string Fallback, params string?[] Alternatives ) {

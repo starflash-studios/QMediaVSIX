@@ -141,14 +141,6 @@ public static class MediaEcoystemExtensions {
 		//}
 	}
 
-	public static string TrimEnd(this string Str, string Trim ) {
-		int L = Trim.Length;
-		while ( Str.EndsWith(Trim) ) {
-			Str = Str[..^L];
-		}
-		return Str;
-	}
-
 	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>( this IEnumerable<KeyValuePair<TKey, TValue>> Enumerable ) where TKey : notnull {
 		Dictionary<TKey, TValue> Dict = new Dictionary<TKey, TValue>();
 		Dict.AddRange(Enumerable);

@@ -35,33 +35,6 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 
 	#region Background Asynchronous Delegators
 
-	//internal static async void FakeAsync( Task Tk ) => await Tk;
-	//internal static async void FakeAsync( IAsyncAction Aa ) => await Aa;
-	//internal static async void FakeAsync<T>( IAsyncOperation<T> Ao ) => _ = await Ao;
-	////internal static async void FakeAsync( Func<Task> FuncTk ) => await FuncTk();
-	////internal static async void FakeAsync( Func<IAsyncAction> FuncAa ) => await FuncAa();
-	//internal static async void FakeAsync<T>( Func<IAsyncOperation<T>> FuncAo ) => _ = await FuncAo();
-	////internal static async void FakeAsync<T>( T Val, Func<T, IAsyncOperation<T>> FuncAo ) => _ = await FuncAo(Val);
-	////internal static async void FakeAsync<T>( Task<T> Tk, Action<T> Act ) {
-	////	await Tk.ContinueWith(Completed => {
-	////		Act.Invoke(Completed.Result);
-	////	});
-	////}
-	////internal static async void FakeAsync<T>( IAsyncOperation<T> Ao, Action<T> Act ) {
-	////	await Ao.AsTask().ContinueWith(Completed => {
-	////		Act.Invoke(Completed.Result);
-	////	});
-	////}
-	//internal static async void FakeAsync<T>( T? Val, Func<T, IAsyncOperation<bool>> Act ) where T : class {
-	//	if ( Val is null ) { throw new NullVal(nameof(Val)); }
-	//	_ = await Act(Val);
-	//}
-
-	//internal static async void FakeAsync<T>( T? Val, Func<T, IAsyncOperation<bool>> Act ) where T : struct {
-	//	if ( Val is null ) { throw new NullVal(nameof(Val)); }
-	//	_ = await Act(Val.Value);
-	//}
-
 	#endregion
 
 	public Action<Func<Task>> AsyncRunner;
