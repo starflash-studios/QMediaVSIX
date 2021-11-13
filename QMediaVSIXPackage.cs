@@ -13,7 +13,10 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+using EnvDTE;
+
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 using QMediaVSIX.Commands;
 using QMediaVSIX.Core.MediaSource;
@@ -46,6 +49,7 @@ namespace QMediaVSIX;
 /// </remarks>
 [ PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true),
   Guid(PackageGuidString),
+  ProvideAutoLoad(UIContextGuids80.ToolboxInitialized, PackageAutoLoadFlags.BackgroundLoad),
   ProvideMenuResource("Menus.ctmenu", 1),
   ProvideToolWindow(typeof(VolumeMixerToolWindow))]
 public sealed class QMediaVSIXPackage : AsyncPackage {
@@ -93,8 +97,21 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
         //await SimpleCommandExtensions.InitializeAllInAssemblyAsync(this);
         await InstanceProviderAttribute.ConstructAllInstanceTypesAsync();
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
+        //Debug.WriteLine("]]]This is the latest I can get[[[");
+        //SessionCommandManager.Active = null;
+        if ( await ServiceProvider.GetServiceAsync(typeof(DTE)) is DTE Dte ) {
+            void UpdateCommands( Window _, Window __ ) {
+                Debug.WriteLine("]]]Updating Commands[[[");
+                SessionCommandManager.Active = null;
+                Dte.Events.WindowEvents.WindowActivated -= UpdateCommands;
+            }
+
+            Dte.Events.WindowEvents.WindowActivated += UpdateCommands;
+        }
         //await PlayCommand.InitializeAsync(this);
     }
+
+    IAsyncServiceProvider ServiceProvider => this;
 
     #endregion
 }

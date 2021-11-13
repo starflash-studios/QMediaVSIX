@@ -19,9 +19,6 @@ namespace QMediaVSIX.Commands;
 internal abstract class SessionPlaybackCommand<T> : SessionCommand<T> where T : SessionPlaybackCommand<T> {
     /// <inheritdoc />
     protected SessionPlaybackCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) {
-        SessionCommandManager.SlowPoll += ( _, _ ) => {
-            ApplyChanges(SessionCommandManager.Active);
-        };
         // ReSharper disable once VirtualMemberCallInConstructor
         ApplyChanges(SessionCommandManager.Active);
     }
@@ -30,7 +27,7 @@ internal abstract class SessionPlaybackCommand<T> : SessionCommand<T> where T : 
         if ( Current is { } C ) {
             ApplyChanges(C);
         } else {
-            SetCommandDisabled();
+            ApplyChanges(null);
         }
     }
 

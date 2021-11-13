@@ -11,7 +11,7 @@ internal sealed class RepeatSingleCommand : SessionCommand<RepeatSingleCommand> 
     /// <summary>
     /// Command ID.
     /// </summary>
-    public const int CommandId = 4179;
+    public const int CommandId = 4181;
 
     /// <summary>
     /// Command menu group (command set GUID).
@@ -19,6 +19,8 @@ internal sealed class RepeatSingleCommand : SessionCommand<RepeatSingleCommand> 
     public static readonly Guid CommandSet = new Guid("a36c982e-236d-489b-8703-7e1fc268d77c");
 
     public RepeatSingleCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) { }
+
+    public override void CtoAddToMenu( AsyncPackage Package, OleMenuCommandService CommandService ) { }
 
     // ReSharper disable once ReplaceAutoPropertyWithComputedProperty
     /// <summary>

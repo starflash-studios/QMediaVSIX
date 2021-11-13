@@ -12,7 +12,7 @@ internal sealed class RepeatListCommand : SessionCommand<RepeatListCommand> {
     /// <summary>
     /// Command ID.
     /// </summary>
-    public const int CommandId = 4180;
+    public const int CommandId = 4182;
 
     /// <summary>
     /// Command menu group (command set GUID).
@@ -26,6 +26,8 @@ internal sealed class RepeatListCommand : SessionCommand<RepeatListCommand> {
     /// <param name="Package">Owner package, not null.</param>
     /// <param name="CommandService">Command service to add command to, not null.</param>
     public RepeatListCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) { }
+
+    public override void CtoAddToMenu( AsyncPackage Package, OleMenuCommandService CommandService ) { }
 
     // ReSharper disable once ReplaceAutoPropertyWithComputedProperty
     /// <summary>

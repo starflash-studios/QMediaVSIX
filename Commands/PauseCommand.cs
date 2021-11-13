@@ -1,16 +1,13 @@
-﻿
+﻿using System.ComponentModel.Design;
+
 using Microsoft.VisualStudio.Shell;
-
-using QMediaVSIX.Core.MediaSource.Software;
-
-using Windows.Media.Control;
 
 namespace QMediaVSIX.Commands;
 
 /// <summary>
 /// Command handler
 /// </summary>
-internal sealed class PauseCommand : SessionPlaybackCommand<PauseCommand> {
+internal sealed class PauseCommand : SessionCommand<PauseCommand> {
     /// <summary>
     /// Command ID.
     /// </summary>
@@ -29,21 +26,12 @@ internal sealed class PauseCommand : SessionPlaybackCommand<PauseCommand> {
 
     public PauseCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) { }
 
-    /// <inheritdoc />
-    public override void ApplyChanges( MediaSession? ChangedSession ) => ApplyNewStatus(ChangedSession?.PlaybackStatus);
-
-    GlobalSystemMediaTransportControlsSessionPlaybackStatus? _LastStatus = null;
-    void ApplyNewStatus( GlobalSystemMediaTransportControlsSessionPlaybackStatus? Status ) {
-        if (_LastStatus == Status ) { return; }
-        Debug.WriteLine($"Applying new status {Status}");
-        _LastStatus = Status;
-        if ( Status is null ) {
-            SetCommandEnabled(false);
-            return;
+    public override void OnCurrentSessionChanged() {
+        if ( SessionCommandManager.Active is { } A ) {
+            ChangeEnableable(Package, new CommandID(CommandSet, CommandId), A.IsPauseEnabled);
+        } else {
+            base.OnCurrentSessionChanged();
         }
-
-        bool WillEnable = Status != GlobalSystemMediaTransportControlsSessionPlaybackStatus.Paused;
-        SetCommandEnabled(WillEnable);
     }
 
     // ReSharper disable once ReplaceAutoPropertyWithComputedProperty
@@ -64,6 +52,4 @@ internal sealed class PauseCommand : SessionPlaybackCommand<PauseCommand> {
             Debug.WriteLine("Attempted to pause, but no session was active.");
         }
     }
-
-    public override bool EnableButtonRelativeToSessionNullability => false;
 }

@@ -9,7 +9,6 @@
 #region Using Directives
 
 using System.ComponentModel;
-using System.ComponentModel.Design;
 
 using Microsoft.VisualStudio.Shell;
 
@@ -22,58 +21,35 @@ namespace QMediaVSIX.Commands;
 internal abstract class SessionCommand<T> : SimpleCommand<T> where T : SimpleCommand<T> {
     /// <inheritdoc />
     protected SessionCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) {
-        SessionCommandManager.RunWhenInitialised(I => {
+        //MediaSessionManager.CurrentSessionChanged += ( _, MS, MSE ) => {
+        //    if ( MSE is not null ) {
+        //        MSE.PropertyChanged -= OnCurrentSessionPropertyChanged;
+        //    }
+        //    if ( MS is not null ) {
+        //        MS.PropertyChanged += OnCurrentSessionPropertyChanged;
+        //    }
+        //    OnCurrentSessionChanged();
+        //};
+        SessionCommandManager.RunWhenInitialised( I => {
             I.PropertyChanged += ( _, E ) => {
-                Current = E.PropertyName switch {
-                    nameof(SessionCommandManager.Active) => SessionCommandManager.Active,
-                    _                                    => Current
-                };
+                switch ( E.PropertyName ) {
+                    case nameof(SessionCommandManager.Active):
+                        OnCurrentSessionChanged();
+                        break;
+                }
             };
-            Current = SessionCommandManager.Active;
         });
     }
 
-    MediaSession? _Current;
     /// <summary>
     /// The current user-controlled <see cref="MediaSession"/>.
     /// </summary>
-    public MediaSession? Current {
-        get {
-            switch ( _Current ) {
-                case { } C:
-                    return C;
-                default:
-                    MediaSessionManager.RefreshCurrentSession();
-                    return MediaSessionManager.Current;
-            }
-        }
-        set {
-            if (_Current == value ) { return; }
-            RaisePropertyChanging();
-
-            if ( value is { } Old ) {
-                Old.PropertyChanged -= OnCurrentSessionPropertyChanged;
-            }
-
-            _Current = value;
-
-            if ( value is { } New ) {
-                New.PropertyChanged += OnCurrentSessionPropertyChanged;
-                if ( EnableButtonRelativeToSessionNullability ) {
-                    SetCommandEnabled();
-                }
-            } else if ( EnableButtonRelativeToSessionNullability ) {
-                SetCommandDisabled();
-            }
-
-            OnCurrentSessionChanged();
-            RaisePropertyChanged();
-        }
-    }
-
-    public virtual bool EnableButtonRelativeToSessionNullability => true;
+    public MediaSession? Current => SessionCommandManager.Active;
 
     public virtual void OnCurrentSessionPropertyChanged( object Sender, PropertyChangedEventArgs E ) { }
 
-    public virtual void OnCurrentSessionChanged() { }
+    public virtual void OnCurrentSessionChanged() {
+        //Debug.WriteLine($"OnCurrentSessionChanged() on {GetType().GetTypeName()}");
+        SetCommandEnabled(Current switch { { } => true, _ => false });
+    }
 }

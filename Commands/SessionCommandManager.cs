@@ -10,8 +10,6 @@
 
 using System.Threading.Tasks;
 
-using Windows.Media.Control;
-
 using Microsoft.VisualStudio.Shell;
 
 using QMediaVSIX.Controls;
@@ -32,36 +30,23 @@ public class SessionCommandManager : NotifyPropertyChange {
         get => _Active;
         set {
             if ( Instance is null ) {
+                Debug.WriteLine("No instance, ignoring change.");
                 //If no instance is created yet, there's no reason to raise property change notifications as there will be no receivers anyways. Just change the value and return.
                 _Active = value;
                 return;
             }
-            if ( value != _Active ) {
+            if ( value is null || value != _Active ) {
                 Instance.RaisePropertyChanging();
-                Debug.WriteLine($"Active session changed to {value}");
+                Debug.WriteLine($"Active session changed to {value?.ToString() ?? "<NULL>"}");
                 _Active = value;
-
-                if ( value is { } New ) {
-                    _ = ThreadHelper.JoinableTaskFactory.StartOnIdle(async () => {
-                        //MediaSession StartSession = New;
-                        //Debug.WriteLine($"Started position checking loop of {New}.");
-                        for (; ; ) {
-                            await Task.Delay(2000);
-                            if ( _Active != New ) {
-                                //Debug.WriteLine("Changed. Aborting loop.");
-                                break;
-                            }
-                            OnSlowPoll(Instance, New.Session.GetPlaybackInfo());
-                            //Debug.WriteLine($"Pos: {New.Position} ;; Status: {New.Session.GetPlaybackInfo().PlaybackStatus}");
-                        }
-                    });
-                }
 
                 if ( !_ActiveChangedByCommand ) {
                     PlayCommand.Instance?.ChangeChosenOption(value);
                 }
 
                 Instance.RaisePropertyChanged();
+            } else {
+                Debug.WriteLine("Session was already the same. Ignoring.");
             }
         }
     }
@@ -69,34 +54,12 @@ public class SessionCommandManager : NotifyPropertyChange {
     static bool _ActiveChangedByCommand = false;
     public static void SetActiveFromCommand( MediaSession? Session ) {
         _ActiveChangedByCommand = true;
+        Debug.WriteLine($"Setting active to {Session}");
         Active = Session;
         _ActiveChangedByCommand = false;
     }
 
     public static Action<Func<Task>> AsyncRunner = null!;
-
-    #region OnSlowPoll Event
-
-    /// <summary>
-    /// Event arguments for the <see cref="OnSlowPoll"/> event (<inheritdoc cref="OnSlowPoll"/>).
-    /// </summary>
-    /// <param name="Sender">The event raiser.</param>
-    /// <param name="E">The raised event arguments.</param>
-    public delegate void SlowPollEventArgs( SessionCommandManager Sender, GlobalSystemMediaTransportControlsSessionPlaybackInfo E );
-
-    /// <summary>
-    /// Invoked when the currently playing <see cref="MediaSession"/> ticks on the slow poll.
-    /// </summary>
-    public static event SlowPollEventArgs SlowPoll = delegate { };
-
-    /// <summary>
-    /// Raises the <see cref="SlowPoll"/> event (<inheritdoc cref="SlowPoll"/>)
-    /// </summary>
-    /// <param name="Sender">The event raiser.</param>
-    /// <param name="E">The raised event arguments.</param>
-    public static void OnSlowPoll( SessionCommandManager Sender, GlobalSystemMediaTransportControlsSessionPlaybackInfo E ) => SlowPoll(Sender, E);
-
-    #endregion
 
     public SessionCommandManager() {
         if ( Instance is not null ) {
@@ -109,7 +72,7 @@ public class SessionCommandManager : NotifyPropertyChange {
         MediaSessionManager.SessionConnected += ( S, _ ) => {
             S.AsyncRunner = AsyncRunner;
         };
-        MediaSessionManager.CurrentSessionChanged += ( _, E ) => Active = E;
+        MediaSessionManager.CurrentSessionChanged += ( _, E, _ ) => Active = E;
     }
 
     public static void RunWhenInitialised(InitialisedEventArgs Act) {
@@ -120,7 +83,10 @@ public class SessionCommandManager : NotifyPropertyChange {
         }
     }
 
-    static void OnFinishedInit() => OnInitialised(Instance!);
+    static void OnFinishedInit() {
+        OnInitialised(Instance!);
+        Active = null;
+    }
 
     #region Initialised Event
 

@@ -22,6 +22,15 @@
                     <ButtonText>Play</ButtonText>
                 </Strings>
             </Menu>
+            <Menu guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatController" priority="0x0204" type="MenuController">
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup"/>
+                <CommandFlag>TextChanges</CommandFlag>
+                <CommandFlag>TextIsAnchorCommand</CommandFlag>
+                <Strings>
+                    <ButtonText>MC BT</ButtonText>
+                    <CommandName>CN BT</CommandName>
+                </Strings>
+            </Menu>
         </Menus>
         
         <Buttons>
@@ -72,21 +81,21 @@
                 </Strings>
             </Button>
             <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidShuffleCommand" priority="0x0204" type="Button">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatControllerGroup" />
                 <Icon guid="guidImages" id="bmpShuffle" />
                 <Strings>
                     <ButtonText>Shuffle</ButtonText>
                 </Strings>
             </Button>
             <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidRepeatSingleCommand" priority="0x0205" type="Button">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatControllerGroup" />
                 <Icon guid="guidImages" id="bmpRepeatSingle" />
                 <Strings>
                     <ButtonText>Repeat Single</ButtonText>
                 </Strings>
             </Button>
             <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidRepeatListCommand" priority="0x0206" type="Button">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatControllerGroup" />
                 <Icon guid="guidImages" id="bmpRepeat" />
                 <Strings>
                     <ButtonText>Repeat List</ButtonText>
@@ -118,6 +127,10 @@
 
             <Group guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ControllerGroup" priority="0x0800">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="Controller"/>
+            </Group>
+
+            <Group guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatControllerGroup" priority="0x0000">
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatController"/>
             </Group>
         </Groups>
     </Commands>
@@ -161,9 +174,11 @@
             <IDSymbol value="4129" name="cmdidSkipPreviousCommand" />
             <IDSymbol value="4130" name="cmdidSkipNextCommand" />
             <IDSymbol value="4177" name="cmdidPauseCommand" />
-            <IDSymbol value="4178" name="cmdidShuffleCommand" />
-            <IDSymbol value="4179" name="cmdidRepeatSingleCommand" />
-            <IDSymbol value="4180" name="cmdidRepeatListCommand" />
+            <IDSymbol value="4178" name="shuffleRepeatController"/>
+            <IDSymbol value="4179" name="shuffleRepeatControllerGroup"/>
+            <IDSymbol value="4180" name="cmdidShuffleCommand" />
+            <IDSymbol value="4181" name="cmdidRepeatSingleCommand" />
+            <IDSymbol value="4182" name="cmdidRepeatListCommand" />
             <!--<IDSymbol value="5000" name="cmdidSessionComboCommand" />-->
             <!--<IDSymbol value="5001" name="cmdidSessionComboGetList" />-->
             <!--<IDSymbol value="6000" name="cmdidSessionButton"/>-->

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 using QDebug.Listeners;
 
@@ -34,6 +37,69 @@ public static class Debug {
 		}
 	}
 
+	/// <summary>
+	/// Constructs a collection of parameters for use in the <see cref="Here(object?[]?, string?, string?, int?)"/> method.
+	/// </summary>
+	/// <param name="Args">The collection of parameters.</param>
+	/// <returns>A collection of parameters.</returns>
+	public static object[] Params( params object[] Args ) => Args;
+
+	/// <summary>
+	/// Writes the current location (caller method, file path and line number) to the trace <see cref="Listeners"/> collection.
+	/// </summary>
+	/// <param name="CallerMemberName">The name of the caller method.</param>
+	/// <param name="CallerFilePath">The file path of the caller script file at the time of compilation.</param>
+	/// <param name="CallerLineNumber">The line number of the caller script file at the time of compilation.</param>
+	/// <param name="Parameters">The collection of parameters to document as part of the <paramref name="CallerMemberName"/>.</param>
+	public static void Here( object?[]? Parameters, [CallerMemberName] string? CallerMemberName = null, [CallerFilePath] string? CallerFilePath = null, [CallerLineNumber] int? CallerLineNumber = null ) {
+		StringBuilder SB = new StringBuilder();
+		SB.Append(">> ");
+		bool FN = false;
+		if ( CallerFilePath is not null ) {
+			FN = true;
+			SB.Append(CallerFilePath);
+			if ( CallerLineNumber is not null ) {
+				SB.Append(',');
+				SB.Append(CallerLineNumber);
+			}
+		}
+		if ( CallerMemberName is not null ) {
+			if ( FN ) {
+				SB.Append(' ');
+			}
+			SB.Append("> ");
+			SB.Append(CallerMemberName);
+			SB.Append('(');
+			if ( Parameters is not null ) {
+				foreach ( object? Param in Parameters ) {
+					switch ( Param ) {
+						case { } P:
+							SB.Append(P.GetType().Name);
+							SB.Append(' ');
+							SB.Append(P);
+							break;
+						default:
+							SB.Append("null");
+							break;
+					}
+					SB.Append(", ");
+				}
+				SB.Remove(SB.Length - 1, 1);
+			}
+			SB.Append(')');
+		}
+		WriteLine(SB.ToString());
+	}
+
+
+	/// <summary>
+	/// Writes the current location (caller method, file path and line number) to the trace <see cref="Listeners"/> collection.
+	/// </summary>
+	/// <param name="CallerMemberName">The name of the caller method.</param>
+	/// <param name="CallerFilePath">The file path of the caller script file at the time of compilation.</param>
+	/// <param name="CallerLineNumber">The line number of the caller script file at the time of compilation.</param>
+	public static void Here( [CallerMemberName] string? CallerMemberName = null, [CallerFilePath] string? CallerFilePath = null, [CallerLineNumber] int? CallerLineNumber = null ) => Here(null, CallerMemberName, CallerFilePath, CallerLineNumber);
+
 	/// <inheritdoc cref="SysDbg.WriteLine(string?)"/>
 	public static void WriteLine( string? Message = null ) => Listeners.ForEach(L => L.WriteLine(Message));
 
@@ -64,3 +130,18 @@ public static class Debug {
 	/// <inheritdoc cref="System.Diagnostics.Debugger.Break()"/>
 	public static void Break() => Listeners.ForEach(L => L.Break());
 }
+
+//public struct LogMe {
+//	string? CallerMemberName, CallerFilePath;
+//	int? CallerLineNumber;
+//	object?[] Parameters;
+
+//	public LogMe([CallerMemberName] string? CallerMemberName = null, [CallerFilePath] string? CallerFilePath = null, [CallerLineNumber] int? CallerLineNumber = null ) {
+//		this.CallerMemberName = CallerMemberName;
+//		this.CallerFilePath = CallerFilePath;
+//		this.CallerLineNumber = CallerLineNumber;
+//		Parameters = Array.Empty<object?>();
+//	}
+
+//	public void Params( params object?[] Parameters ) => this.Parameters = Parameters;
+//}

@@ -8,6 +8,8 @@
 
 #region Using Directives
 
+using System.ComponentModel.Design;
+
 using Microsoft.VisualStudio.Shell;
 
 #endregion
@@ -44,6 +46,14 @@ internal sealed class SkipPreviousCommand : SessionCommand<SkipPreviousCommand> 
     /// <param name="CommandService">Command service to add command to, not null.</param>
     
     public SkipPreviousCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) { }
+
+    public override void OnCurrentSessionChanged() {
+        if ( SessionCommandManager.Active is { } A ) {
+            ChangeEnableable(Package, new CommandID(CommandSet, CommandId), A.IsPreviousEnabled);
+        } else {
+            base.OnCurrentSessionChanged();
+        }
+    }
 
     /// <summary>
     /// Gets the instance of the command.

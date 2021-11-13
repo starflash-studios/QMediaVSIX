@@ -81,7 +81,8 @@ public static class MediaSessionManager {
 	/// </summary>
 	/// <param name="Sender">The event raiser.</param>
 	/// <param name="E">The raised event arguments.</param>
-	public delegate void CurrentSessionChangedEventArgs( Guid Sender, MediaSession? E );
+	/// <param name="O">The raised event arguments.</param>
+	public delegate void CurrentSessionChangedEventArgs( Guid Sender, MediaSession? E, MediaSession? O );
 
 	/// <summary>
 	/// Invoked when the current session windows believes the user wishes to control changes.
@@ -93,7 +94,8 @@ public static class MediaSessionManager {
 	/// </summary>
 	/// <param name="Sender">The event raiser.</param>
 	/// <param name="E">The raised event arguments.</param>
-	public static void OnCurrentSessionChanged( Guid Sender, MediaSession? E ) => CurrentSessionChanged(Sender, E);
+	/// <param name="O">The raised event arguments.</param>
+	public static void OnCurrentSessionChanged( Guid Sender, MediaSession? E, MediaSession? O ) => CurrentSessionChanged(Sender, E, O);
 
 	#endregion
 
@@ -104,10 +106,14 @@ public static class MediaSessionManager {
 		get => _Current;
 		private set {
 			if ( _Current == value ) { return; }
+			MediaSession? Old = _Current;
 			_Current = value;
-			OnCurrentSessionChanged(value?.Identifier ?? Guid.Empty, value);
+			//Debug.WriteLine("SESSION CHANGED");
+			OnCurrentSessionChanged(value?.Identifier ?? Guid.Empty, value, Old);
 		}
 	}
+
+	public static void ForceSetCurrent( MediaSession? Session ) => Current = Session;
 
 	static MediaSessionManager() {
 		Debug.WriteLine("Constructing session manager.");
