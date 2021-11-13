@@ -15,6 +15,13 @@
                     <CommandName>Playback Controls (QMediaVSIX)</CommandName>
                 </Strings>
             </Menu>
+            <Menu guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="Controller" priority="0x0102" type="MenuController">
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup"/>
+                <CommandFlag>DynamicVisibility</CommandFlag>
+                <Strings>
+                    <ButtonText>Play</ButtonText>
+                </Strings>
+            </Menu>
         </Menus>
         
         <Buttons>
@@ -32,49 +39,60 @@
                     <ButtonText>Skip Previous</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidPlayCommand" priority="0x0101" type="Button">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidPlayCommand" priority="0x0101">
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ControllerGroup"/>
+                <CommandFlag>DynamicItemStart</CommandFlag>
+                <CommandFlag>DynamicVisibility</CommandFlag>
+                <CommandFlag>TextChanges</CommandFlag>
+                <Strings>
+                    <ButtonText>ERR - NV</ButtonText>
+                </Strings>
+            </Button>
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidPlayAnchorCommand" priority="0x0102">
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ControllerGroup"/>
                 <Icon guid="guidImages" id="bmpPlay" />
+                <CommandFlag>NoShowOnMenuController</CommandFlag>
+                <CommandFlag>FixMenuController</CommandFlag>
                 <Strings>
                     <ButtonText>Play</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidPauseCommand" priority="0x0101" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidPauseCommand" priority="0x0202" type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
                 <Icon guid="guidImages" id="bmpPause" />
                 <Strings>
                     <ButtonText>Pause</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidSkipNextCommand" priority="0x0103" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidSkipNextCommand" priority="0x0203" type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
                 <Icon guid="guidImages" id="bmpSkipNext" />
                 <Strings>
                     <ButtonText>Skip Next</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidShuffleCommand" priority="0x0104" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidShuffleCommand" priority="0x0204" type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
                 <Icon guid="guidImages" id="bmpShuffle" />
                 <Strings>
                     <ButtonText>Shuffle</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidRepeatSingleCommand" priority="0x0105" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidRepeatSingleCommand" priority="0x0205" type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
                 <Icon guid="guidImages" id="bmpRepeatSingle" />
                 <Strings>
                     <ButtonText>Repeat Single</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidRepeatListCommand" priority="0x0106" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidRepeatListCommand" priority="0x0206" type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
                 <Icon guid="guidImages" id="bmpRepeat" />
                 <Strings>
                     <ButtonText>Repeat List</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolWindowCmdSet" id="cmdidVolumeMixerToolWindowCommand" priority="0x0107" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolWindowCmdSet" id="cmdidVolumeMixerToolWindowCommand" priority="0x0207" type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
                 <Icon guid="guidImages" id="bmpVolumeMixer" />
                 <Strings>
@@ -83,20 +101,7 @@
             </Button>
         </Buttons>
 
-        <Combos>
-            <Combo guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidSessionComboCommand" priority="0x0010" type="DynamicCombo" defaultWidth="130" idCommandList="cmdidSessionComboGetList">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup"/>
-                <CommandFlag>IconAndText</CommandFlag>
-                <CommandFlag>CommandWellOnly</CommandFlag>
-                <Strings>
-                    <MenuText>Session: (MT)</MenuText>
-                    <ButtonText>Session: (BT)</ButtonText>
-                    <ToolTipText>Select a Media Session</ToolTipText>
-                    <CanonicalName>Session Combo</CanonicalName>
-                    <CommandName>Session Combo</CommandName>
-                </Strings>
-            </Combo>
-        </Combos>
+        <!--<Combos/>-->
 
         <Bitmaps>
             <Bitmap guid="guidImages" href="Resources\Commands16.png" usedList="bmpPlay, bmpPause, bmpSkipPrevious, bmpSkipNext, bmpShuffle, bmpRepeat, bmpVolumeMax, bmpVolumeMute, bmpRepeatSingle, bmpVolumeMixer" />
@@ -110,6 +115,10 @@
             <Group guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" priority="0x0000">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="Toolbar" />
             </Group>
+
+            <Group guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ControllerGroup" priority="0x0800">
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="Controller"/>
+            </Group>
         </Groups>
     </Commands>
 
@@ -119,7 +128,9 @@
         </CommandPlacement>
     </CommandPlacements>-->
 
-    <!--<VisibilityConstraints/>-->
+    <VisibilityConstraints>
+        <VisibilityItem guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="Controller" context="guidNotViewSourceMode"/>
+    </VisibilityConstraints>
 
     <Symbols>
         <GuidSymbol name="guidQMediaVSIXPackage" value="{9d9c8b04-c51f-455b-977c-79478bd8fcd0}" />
@@ -146,15 +157,20 @@
             <IDSymbol value="4128" name="MyMenuGroup" />
             <IDSymbol value="0x1000" name="Toolbar" />
             <IDSymbol value="0x1050" name="ToolbarGroup" />
-            <IDSymbol value="256" name="cmdidPlayCommand" />
+            <!--<IDSymbol value="256"  name="cmdidPlayCommand" />-->
             <IDSymbol value="4129" name="cmdidSkipPreviousCommand" />
             <IDSymbol value="4130" name="cmdidSkipNextCommand" />
             <IDSymbol value="4177" name="cmdidPauseCommand" />
             <IDSymbol value="4178" name="cmdidShuffleCommand" />
             <IDSymbol value="4179" name="cmdidRepeatSingleCommand" />
             <IDSymbol value="4180" name="cmdidRepeatListCommand" />
-            <IDSymbol value="5000" name="cmdidSessionComboCommand" />
-            <IDSymbol value="5001" name="cmdidSessionComboGetList" />
-        </GuidSymbol>
-    </Symbols>
+            <!--<IDSymbol value="5000" name="cmdidSessionComboCommand" />-->
+            <!--<IDSymbol value="5001" name="cmdidSessionComboGetList" />-->
+            <!--<IDSymbol value="6000" name="cmdidSessionButton"/>-->
+            <IDSymbol value="5997" name="ControllerGroup"/>
+            <IDSymbol value="5998" name="Controller"/>
+            <IDSymbol value="5999" name="cmdidPlayAnchorCommand"/>
+            <IDSymbol value="6000" name="cmdidPlayCommand" />
+    </GuidSymbol>
+  </Symbols>
 </CommandTable>

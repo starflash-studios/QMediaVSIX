@@ -57,9 +57,20 @@ public class SessionCommandManager : NotifyPropertyChange {
                     });
                 }
 
+                if ( !_ActiveChangedByCommand ) {
+                    PlayCommand.Instance?.ChangeChosenOption(value);
+                }
+
                 Instance.RaisePropertyChanged();
             }
         }
+    }
+
+    static bool _ActiveChangedByCommand = false;
+    public static void SetActiveFromCommand( MediaSession? Session ) {
+        _ActiveChangedByCommand = true;
+        Active = Session;
+        _ActiveChangedByCommand = false;
     }
 
     public static Action<Func<Task>> AsyncRunner = null!;

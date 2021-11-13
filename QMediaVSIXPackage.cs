@@ -48,24 +48,6 @@ namespace QMediaVSIX;
   Guid(PackageGuidString),
   ProvideMenuResource("Menus.ctmenu", 1),
   ProvideToolWindow(typeof(VolumeMixerToolWindow))]
-/// <summary>
-/// This is the class that implements the package exposed by this assembly.
-/// </summary>
-/// <remarks>
-/// <para>
-/// The minimum requirement for a class to be considered a valid package for Visual Studio
-/// is to implement the IVsPackage interface and register itself with the shell.
-/// This package uses the helper classes defined inside the Managed Package Framework (MPF)
-/// to do it: it derives from the Package class that provides the implementation of the
-/// IVsPackage interface and uses the registration attributes defined in the framework to
-/// register itself and its components with the shell. These attributes tell the pkgdef creation
-/// utility what data to put into .pkgdef file.
-/// </para>
-/// <para>
-/// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
-/// </para>
-/// </remarks>
-[ProvideMenuResource("Menus.ctmenu", 1)]
 public sealed class QMediaVSIXPackage : AsyncPackage {
 
     public static AsyncPackage Instance { get; private set; } = null!;
@@ -80,6 +62,8 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
     public const string
         guidQMediaVSIXPackageToolWindowCmdSet = "f69ab04e-226e-425f-8f7c-4ea38da690a8",
         guidQMediaVSIXPackageToolbarItemCmdSet = "a36c982e-236d-489b-8703-7e1fc268d77c";
+
+    public const uint cmdidPlayCommand = 6000;
 
     #endregion
 
@@ -100,6 +84,7 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
             //Debug.WriteLine("Initialising listeners...");
             ThreadHelper.ThrowIfOnUIThread();
             //Debug.WriteLine("On background thread.");
+            MediaSourceManager.EnableEcosystems = false;
             MediaSourceManager.Initialise();
             //Debug.WriteLine("Initialised listeners.");
         }, CancellationToken);
@@ -108,6 +93,7 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
         //await SimpleCommandExtensions.InitializeAllInAssemblyAsync(this);
         await InstanceProviderAttribute.ConstructAllInstanceTypesAsync();
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
+        //await PlayCommand.InitializeAsync(this);
     }
 
     #endregion

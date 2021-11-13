@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-
+﻿
 using Microsoft.VisualStudio.Shell;
 
 using QMediaVSIX.Core.MediaSource.Software;
@@ -36,6 +35,7 @@ internal sealed class PauseCommand : SessionPlaybackCommand<PauseCommand> {
     GlobalSystemMediaTransportControlsSessionPlaybackStatus? _LastStatus = null;
     void ApplyNewStatus( GlobalSystemMediaTransportControlsSessionPlaybackStatus? Status ) {
         if (_LastStatus == Status ) { return; }
+        Debug.WriteLine($"Applying new status {Status}");
         _LastStatus = Status;
         if ( Status is null ) {
             SetCommandEnabled(false);
@@ -43,13 +43,7 @@ internal sealed class PauseCommand : SessionPlaybackCommand<PauseCommand> {
         }
 
         bool WillEnable = Status != GlobalSystemMediaTransportControlsSessionPlaybackStatus.Paused;
-        if ( WillEnable ) { //Always disable the other command first.
-            SetCommandEnabled(false);
-            PlayCommand.Instance?.SetCommandEnabled(true);
-        } else {
-            PlayCommand.Instance?.SetCommandEnabled(false);
-            SetCommandEnabled(true);
-        }
+        SetCommandEnabled(WillEnable);
     }
 
     // ReSharper disable once ReplaceAutoPropertyWithComputedProperty

@@ -138,11 +138,13 @@ public static class MediaSessionManager {
 		switch ( SM.GetCurrentSession() ) {
 			case { } NewCurrent:
 				Guid NewSessionIdentifier = MediaSession.GetIdentifier(NewCurrent);
-				foreach ( (Guid Identifier, MediaSession Session) in Sessions ) {
-					if ( Identifier == NewSessionIdentifier ) {
-						Debug.WriteLine($"Current session changed to {Session}.");
-						Current = Session;
-						//OnCurrentSessionChanged(Identifier, Session);
+				lock ( Sessions ) {
+					foreach ( (Guid Identifier, MediaSession Session) in Sessions ) {
+						if ( Identifier == NewSessionIdentifier ) {
+							Debug.WriteLine($"Current session changed to {Session}.");
+							Current = Session;
+							//OnCurrentSessionChanged(Identifier, Session);
+						}
 					}
 				}
 				break;
@@ -158,27 +160,36 @@ public static class MediaSessionManager {
 	/// Checks all current sessions in the <see cref="WMCSessionManager"/>, and updates the list of <see cref="Sessions"/> accordingly - removing old sessions, and adding new sessions.
 	/// </summary>
 	public static void RefreshSessions() {
-		Debug.WriteLine("Staleness Check--");
-		List<Guid> Known = Sessions.Keys.ToList();
-		foreach ( WMCSession Sess in SM.GetSessions() ) { //Check all possible sessions
-			Guid Identifier = MediaSession.GetIdentifier(Sess);
-			if ( Known.Contains(Identifier) ) { //Ignore already known sessions
-				Debug.WriteLine($"\tPreExisting: {Identifier} ({Sess.SourceAppUserModelId})");
-				Known.Remove(Identifier);
-				continue;
+		lock ( Sessions ) {
+			Debug.WriteLine("Staleness Check--");
+			List<Guid>
+				Known = Sessions.Keys.ToList(),
+				New = new List<Guid>();
+			foreach ( WMCSession Sess in SM.GetSessions() ) { //Check all possible sessions
+				Guid Identifier = MediaSession.GetIdentifier(Sess);
+				if ( Known.Contains(Identifier) ) { //Ignore already known sessions
+					Debug.WriteLine($"\tPreExisting: {Identifier} ({Sess.SourceAppUserModelId})");
+					Known.Remove(Identifier);
+					continue;
+				}
+				if ( !New.Contains(Identifier) ) {
+					Debug.WriteLine($"\tNew: {Identifier} ({Sess.SourceAppUserModelId}) -- {string.Join(",", New)}");
+					MediaSession NewSess = new MediaSession(Sess); //Add new sessions
+					Sessions.Add(Identifier, NewSess);
+					New.Add(Identifier);
+				} else {
+					Debug.WriteLine($"\tDuplicate: {Identifier} ({Sess.SourceAppUserModelId})");
+				}
 			}
-			Debug.WriteLine($"\tNew: {Identifier} ({Sess.SourceAppUserModelId})");
-			MediaSession NewSess = new MediaSession(Sess); //Add new sessions
-			Sessions.Add(Identifier, NewSess);
+			foreach ( Guid Removed in Known ) { //Remove no longer existing sessions
+				Debug.WriteLine($"\tRemoved: {Removed}");
+				//MediaSession RemovedSession = Sessions[Removed];
+				Sessions.Remove(Removed);
+				//SessionDisconnected(RemovedSession);
+			}
+			Debug.WriteLine("-----------------");
+			RefreshCurrentSession();
 		}
-		foreach( Guid Removed in Known ) { //Remove no longer existing sessions
-			Debug.WriteLine($"\tRemoved: {Removed}");
-			//MediaSession RemovedSession = Sessions[Removed];
-			Sessions.Remove(Removed);
-			//SessionDisconnected(RemovedSession);
-		}
-		Debug.WriteLine("-----------------");
-		RefreshCurrentSession();
 	}
 
 	public static readonly ObservableDictionary<Guid, MediaSession> Sessions = new ObservableDictionary<Guid, MediaSession>();

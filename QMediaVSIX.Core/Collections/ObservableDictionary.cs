@@ -240,6 +240,18 @@ public class ObservableDictionary<TKey, TValue> : List<ObservableKeyValuePair<TK
 		return - 1;
 	}
 
+	public bool TryGetIndexOf( TValue Value, out int Index ) {
+		foreach( (_, TValue V) in this ) {
+			Index = 0;
+			if ( V is { } Val && Val.Equals(Value) ) {
+				return true;
+			}
+			Index++;
+		}
+		Index = - 1;
+		return false;
+	}
+
 	#endregion
 
 	#region Item Manipulation

@@ -208,4 +208,161 @@ public static class Extensions {
             I++;
         }
     }
+
+    public static TKey GetKeyAt<TKey, TValue>( this IDictionary<TKey, TValue> Dict, int Index ) {
+        int I = 0;
+        foreach (KeyValuePair<TKey, TValue> Pair in Dict ) {
+            if (I == Index ) { return Pair.Key; }
+            I++;
+        }
+        throw new IndexOutOfRangeException();
+    }
+
+    public static TValue GetValueAt<TKey, TValue>( this IDictionary<TKey, TValue> Dict, int Index ) {
+        int I = 0;
+        foreach ( KeyValuePair<TKey, TValue> Pair in Dict ) {
+            if ( I == Index ) { return Pair.Value; }
+            I++;
+        }
+        throw new IndexOutOfRangeException();
+    }
+
+    public static bool TryGetAt<TKey, TValue>( this IDictionary<TKey, TValue> Dict, int Index, out KeyValuePair<TKey, TValue> Found ) {
+        if (Index >= 0 ) {
+            int I = 0;
+            foreach ( KeyValuePair<TKey, TValue> Pair in Dict ) {
+                if ( I == Index ) {
+                    Found = Pair;
+                    return true;
+                }
+                I++;
+            }
+        }
+        
+        Found = default;
+        return false;
+    }
+
+    public static bool TryGetKey<TKey, TValue>(this IDictionary<TKey, TValue> Dict, TValue? Value, out TKey Found) {
+        foreach (KeyValuePair<TKey, TValue> Pair in Dict ) {
+            if ( Pair.Value?.Equals(Value) ?? Value is null ) {
+                Found = Pair.Key;
+                return true;
+            }
+        }
+        Found = default!;
+        return false;
+    }
+
+    public static bool TryGetWithKey<TKey, TValue>( this IDictionary<TKey, TValue> Dict, Func<TKey, bool> Predicate, out (int Index, TKey Key, TValue Value) Found ) {
+        int I = 0;
+        foreach ( KeyValuePair<TKey, TValue> Pair in Dict ) {
+            if ( Predicate(Pair.Key) ) {
+                Found = (I, Pair.Key, Pair.Value);
+                return true;
+            }
+            I++;
+        }
+        Found = default!;
+        return false;
+    }
+
+    public static bool TryGetWithValue<TKey, TValue>( this IDictionary<TKey, TValue> Dict, Func<TValue, bool> Predicate, out (int Index, TKey Key, TValue Value) Found ) {
+        int I = 0;
+        foreach ( KeyValuePair<TKey, TValue> Pair in Dict ) {
+            if ( Predicate(Pair.Value) ) {
+                Found = (I, Pair.Key, Pair.Value);
+                return true;
+            }
+            I++;
+        }
+        Found = default;
+        return false;
+    }
+
+    [SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods")]
+    public static Task AsFakeTask(this Action Act) {
+        Act();
+        return Task.CompletedTask;
+    }
+
+    [SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods")]
+    public static Task<T> AsFakeTask<T>( this Func<T> Fn ) {
+        T GetResult() => Fn();
+        return Task.FromResult(GetResult());
+    }
+
+    [SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods")]
+    public static Task<TOut> AsFakeTask<TIn, TOut>( this Func<TIn, TOut> Fn, TIn Input ) {
+        TOut GetResult() => Fn(Input);
+        return Task.FromResult(GetResult());
+    }
+
+    [SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods")]
+    public static Task AsFakeTask<T>( this Action<T> Fn, T Input ) {
+        Fn(Input);
+        return Task.CompletedTask;
+    }
+
+    public static int GetIndexOf<TKey, TValue>( this IDictionary<TKey, TValue> Dict, TKey Search ) where TKey : notnull {
+        int I = 0;
+        foreach(KeyValuePair<TKey, TValue> Pair in Dict ) {
+            if ( Pair.Key.Equals(Search) ) {
+                return I;
+            }
+            I++;
+        }
+        return - 1;
+    }
+
+    public static int GetIndexOf<TKey, TValue>( this IDictionary<TKey, TValue> Dict, TValue Search ) where TKey : notnull {
+        int I = 0;
+        foreach ( KeyValuePair<TKey, TValue> Pair in Dict ) {
+            if ( Pair.Value is null ? Search is null : Search is not null && Pair.Value.Equals(Search) ) {
+                return I;
+            }
+            I++;
+        }
+        return -1;
+    }
+
+    public static bool IsValidIndex( this int In, int Count, out int Valid ) {
+        if ( In < 0 || In >= Count ) {
+            Valid = 0;
+            return false;
+        }
+        Valid = In;
+        return true;
+    }
+
+    public static bool IsValidIndex( this int In, out int Valid ) {
+        if (In < 0 ) {
+            Valid = 0;
+            return false;
+        }
+        Valid = In;
+        return true;
+    }
+
+    public static int FindIndex<T> ( this IList<T> Ls, Func<T, bool> Match ) {
+        int L = Ls.Count;
+        for ( int I = 0; I < L; I++ ) {
+            if ( Match(Ls[I]) ) {
+                return I;
+            }
+        }
+        return -1;
+    }
+
+    public static int FindIndex<T>( this IList<T> Ls, Func<T, bool> Match, out T Found ) {
+        Found = default!;
+        int L = Ls.Count;
+        for ( int I = 0; I < L; I++ ) {
+            Found = Ls[I];
+            if ( Match(Found) ) {
+                return I;
+            }
+        }
+        return -1;
+    }
 }

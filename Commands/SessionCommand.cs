@@ -76,30 +76,4 @@ internal abstract class SessionCommand<T> : SimpleCommand<T> where T : SimpleCom
     public virtual void OnCurrentSessionPropertyChanged( object Sender, PropertyChangedEventArgs E ) { }
 
     public virtual void OnCurrentSessionChanged() { }
-    
-    /// <summary>
-    /// Sets the command to be enabled, returning <see langword="true"/> if successful.
-    /// </summary>
-    /// <param name="MakeEnabled">Whether to make the command enabled or disabled. Command is enabled if <see langword="true"/>.</param>
-    /// <returns><see langword="true"/> if the change was successful.</returns>
-    public bool SetCommandEnabled( bool MakeEnabled = true ) => ChangeEnableable(MakeEnabled);
-
-    /// <summary>
-    /// Sets the command to be disabled, returning <see langword="true"/> if successful.
-    /// </summary>
-    /// <param name="MakeDisabled">Whether to make the command disabled or enabled. Command is disabled if <see langword="true"/>.</param>
-    /// <returns><see langword="true"/> if the change was successful.</returns>
-    public bool SetCommandDisabled( bool MakeDisabled = true ) => ChangeEnableable(!MakeDisabled);
-
-    internal bool ChangeEnableable( bool EnableCmd ) {
-        OleMenuCommandService Mcs = Package.GetService<IMenuCommandService, OleMenuCommandService>();
-        CommandID NewCmdID = new CommandID(SelfCommandSet, SelfCommandId);
-        MenuCommand? MC = Mcs.FindCommand(NewCmdID);
-        if ( MC is not null ) {
-            MC.Enabled = EnableCmd;
-            return true;
-        }
-        Debug.WriteLine($"MenuCommand was unable to be found for {SelfCommandSet} {SelfCommandId} == {NewCmdID}");
-        return false;
-    }
 }

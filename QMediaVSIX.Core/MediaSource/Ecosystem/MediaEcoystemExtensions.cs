@@ -157,7 +157,7 @@ public static class MediaEcoystemExtensions {
 		string SearchProcName = Session.Session.SourceAppUserModelId.TrimEnd(".exe");
 		foreach ( MediaDevice Device in Devices ) {
 			Process P = Device.Control2.Process;
-			Debug.WriteLine($"Does {SearchProcName} == {P.ProcessName.TrimEnd(".exe")}?");
+			//Debug.WriteLine($"Does {SearchProcName} == {P.ProcessName.TrimEnd(".exe")}?");
 			if ( P.ProcessName.TrimEnd(".exe") == SearchProcName ) {
 				return (P.Id, Session, Device);
 			}

@@ -61,6 +61,8 @@ public static class MediaSourceManager {
 
 	static MediaSourceManager() => Initialise();
 
+	public static bool EnableEcosystems { get; set; } = true;
+
 	public static void Initialise() {
 		Debug.WriteLine("Constructing managers.");
 		RuntimeHelpers.RunClassConstructor(typeof(MediaSessionManager).TypeHandle);
@@ -76,6 +78,7 @@ public static class MediaSourceManager {
 	}
 
 	static void MediaDeviceDisconnectedManager_DeviceDisconnected( MediaDevice Sender ) {
+		if ( !EnableEcosystems ) { return; }
 		foreach ( (Guid Identifier, MediaEcosystem Ecosystem) in Ecosystems ) {
 			if ( Ecosystem.Device.Identifier == Sender.Identifier ) {
 				RemoveEcosystem(Identifier, Ecosystem);
@@ -84,6 +87,7 @@ public static class MediaSourceManager {
 	}
 
 	static void MediaSessionDisconnectedManager_SessionDisconnected( MediaSession Sender ) {
+		if ( !EnableEcosystems ) { return; }
 		List<(Guid Id, MediaEcosystem ME)> ToRemove = new List<(Guid, MediaEcosystem)>();
 		lock ( Ecosystems ) {
 			foreach ( (Guid Identifier, MediaEcosystem Ecosystem) in Ecosystems ) {
@@ -98,23 +102,28 @@ public static class MediaSourceManager {
 	}
 
 	static void MediaDeviceConnectedManager_DeviceConnected( MediaDevice Sender, Guid E ) {
+		if ( !EnableEcosystems ) { return; }
 		if ( Sender.FindSingleLinked(MediaSessionManager.Sessions.Values.ToArray()) is { } Pair ) {
 			AddNewEcosystem(Pair);
 		}
 	}
 
 	static void MediaSessionConnectedManager_SessionConnected( MediaSession Sender, Guid E ) {
+		if ( !EnableEcosystems ) { return; }
 		if (Sender.FindSingleLinked(MediaDeviceManager.Devices.Values.ToArray()) is { } Pair ) {
 			AddNewEcosystem(Pair);
 		}
 	}
 
 	internal static void GetInitialLinked() {
+		if ( !EnableEcosystems ) { return; }
 		MediaDeviceManager.Devices.FindLinked(MediaSessionManager.Sessions).ForAll(AddNewEcosystem);
 	}
 
 	internal static void AddNewEcosystem( (int ProcessId, MediaSession Session, MediaDevice Device) Pair ) => AddNewEcosystem(Pair.ProcessId, Pair.Session, Pair.Device);
+
 	internal static void AddNewEcosystem( int ProcessId, MediaSession Session, MediaDevice Device ) {
+		if ( !EnableEcosystems ) { return; }
 		Guid Combined = MediaEcosystem.GetIdentifier(Session, Device);
 		if ( !Ecosystems.ContainsKey(Combined) ) {
 			Ecosystems.Add(Combined, new MediaEcosystem(ProcessId, Session, Device));
@@ -122,6 +131,7 @@ public static class MediaSourceManager {
 	}
 
 	internal static void RemoveEcosystem( Guid Identifier, MediaEcosystem Ecosystem ) {
+		if ( !EnableEcosystems ) { return; }
 		if ( Ecosystems.ContainsKey(Identifier) ) {
 			Ecosystems.Remove(Identifier);
 			EcosystemDisconnected(Ecosystem, Identifier);
