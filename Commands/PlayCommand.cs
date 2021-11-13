@@ -1,8 +1,12 @@
-﻿using System.ComponentModel.Design;
+﻿using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Shell;
 
+using QMediaVSIX.Core.Collections;
 using QMediaVSIX.Core.MediaSource.Software;
 
 using Windows.Media.Control;
@@ -12,7 +16,8 @@ namespace QMediaVSIX.Commands;
 /// <summary>
 /// Command handler
 /// </summary>
-internal sealed class PlayCommand : SimpleCommand<PlayCommand> {
+[InstanceProvider(nameof(Instance), nameof(InitializeAsync))]
+internal sealed class PlayCommand : INotifyPropertyChange {
     /// <summary>
     /// Command ID.
     /// </summary>
@@ -23,8 +28,10 @@ internal sealed class PlayCommand : SimpleCommand<PlayCommand> {
     /// </summary>
     public static readonly Guid CommandSet = new Guid("a36c982e-236d-489b-8703-7e1fc268d77c");
 
-    //DTE2 _Dte;
-    //int _RootItemID = 0;
+    /// <summary>
+    /// VS Package that provides this command, not null.
+    /// </summary>
+    readonly AsyncPackage _Package;
 
     public readonly FauxFirstList<(string Name, MediaSession Session)> Sessions;
 
@@ -34,7 +41,14 @@ internal sealed class PlayCommand : SimpleCommand<PlayCommand> {
     /// </summary>
     /// <param name="Package">Owner package, not null.</param>
     /// <param name="CommandService">Command service to add command to, not null.</param>
-    public PlayCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) {
+    public PlayCommand( AsyncPackage Package, IMenuCommandService CommandService ) {
+        _Package = Package;
+        //this.CommandService = CommandService;
+
+        CommandID DynamicItemRootID = new CommandID(new Guid(QMediaVSIXPackage.guidQMediaVSIXPackageToolbarItemCmdSet), (int)QMediaVSIXPackage.cmdidPlayCommand);
+        PlayItemMenuCommand DMC = new PlayItemMenuCommand(DynamicItemRootID, IsValidDynamicItem, OnInvokedDynamicItem, OnBeforeQueryStatusDynamicItem);
+        CommandService.AddCommand(DMC);
+
         Sessions = new FauxFirstList<(string, MediaSession)>(("none", null!), MediaSessionManager.Sessions.Values.Select(Ms => (Ms.ToString(), Ms)));
         MediaSessionManager.SessionConnected += (S, _) => {
             Sessions.Add((S.ToString(), S));
@@ -46,13 +60,6 @@ internal sealed class PlayCommand : SimpleCommand<PlayCommand> {
             { } C => MediaSessionManager.Sessions.TryGetIndexOf(C, out int I) ? (uint)I + 1u : 0u,
             _     => 0u
         };
-    }
-
-    public override void CtoAddToMenu( AsyncPackage Package, OleMenuCommandService CommandService ) {
-        //base.CtoAddToMenu(Package, CommandService);
-        CommandID DynamicItemRootID = new CommandID(new Guid(QMediaVSIXPackage.guidQMediaVSIXPackageToolbarItemCmdSet), (int)QMediaVSIXPackage.cmdidPlayCommand);
-        PlayItemMenuCommand DMC = new PlayItemMenuCommand(DynamicItemRootID, IsValidDynamicItem, OnInvokedDynamicItem, OnBeforeQueryStatusDynamicItem);
-        CommandService.AddCommand(DMC);
     }
 
     void OnInvokedDynamicItem( object Sender, EventArgs E ) {
@@ -176,23 +183,84 @@ internal sealed class PlayCommand : SimpleCommand<PlayCommand> {
             _                                                               => 0
         };
 
-    // ReSharper disable once ReplaceAutoPropertyWithComputedProperty
+    // ReSharper disable once UnassignedGetOnlyAutoProperty
     /// <summary>
     /// Gets the instance of the command.
     /// </summary>
-    public new static PlayCommand? Instance { get; } = null;
+    public static PlayCommand? Instance { get; }
 
-    /// <inheritdoc />
-    public override string Title => "PlayCommand";
+    /// <summary>
+    /// Initialises the singleton instance of the command.
+    /// </summary>
+    public static async Task<PlayCommand> InitializeAsync() {
+        AsyncPackage Package = QMediaVSIXPackage.Instance;
+        
+        //Debug.WriteLine("Switching main...");
+        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(Package.DisposalToken);
 
-    /// <inheritdoc />
-    protected override int SelfCommandId => CommandId;
+        //Debug.WriteLine("Retrieving service...");
+        OleMenuCommandService CommandService = await Package.GetServiceAsync<IMenuCommandService, OleMenuCommandService>() ?? throw new ArgumentNullException(nameof(CommandService), "No CommandService could be created at this time.");
 
-    /// <inheritdoc />
-    protected override Guid SelfCommandSet => CommandSet;
+        return new PlayCommand(Package, CommandService);
+    }
 
-    public override void Execute( object Sender, EventArgs E ) {
+
+    /// <summary>
+    /// Gets the service provider from the owner package.
+    /// </summary>
+    IAsyncServiceProvider ServiceProvider => _Package;
+
+    /// <summary>
+    /// This function is the callback used to execute the command when the menu item is clicked.
+    /// See the constructor to see how the menu item is associated with this function using
+    /// OleMenuCommandService service and MenuCommand class.
+    /// </summary>
+    /// <param name="Sender">Event sender.</param>
+    /// <param name="E">Event args.</param>
+    public void Execute( object Sender, EventArgs E ) {
         Debug.WriteLine("Playing media...");
         CurrentChosen?.Play();
     }
+
+    /// <summary>
+    /// Sets the command to be enabled, returning <see langword="true"/> if successful.
+    /// </summary>
+    /// <param name="MakeEnabled">Whether to make the command enabled or disabled. Command is enabled if <see langword="true"/>.</param>
+    /// <returns><see langword="true"/> if the change was successful.</returns>
+    public bool SetCommandEnabled( bool MakeEnabled = true ) => ChangeEnableable(MakeEnabled);
+
+    /// <summary>
+    /// Sets the command to be disabled, returning <see langword="true"/> if successful.
+    /// </summary>
+    /// <param name="MakeDisabled">Whether to make the command disabled or enabled. Command is disabled if <see langword="true"/>.</param>
+    /// <returns><see langword="true"/> if the change was successful.</returns>
+    public bool SetCommandDisabled( bool MakeDisabled = true ) => ChangeEnableable(!MakeDisabled);
+
+    internal bool ChangeEnableable( bool EnableCmd ) {
+        OleMenuCommandService Mcs = _Package.GetService<IMenuCommandService, OleMenuCommandService>();
+        CommandID NewCmdID = new CommandID(CommandSet, CommandId);
+        MenuCommand? MC = Mcs.FindCommand(NewCmdID);
+        if ( MC is not null ) {
+            MC.Enabled = EnableCmd;
+            return true;
+        }
+        Debug.WriteLine($"MenuCommand was unable to be found for {CommandSet} {CommandId} == {NewCmdID}");
+        return false;
+    }
+
+    /// <inheritdoc />
+    public event PropertyChangingEventHandler? PropertyChanging = delegate { };
+
+    /// <inheritdoc />
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+    /// <inheritdoc />
+    public void OnPropertyChanging( object? Sender, [CallerMemberName] string? PropertyName = null ) => PropertyChanging?.Invoke(Sender, new PropertyChangingEventArgs(PropertyName));
+
+    /// <inheritdoc />
+    public void OnPropertyChanged( object? Sender, [CallerMemberName] string? PropertyName = null ) => PropertyChanged?.Invoke(Sender, new PropertyChangedEventArgs(PropertyName));
+
+    internal void RaisePropertyChanging( [CallerMemberName] string? PropertyName = null ) => OnPropertyChanging(this, PropertyName);
+
+    internal void RaisePropertyChanged( [CallerMemberName] string? PropertyName = null ) => OnPropertyChanged(this, PropertyName);
 }
