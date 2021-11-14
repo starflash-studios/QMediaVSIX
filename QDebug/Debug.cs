@@ -9,6 +9,8 @@
 #region Using Directives
 
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -26,7 +28,6 @@ public static class Debug {
 	/// </summary>
 	public static readonly List<IDebugListener> Listeners;
 
-
 	static Debug() {
 		Listeners = new List<IDebugListener> {
 			new DiagnosticsListener()
@@ -35,6 +36,7 @@ public static class Debug {
 			Listeners.Add(new ConsoleListener());
 		}
 	}
+
 	/// <summary>
 	/// Queries the collection of listeners for trace listeners of the requested type.
 	/// </summary>
@@ -49,7 +51,7 @@ public static class Debug {
 	}
 
 	/// <summary>
-	/// Constructs a collection of parameters for use in the <see cref="Here(object?[]?, string?, string?, int?)"/> method.
+	/// Constructs a collection of parameters for use in the <see cref="Here(object?[], string?, string?, int?)"/> method.
 	/// </summary>
 	/// <param name="Args">The collection of parameters.</param>
 	/// <returns>A collection of parameters.</returns>
@@ -62,6 +64,7 @@ public static class Debug {
 	/// <param name="CallerFilePath">The file path of the caller script file at the time of compilation.</param>
 	/// <param name="CallerLineNumber">The line number of the caller script file at the time of compilation.</param>
 	/// <param name="Parameters">The collection of parameters to document as part of the <paramref name="CallerMemberName"/>.</param>
+	[Conditional("DEBUG")]
 	public static void Here( object?[]? Parameters, [CallerMemberName] string? CallerMemberName = null, [CallerFilePath] string? CallerFilePath = null, [CallerLineNumber] int? CallerLineNumber = null ) {
 		StringBuilder SB = new StringBuilder();
 		SB.Append(">> ");
@@ -102,44 +105,60 @@ public static class Debug {
 		WriteLine(SB.ToString());
 	}
 
-
 	/// <summary>
 	/// Writes the current location (caller method, file path and line number) to the trace <see cref="Listeners"/> collection.
 	/// </summary>
 	/// <param name="CallerMemberName">The name of the caller method.</param>
 	/// <param name="CallerFilePath">The file path of the caller script file at the time of compilation.</param>
 	/// <param name="CallerLineNumber">The line number of the caller script file at the time of compilation.</param>
+	[SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression"),
+	 SuppressMessage("ReSharper", "ExplicitCallerInfoArgument"),
+	 Conditional("DEBUG")]
 	public static void Here( [CallerMemberName] string? CallerMemberName = null, [CallerFilePath] string? CallerFilePath = null, [CallerLineNumber] int? CallerLineNumber = null ) => Here(null, CallerMemberName, CallerFilePath, CallerLineNumber);
 
-	/// <inheritdoc cref="SysDbg.WriteLine(string?)"/>
-	public static void WriteLine( string? Message = null ) => Listeners.ForEach(L => L.WriteLine(Message));
-
-	/// <inheritdoc cref="SysDbg.WriteLine(object?)"/>
-	public static void WriteLine( object? Object ) => WriteLine(Object?.ToString());
-
-	/// <inheritdoc cref="SysDbg.WriteLine(string?, string)"/>
-	public static void WriteLine( string? Message, string Category ) => Listeners.ForEach(L => L.WriteLine(Message, Category));
-
-	/// <inheritdoc cref="SysDbg.WriteLine(object?, string)"/>
-	public static void WriteLine( object? Object, string Category ) => WriteLine(Object?.ToString(), Category);
-
-	/// <inheritdoc cref="SysDbg.Write(string?)"/>
-	public static void Write( string? Message = null ) => Listeners.ForEach(L => L.Write(Message));
-
-	/// <inheritdoc cref="SysDbg.Write(object?)"/>
-	public static void Write( object? Object ) => Write(Object?.ToString());
-
-	/// <inheritdoc cref="SysDbg.Write(string?, string)"/>
-	public static void Write( string? Message, string Category ) => Listeners.ForEach(L => L.Write(Message, Category));
-
-	/// <inheritdoc cref="SysDbg.Write(object?, string)"/>
-	public static void Write( object? Object, string Category ) => Write(Object?.ToString(), Category);
+	#region Redirected Methods
 
 	/// <inheritdoc cref="SysCon.Clear()"/>
-	public static void Clear() => Listeners.ForEach(L => L.Clear());
+	[Conditional("DEBUG")]
+	public static void Clear() => Console.Clear();
 
-	/// <inheritdoc cref="System.Diagnostics.Debugger.Break()"/>
-	public static void Break() => Listeners.ForEach(L => L.Break());
+	/// <inheritdoc cref="Debugger.Break()"/>
+	[Conditional("DEBUG")]
+	public static void Break() => Console.Break();
+
+	/// <inheritdoc cref="SysCon.WriteLine(string?)"/>
+	[Conditional("DEBUG")]
+	public static void WriteLine( string? Message = null ) => Console.WriteLine(Message);
+
+	/// <inheritdoc cref="Console.WriteLine(string?, string)"/>
+	[Conditional("DEBUG")]
+	public static void WriteLine( string? Message, string Category ) => Console.WriteLine(Message, Category);
+
+	/// <inheritdoc cref="SysCon.WriteLine(object?)"/>
+	[Conditional("DEBUG")]
+	public static void WriteLine( object? Object ) => Console.WriteLine(Object);
+
+	/// <inheritdoc cref="Console.WriteLine(object?, string)"/>
+	[Conditional("DEBUG")]
+	public static void WriteLine( object? Object, string Category ) => Console.WriteLine(Object, Category);
+
+	/// <inheritdoc cref="SysCon.Write(string?)"/>
+	[Conditional("DEBUG")]
+	public static void Write( string? Message = null ) => Console.Write(Message);
+
+	/// <inheritdoc cref="Console.Write(string?, string)"/>
+	[Conditional("DEBUG")]
+	public static void Write( string? Message, string Category ) => Console.Write(Message, Category);
+
+	/// <inheritdoc cref="SysCon.Write(object?)"/>
+	[Conditional("DEBUG")]
+	public static void Write( object? Object ) => Console.Write(Object);
+
+	/// <inheritdoc cref="Console.Write(object?, string)"/>
+	[Conditional("DEBUG")]
+	public static void Write( object? Object, string Category ) => Console.Write(Object, Category);
+
+	#endregion
 }
 
 //public struct LogMe {

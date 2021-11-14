@@ -9,7 +9,6 @@
 #region Using Directives
 
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 #endregion
@@ -30,7 +29,7 @@ public abstract class NotifyPropertyChange : INotifyPropertyChange {
 	public void OnPropertyChanged( object? Sender, [CallerMemberName] string? PropertyName = null ) => PropertyChanged?.Invoke(Sender, new PropertyChangedEventArgs(PropertyName));
 
 
-	[SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Consistency")]
+	//[SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Consistency")]
 	public T GetValue<T>( T Value ) => Value;
 
 	public void SetValue<T>( ref T Value, T NewValue, [CallerMemberName] string? PropertyName = null ) => NotifyPropertyChange_Extensions.SetValue(this, ref Value, NewValue, PropertyName);

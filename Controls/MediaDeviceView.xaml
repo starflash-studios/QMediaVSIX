@@ -240,6 +240,7 @@
                       Click="Context_HideOnce_Click" />
             <MenuItem Header="Hide (Toggle)"
                       Click="Context_HideToggle_Click" />
+            <!-- <MenuItem Header="Hide {Role}"/> Should this be implemented? -->
         </ContextMenu>
     </UserControl.ContextMenu>
     <SelectiveScrollingGrid Margin="5">

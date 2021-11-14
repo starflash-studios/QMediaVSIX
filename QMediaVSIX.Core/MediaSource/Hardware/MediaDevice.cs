@@ -53,17 +53,41 @@ public class MediaDevice : NotifyPropertyChange, IMediaDevice {
 
 	#endregion
 
+	#region Flow Property
+
+	DataFlow _Flow;
+	/// <inheritdoc/>
+	public DataFlow Flow {
+		get => _Flow;
+		set => SetValue(ref _Flow, value);
+	}
+
 	#endregion
 
-	public MediaDevice( AudioSessionControl Control ) : this(Control, Control.QueryInterface<AudioSessionControl2>()) { }
+	#region Role Property
 
-	public MediaDevice( AudioSessionControl Control, AudioSessionControl2 Control2 ) {
+	Role _Role;
+	/// <inheritdoc/>
+	public Role Role {
+		get => _Role;
+		set => SetValue(ref _Role, value);
+	}
+
+	#endregion
+
+	#endregion
+
+	public MediaDevice( AudioSessionControl Control, DataFlow Flow, Role Role ) : this(Control, Control.QueryInterface<AudioSessionControl2>(), Flow, Role) { }
+
+	public MediaDevice( AudioSessionControl Control, AudioSessionControl2 Control2, DataFlow Flow, Role Role ) {
 		this.Control = Control;
 		this.Control2 = Control2;
 		//Control2 = Control.QueryInterface<AudioSessionControl2>();
 		SimpleAV = Control.QueryInterface<SimpleAudioVolume>();
 		_Volume = SimpleAV.MasterVolume;
 		_Mute = SimpleAV.IsMuted;
+		_Flow = Flow;
+		_Role = Role;
 
 		Control2.SimpleVolumeChanged += ( _, E ) => {
 			//Volume = E.NewVolume;

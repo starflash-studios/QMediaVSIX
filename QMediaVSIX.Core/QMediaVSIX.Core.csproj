@@ -57,6 +57,9 @@
     <Compile Include="Collections\KeyCollisionException.cs" />
     <Compile Include="Collections\KeyNotFoundException.cs" />
     <Compile Include="Collections\KeyNullException.cs" />
+    <Compile Include="Collections\NonRemovableList`1.cs" />
+    <Compile Include="Collections\NotifyCollectionChange.cs" />
+    <Compile Include="Collections\NotifyCollectionChange`1.cs" />
     <Compile Include="Collections\NotifyPropertyChange.cs" />
     <Compile Include="Collections\NotifyPropertyChange_Extensions.cs" />
     <Compile Include="Collections\NullSafeObservableDictionary.cs" />

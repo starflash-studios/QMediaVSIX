@@ -68,22 +68,63 @@ public static class MediaDeviceManager {
 
 	public static readonly ObservableDictionary<Guid, MediaDevice> Devices = new ObservableDictionary<Guid, MediaDevice>();
 
+	public static NonRemovableList<DataFlow> AcceptedFlows = new NonRemovableList<DataFlow>(DataFlow.Render);
+	public static NonRemovableList<Role> AcceptedRoles = new NonRemovableList<Role>(Role.Multimedia); //TODO: Implement these below & on flow/role add
+
 	static MediaDeviceManager() {
 		//Debug.WriteLine("Constructing device manager.");
+		foreach ( DataFlow DF in AcceptedFlows ) {
+			foreach ( Role Rl in AcceptedRoles ) {
+				TryAddEndpoint(DF, Rl);
+			}
+		}
+
+		AcceptedFlows.CollectionItemAdded += ( _, E ) => {
+			foreach ( Role Rl in AcceptedRoles ) {
+				TryAddEndpoint(E, Rl);
+			}
+		};
+
+		AcceptedRoles.CollectionItemAdded += (_, E) => {
+			foreach(DataFlow F in AcceptedFlows ) {
+				TryAddEndpoint(F, E);
+			}
+		};
+	}
+
+	static readonly Dictionary<DataFlow, List<Role>> _AddedEndpoints = new Dictionary<DataFlow, List<Role>>();
+
+	internal static void TryAddEndpoint(DataFlow F, Role R ) {
+		if ( _AddedEndpoints.ContainsKey(F) ) {
+			if ( _AddedEndpoints[F].Contains(R) ) {
+				Debug.WriteLine($"Audio Endpoint {F}::{R} already added, ignoring.");
+				return;
+			}
+			_AddedEndpoints[F].Add(R);
+		} else {
+			_AddedEndpoints.Add(F, new List<Role> { R });
+		}
+		AddEndpoint(F, R);
+	}
+
+	internal static void AddEndpoint(DataFlow F, Role R) {
+		Debug.WriteLine($"Adding Audio Endpoint {F}::{R}...");
 		using ( MMDeviceEnumerator Enumerator = new MMDeviceEnumerator() ) {
 			//Debug.WriteLine("A");
-			using ( MMDevice? Device = Enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia) ) {
+			using ( MMDevice? Device = Enumerator.GetDefaultAudioEndpoint(F, R) ) {
 				//Debug.WriteLine("B");
 				using ( AudioSessionManager2 SessionManager = AudioSessionManager2.FromMMDevice(Device) ) {
 					//Debug.WriteLine("C");
-					SessionManager.SessionCreated += SessionManager_SessionCreated;
+					SessionManager.SessionCreated += (_, E) => {
+						Add(E.NewSession, F, R);
+					};
 					//Debug.WriteLine("D");
 					using ( AudioSessionEnumerator SessionEnumerator = SessionManager.GetSessionEnumerator() ) {
 						//Debug.WriteLine("E");
 						// ReSharper disable once LoopCanBePartlyConvertedToQuery
 						foreach ( AudioSessionControl Control in SessionEnumerator ) {
 							//Debug.WriteLine("F");
-							Add(Control);
+							Add(Control, F, R);
 						}
 					}
 				}
@@ -91,11 +132,11 @@ public static class MediaDeviceManager {
 		}
 	}
 
-	internal static void Add( AudioSessionControl ASC ) {
+	internal static void Add( AudioSessionControl ASC, DataFlow Flow, Role Role ) {
 		AudioSessionControl2 AS = ASC.QueryInterface<AudioSessionControl2>();
 		Guid Identifier = MediaDevice.GetIdentifier(AS);
 		if ( !Devices.ContainsKey(Identifier) ) {
-			MediaDevice New = new MediaDevice(ASC, AS);
+			MediaDevice New = new MediaDevice(ASC, AS, Flow, Role);
 			Devices.Add(Identifier, New);
 			ASC.SessionDisconnected += (_, _) => {
 				Devices.Remove(Identifier);
@@ -104,7 +145,5 @@ public static class MediaDeviceManager {
 			OnDeviceConnected(New, Identifier);
 		}
 	}
-
-	static void SessionManager_SessionCreated( object? Sender, SessionCreatedEventArgs E ) => Add(E.NewSession);
 
 }

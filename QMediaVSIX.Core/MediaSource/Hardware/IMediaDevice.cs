@@ -20,4 +20,14 @@ public interface IMediaDevice {
 
 	/// <inheritdoc cref="SimpleAudioVolume.IsMuted"/>
 	bool Mute { get; set; }
+
+	/// <summary>
+	/// Indicates the direction in which audio data flows between an audio endpoint device and an application.
+	/// </summary>
+	DataFlow Flow { get; set; }
+
+	/// <summary>
+	/// Indicates the role that the system has assigned to an audio endpoint device.
+	/// </summary>
+	Role Role { get; set; }
 }

@@ -9,7 +9,6 @@
 namespace QMediaVSIX.Core.Collections;
 
 public interface INotifyCollectionChanged<T> : INotifyCollectionChanged {
-	#pragma warning disable CS0109 //Member does not hide an inherited member; new keyword is not required
 	public new delegate void CollectionItemAddedEventArgs( object Sender, T? Item );
 	public new event CollectionItemAddedEventArgs CollectionItemAdded;
 
@@ -24,5 +23,4 @@ public interface INotifyCollectionChanged<T> : INotifyCollectionChanged {
 
 	public new delegate void CollectionItemChangedEventArgs( object Sender, T? Item );
 	public new event CollectionItemChangedEventArgs CollectionItemChanged;
-	#pragma warning restore CS0109
 }

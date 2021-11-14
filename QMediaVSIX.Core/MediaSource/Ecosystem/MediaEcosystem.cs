@@ -68,6 +68,24 @@ public class MediaEcosystem : NotifyPropertyChange, IMediaEcosystem {
 
 	#endregion
 
+	#region Flow Property
+
+	public DataFlow Flow {
+		get => Device.Flow;
+		set => Device.Flow = value;
+	}
+
+	#endregion
+
+	#region Role Property
+
+	public Role Role {
+		get => Device.Role;
+		set => Device.Role = value;
+	}
+
+	#endregion
+
 	#endregion
 
 	#region IMediaSession Implementation

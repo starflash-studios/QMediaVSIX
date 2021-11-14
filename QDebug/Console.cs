@@ -39,37 +39,33 @@ public static class Console {
 	[DllImport("kernel32.dll")]
 	static extern IntPtr GetConsoleWindow();
 
-	#region Redirected Methods
+	/// <inheritdoc cref="SysDbg.WriteLine(string?)"/>
+	public static void WriteLine( string? Message = null ) => Debug.Listeners.ForEach(L => L.WriteLine(Message));
+
+	/// <inheritdoc cref="SysDbg.WriteLine(object?)"/>
+	public static void WriteLine( object? Object ) => WriteLine(Object?.ToString());
+
+	/// <inheritdoc cref="SysDbg.WriteLine(string?, string)"/>
+	public static void WriteLine( string? Message, string Category ) => Debug.Listeners.ForEach(L => L.WriteLine(Message, Category));
+
+	/// <inheritdoc cref="SysDbg.WriteLine(object?, string)"/>
+	public static void WriteLine( object? Object, string Category ) => WriteLine(Object?.ToString(), Category);
+
+	/// <inheritdoc cref="SysDbg.Write(string?)"/>
+	public static void Write( string? Message = null ) => Debug.Listeners.ForEach(L => L.Write(Message));
+
+	/// <inheritdoc cref="SysDbg.Write(object?)"/>
+	public static void Write( object? Object ) => Write(Object?.ToString());
+
+	/// <inheritdoc cref="SysDbg.Write(string?, string)"/>
+	public static void Write( string? Message, string Category ) => Debug.Listeners.ForEach(L => L.Write(Message, Category));
+
+	/// <inheritdoc cref="SysDbg.Write(object?, string)"/>
+	public static void Write( object? Object, string Category ) => Write(Object?.ToString(), Category);
 
 	/// <inheritdoc cref="SysCon.Clear()"/>
-	public static void Clear() => Debug.Clear();
+	public static void Clear() => Debug.Listeners.ForEach(L => L.Clear());
 
 	/// <inheritdoc cref="System.Diagnostics.Debugger.Break()"/>
-	public static void Break() => Debug.Break();
-
-	/// <inheritdoc cref="SysCon.WriteLine(string?)"/>
-	public static void WriteLine( string? Message = null ) => Debug.WriteLine(Message);
-
-	/// <inheritdoc cref="Debug.WriteLine(string?, string)"/>
-	public static void WriteLine( string? Message, string Category ) => Debug.WriteLine(Message, Category);
-
-	/// <inheritdoc cref="SysCon.WriteLine(object?)"/>
-	public static void WriteLine( object? Object ) => Debug.WriteLine(Object);
-
-	/// <inheritdoc cref="Debug.WriteLine(object?, string)"/>
-	public static void WriteLine( object? Object, string Category ) => Debug.WriteLine(Object, Category);
-
-	/// <inheritdoc cref="SysCon.Write(string?)"/>
-	public static void Write( string? Message = null ) => Debug.Write(Message);
-
-	/// <inheritdoc cref="Debug.Write(string?, string)"/>
-	public static void Write( string? Message, string Category ) => Debug.Write(Message, Category);
-
-	/// <inheritdoc cref="SysCon.Write(object?)"/>
-	public static void Write( object? Object ) => Debug.Write(Object);
-
-	/// <inheritdoc cref="Debug.Write(object?, string)"/>
-	public static void Write( object? Object, string Category ) => Debug.Write(Object, Category);
-
-	#endregion
+	public static void Break() => Debug.Listeners.ForEach(L => L.Break());
 }
