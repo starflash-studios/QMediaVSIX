@@ -1,15 +1,25 @@
-﻿using System.ComponentModel.Design;
+﻿#region Copyright (C) 2017-2021  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
 
 using Windows.Media;
 
 using Microsoft.VisualStudio.Shell;
+
+#endregion
 
 namespace QMediaVSIX.Commands;
 
 /// <summary>
 /// Command handler
 /// </summary>
-internal sealed class ShuffleRepeatControllerGroupCommand : SessionCommand<ShuffleRepeatControllerGroupCommand> {
+internal sealed class ShuffleRepeatControllerGroupCommand : SimpleGroupCommand<ShuffleRepeatControllerGroupCommand> {
     /// <summary>
     /// Command ID.
     /// </summary>
@@ -19,6 +29,12 @@ internal sealed class ShuffleRepeatControllerGroupCommand : SessionCommand<Shuff
         CommandShuffle      = 4180,
         CommandRepeatSingle = 4181,
         CommandRepeatList   = 4182;
+
+    /// <inheritdoc />
+    public override int MinCommandId => CommandShuffle;
+
+    /// <inheritdoc />
+    public override int MaxCommandId => CommandRepeatList;
 
     /// <summary>
     /// Command menu group (command set GUID).
@@ -33,41 +49,27 @@ internal sealed class ShuffleRepeatControllerGroupCommand : SessionCommand<Shuff
 
     public ShuffleRepeatControllerGroupCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) { }
 
-    public override void CtoAddToMenu( AsyncPackage Package, OleMenuCommandService CommandService ) {
-        base.CtoAddToMenu(Package, CommandService);
-        for ( int I = CommandShuffle; I <= CommandRepeatList; I++ ) {
-            CommandID CmdID = new CommandID(CommandSet, I);
-            OleMenuCommand MC = new OleMenuCommand(MC_OnItemClicked, CmdID);
-            MC.BeforeQueryStatus += MC_BeforeQueryStatus;
-            CommandService.AddCommand(MC);
-        }
-    }
 
-    static void MC_BeforeQueryStatus( object Sender, EventArgs E ) {
-        OleMenuCommand CMD = (OleMenuCommand)Sender;
-        Debug.WriteLine($"Query {CMD.CommandID}");
-        // ReSharper disable once ConvertSwitchStatementToSwitchExpression
-        switch ( CMD.CommandID.ID ) {
-            case CommandShuffle:
-                CMD.Checked = SessionCommandManager.Active?.IsShuffleActive ?? false;
-                //CMD.Checked = true;
-                break;
-            case CommandRepeatSingle:
-                CMD.Checked = SessionCommandManager.Active?.AutoRepeatMode == MediaPlaybackAutoRepeatMode.Track;
-                //CMD.Checked = true;
-                break;
-            case CommandRepeatList:
-                CMD.Checked = SessionCommandManager.Active?.AutoRepeatMode == MediaPlaybackAutoRepeatMode.List;
-                //CMD.Checked = true;
-                break;
-        }
-    }
+    // ReSharper disable once ReplaceAutoPropertyWithComputedProperty
+    /// <summary>
+    /// Gets the instance of the command.
+    /// </summary>
+    public new static ShuffleRepeatControllerGroupCommand? Instance { get; } = null;
 
-    static void MC_OnItemClicked( object Sender, EventArgs E ) {
-        //Debug.WriteLine("Click");
+    /// <inheritdoc />
+    public override string Title => "ShuffleRepeatControllerGroupCommand";
+
+    /// <inheritdoc />
+    public override bool IsChecked( int CmdId ) => CmdId switch {
+        CommandShuffle => SessionCommandManager.Active?.IsShuffleActive ?? false,
+        CommandRepeatSingle => SessionCommandManager.Active?.AutoRepeatMode == MediaPlaybackAutoRepeatMode.Track,
+        CommandRepeatList => SessionCommandManager.Active?.AutoRepeatMode == MediaPlaybackAutoRepeatMode.List,
+        _ => throw new IndexOutOfRangeException($"{nameof(CmdId)} {CmdId} was an unexpected id at this time.")
+    };
+
+    /// <inheritdoc />
+    public override void OnClick( OleMenuCommand CMD ) {
         if ( SessionCommandManager.Active is not { } A ) { return; }
-        OleMenuCommand CMD = (OleMenuCommand)Sender;
-        Debug.WriteLine($"Click from {CMD.CommandID}");
         switch ( CMD.CommandID.ID ) {
             case CommandShuffle:
                 A.IsShuffleActive = A.IsShuffleActive != true;
@@ -87,27 +89,25 @@ internal sealed class ShuffleRepeatControllerGroupCommand : SessionCommand<Shuff
         }
     }
 
-    public override void OnCurrentSessionChanged() {
-        if ( SessionCommandManager.Active is { } A ) {
-            ChangeEnableable(Package, new CommandID(CommandSet, CommandShuffle), A.IsShuffleEnabled);
-            ChangeEnableable(Package, new CommandID(CommandSet, CommandRepeatSingle), A.IsRepeatEnabled);
-            ChangeEnableable(Package, new CommandID(CommandSet, CommandRepeatList), A.IsRepeatEnabled);
-        } else {
-            base.OnCurrentSessionChanged();
-        }
-    }
+    //public override bool ShouldCommandBeEnabled( int CmdId ) => CmdId switch {
+    //    >= CommandShuffle and <= CommandRepeatList => SessionCommandManager.Active is not null,
+    //    _                                          => throw new IndexOutOfRangeException($"{nameof(CmdId)} {CmdId} was an unexpected id at this time.")
+    //};
 
-    // ReSharper disable once ReplaceAutoPropertyWithComputedProperty
-    /// <summary>
-    /// Gets the instance of the command.
-    /// </summary>
-    public new static ShuffleRepeatControllerGroupCommand? Instance { get; } = null;
+    public override bool ShouldCommandBeEnabled( int CmdId ) => CmdId switch {
+        CommandShuffle      => SessionCommandManager.Active?.IsShuffleEnabled ?? false,
+        CommandRepeatSingle => SessionCommandManager.Active?.IsRepeatEnabled  ?? false,
+        CommandRepeatList   => SessionCommandManager.Active?.IsRepeatEnabled  ?? false,
+        _                   => throw new IndexOutOfRangeException($"{nameof(CmdId)} {CmdId} was an unexpected id at this time.")
+    };
 
-    /// <inheritdoc />
-    public override string Title => "ShuffleRepeatControllerGroupCommand";
-
-    /// <inheritdoc />
-    public override void Execute( object Sender, EventArgs E ) {
-        Debug.WriteLine("Huh?");
-    }
+    //public override void OnCurrentSessionChanged() {
+    //    if ( SessionCommandManager.Active is { } A ) {
+    //        ChangeEnableable(Package, new CommandID(CommandSet, CommandShuffle), A.IsShuffleEnabled);
+    //        ChangeEnableable(Package, new CommandID(CommandSet, CommandRepeatSingle), A.IsRepeatEnabled);
+    //        ChangeEnableable(Package, new CommandID(CommandSet, CommandRepeatList), A.IsRepeatEnabled);
+    //    } else {
+    //        base.OnCurrentSessionChanged();
+    //    }
+    //}
 }

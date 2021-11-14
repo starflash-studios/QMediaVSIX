@@ -1,7 +1,18 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
+﻿#region Copyright (C) 2017-2021  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System.Collections.ObjectModel;
 using System.Security.Cryptography;
 using System.Text;
+
+#endregion
 
 namespace QMediaVSIX.Core;
 
@@ -27,7 +38,7 @@ public static class Extensions {
 
 	public static ICollection<T> AsCollection<T>( this IList<T> List ) => new Collection<T>(List);
 
-	public static ICollection<T> AsCollection<T>( this IEnumerable<T> Enumerable ) => AsCollection(List: Enumerable.ToList());
+	public static ICollection<T> AsCollection<T>( this IEnumerable<T> Enumerable ) => AsCollection(Enumerable.ToList());
 
 	public static bool Any<T>( this IEnumerable<T> Enumerable, Func<T, bool> Predicate, out T Found ) {
 		// ReSharper disable once LoopCanBePartlyConvertedToQuery
@@ -119,19 +130,19 @@ public static class Extensions {
 
 	public static string CatchNull( this string? Str, string Fallback, params string?[] Alternatives ) => Str ?? FirstNotNull(Alternatives) ?? Fallback;
 
-	public static string CatchEmpty( this string? Str, string WhenNullOrEmpty ) => Str.IsNullOrEmpty() ? WhenNullOrEmpty : Str;
+	public static string CatchEmpty( this string? Str, string WhenNullOrEmpty ) => Str.IsNullOrEmpty() ? WhenNullOrEmpty : Str!;
 
 	public static string CatchEmpty( this string? Str, string Fallback, params string?[] Alternatives ) {
 		if ( Str.IsNullOrEmpty() ) {
 			// ReSharper disable once LoopCanBePartlyConvertedToQuery
 			foreach (string? Alt in Alternatives ) {
 				if ( !Alt.IsNullOrEmpty() ) {
-					return Alt;
+					return Alt!;
 				}
 			}
 			return Fallback;
 		}
-		return Str;
+		return Str!;
 	}
 
 	public static string TrimEnd( this string Str, string Trim ) {
@@ -142,19 +153,19 @@ public static class Extensions {
 		return Str;
 	}
 
-	public static string CatchWhitespace( this string? Str, string WhenNullEmptyOrWhitespace ) => Str.IsNullOrWhiteSpace() ? WhenNullEmptyOrWhitespace : Str;
+	public static string CatchWhitespace( this string? Str, string WhenNullEmptyOrWhitespace ) => Str.IsNullOrWhiteSpace() ? WhenNullEmptyOrWhitespace : Str!;
 
 	public static string CatchWhitespace( this string? Str, string Fallback, params string?[] Alternatives ) {
 		if ( Str.IsNullOrWhiteSpace() ) {
 			// ReSharper disable once LoopCanBePartlyConvertedToQuery
 			foreach ( string? Alt in Alternatives ) {
 				if ( !Alt.IsNullOrWhiteSpace() ) {
-					return Alt;
+					return Alt!;
 				}
 			}
 			return Fallback;
 		}
-		return Str;
+		return Str!;
 	}
 
 	/// <summary>

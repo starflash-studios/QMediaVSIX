@@ -49,6 +49,7 @@ internal sealed class SkipPreviousCommand : SessionCommand<SkipPreviousCommand> 
 
     public override void OnCurrentSessionChanged() {
         if ( SessionCommandManager.Active is { } A ) {
+            Debug.WriteLine($"Does {A} support SkipPrevious? {A.IsPreviousEnabled}");
             ChangeEnableable(Package, new CommandID(CommandSet, CommandId), A.IsPreviousEnabled);
         } else {
             base.OnCurrentSessionChanged();

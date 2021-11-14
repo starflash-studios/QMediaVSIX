@@ -82,13 +82,13 @@ public class MediaDeviceViewModel : NotifyPropertyChange {
 				}
 				case { } V when _Device is null || _Device.Identifier != V.Identifier:
 					_Device = V;
-					this.RaisePropertyChanged(nameof(Device));
+					RaisePropertyChanged(nameof(Device));
 					//if (_Device is )
 					_Device.PropertyChanged += Device_PropertyChanged;
 					_Device.Control.IconPathChanged += Control_IconPathChanged;
 
-					this.RaiseAndSetIfChanged(ref _Volume, _Device.Volume, nameof(Volume));
-					this.RaiseAndSetIfChanged(ref _Mute, _Device.Mute, nameof(Mute));
+					RaiseAndSetIfChanged(ref _Volume, _Device.Volume, nameof(Volume));
+					RaiseAndSetIfChanged(ref _Mute, _Device.Mute, nameof(Mute));
 					//Debug.WriteLine($"Current icon '{_Device.Control.IconPath}'");
 					if ( _Device.Control2.Process.MainModule.FileName is { } ProcessPath ) {
 						Image = ProcessPath.GetIconToBitmapSourceCustom(32);
@@ -116,13 +116,13 @@ public class MediaDeviceViewModel : NotifyPropertyChange {
 	float _Volume = 0.75f;
 	public float Volume {
 		get => _Volume;
-		set => this.RaiseAndSetIfChanged(ref _Volume, value);
+		set => RaiseAndSetIfChanged(ref _Volume, value);
 	}
 
 	bool _Mute;
 	public bool Mute {
 		get => _Mute;
-		set => this.RaiseAndSetIfChanged(ref _Mute, value);
+		set => RaiseAndSetIfChanged(ref _Mute, value);
 	}
 
 	//string _DisplayName;
@@ -136,8 +136,8 @@ public class MediaDeviceViewModel : NotifyPropertyChange {
 	public BitmapSource? Image {
 		get => _Image;
 		set {
-			this.RaiseAndSetIfChanged(ref _Image, value);
-			this.RaisePropertyChanged(nameof(BindingImage));
+			RaiseAndSetIfChanged(ref _Image, value);
+			RaisePropertyChanged(nameof(BindingImage));
 		}
 	}
 

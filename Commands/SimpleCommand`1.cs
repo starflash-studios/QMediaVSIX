@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Shell;
 
+using QMediaVSIX.Types;
+
 #endregion
 
 namespace QMediaVSIX.Commands;
@@ -22,12 +24,6 @@ namespace QMediaVSIX.Commands;
 internal abstract class SimpleCommand<T> : SimpleCommand where T : SimpleCommand {
     /// <inheritdoc />
     protected SimpleCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) { }
-
-    // ReSharper disable once UnassignedGetOnlyAutoProperty
-    /// <summary>
-    /// Gets the instance of the command.
-    /// </summary>
-    protected new static SimpleCommand<T>? Instance { get; }
 
     /// <summary>
     /// Initialises the singleton instance of the command.

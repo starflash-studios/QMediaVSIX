@@ -1,9 +1,20 @@
-﻿using System;
+﻿#region Copyright (C) 2017-2021  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 
 using QDebug.Listeners;
+
+#endregion
 
 namespace QDebug;
 
@@ -17,7 +28,7 @@ public static class Debug {
 
 
 	static Debug() {
-		Listeners = new List<IDebugListener>() {
+		Listeners = new List<IDebugListener> {
 			new DiagnosticsListener()
 		};
 		if ( Console.HasConsoleAttached ) {
@@ -104,7 +115,7 @@ public static class Debug {
 	public static void WriteLine( string? Message = null ) => Listeners.ForEach(L => L.WriteLine(Message));
 
 	/// <inheritdoc cref="SysDbg.WriteLine(object?)"/>
-	public static void WriteLine( object? Object ) => WriteLine(Message: Object?.ToString());
+	public static void WriteLine( object? Object ) => WriteLine(Object?.ToString());
 
 	/// <inheritdoc cref="SysDbg.WriteLine(string?, string)"/>
 	public static void WriteLine( string? Message, string Category ) => Listeners.ForEach(L => L.WriteLine(Message, Category));
@@ -116,7 +127,7 @@ public static class Debug {
 	public static void Write( string? Message = null ) => Listeners.ForEach(L => L.Write(Message));
 
 	/// <inheritdoc cref="SysDbg.Write(object?)"/>
-	public static void Write( object? Object ) => Write(Message: Object?.ToString());
+	public static void Write( object? Object ) => Write(Object?.ToString());
 
 	/// <inheritdoc cref="SysDbg.Write(string?, string)"/>
 	public static void Write( string? Message, string Category ) => Listeners.ForEach(L => L.Write(Message, Category));

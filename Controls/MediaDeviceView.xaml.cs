@@ -8,6 +8,8 @@
 
 #region Using Directives
 
+using System.Windows;
+
 using QMediaVSIX.Core.MediaSource.Hardware;
 
 #endregion
@@ -34,4 +36,11 @@ public partial class MediaDeviceView {
         }
     }
 
+    void Context_HideOnce_Click( object Sender, RoutedEventArgs E ) {
+        Debug.WriteLine($"Attempting to hide {Device} for this session.");
+    }
+
+    void Context_HideToggle_Click( object Sender, RoutedEventArgs E ) {
+        Debug.WriteLine($"Attempting to add {Device} to the hidden devices section.");
+    }
 }

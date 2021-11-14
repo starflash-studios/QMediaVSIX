@@ -59,15 +59,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Collections\FauxFirstList.cs" />
+    <Compile Include="Commands\MenuControllerAnchorCommand.cs" />
     <Compile Include="Commands\SessionPlaybackCommand.cs" />
-    <Compile Include="Commands\PauseCommand.cs" />
-    <Compile Include="Commands\RepeatListCommand.cs" />
-    <Compile Include="Commands\RepeatSingleCommand.cs" />
-    <Compile Include="Commands\ShuffleCommand.cs" />
     <Compile Include="Commands\PlayCommand.cs" />
     <Compile Include="Commands\ShuffleRepeatControllerGroupCommand.cs" />
     <Compile Include="Commands\PlayItemMenuCommand.cs" />
     <Compile Include="Commands\PlayAnchorCommand.cs" />
+    <Compile Include="Commands\SimpleGroupCommand.cs" />
+    <Compile Include="Commands\PauseStopControllerGroupCommand.cs" />
+    <Compile Include="Converters\ColourBrightnessContrastConverter.cs" />
+    <Compile Include="Converters\StringTruncateConverter.cs" />
+    <Compile Include="Environment\Utilities\BindingProxy.cs" />
     <Compile Include="Types\AsynchronousInstancedType.cs" />
     <Compile Include="Types\InstancedType.cs" />
     <Compile Include="Types\InstanceProviderAttribute.cs" />

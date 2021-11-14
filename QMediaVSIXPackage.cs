@@ -22,6 +22,7 @@ using QMediaVSIX.Commands;
 using QMediaVSIX.Core.MediaSource;
 using QMediaVSIX.Core.MediaSource.Software;
 using QMediaVSIX.ToolWindows;
+using QMediaVSIX.Types;
 
 using ReactiveUI;
 
@@ -52,6 +53,7 @@ namespace QMediaVSIX;
   Guid(PackageGuidString),
   ProvideAutoLoad(UIContextGuids80.ToolboxInitialized, PackageAutoLoadFlags.BackgroundLoad),
   ProvideMenuResource("Menus.ctmenu", 1),
+  SuppressMessage("Performance", "VSSDK003:Support async tool windows"),
   ProvideToolWindow(typeof(VolumeMixerToolWindow))]
 public sealed class QMediaVSIXPackage : AsyncPackage {
 

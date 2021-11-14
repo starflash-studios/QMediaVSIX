@@ -30,7 +30,7 @@ internal sealed class VolumeMixerToolWindowCommand : SimpleCommand<VolumeMixerTo
     /// <summary>
     /// Command menu group (command set GUID).
     /// </summary>
-    public static readonly Guid CommandSet = new Guid("f69ab04e-226e-425f-8f7c-4ea38da690a8");
+    public static readonly Guid CommandSet = new Guid("a36c982e-236d-489b-8703-7e1fc268d77c");
 
     /// <inheritdoc />
     public override string Title => "Volume Mixer ToolWindow";

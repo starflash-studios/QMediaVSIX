@@ -11,6 +11,8 @@
 using System.Globalization;
 using System.Windows.Data;
 
+using QMediaVSIX.Controls;
+
 #endregion
 
 namespace QMediaVSIX.Converters;
@@ -20,7 +22,7 @@ namespace QMediaVSIX.Converters;
 /// </summary>
 /// <typeparam name="TFrom">The value to convert data from.</typeparam>
 /// <typeparam name="TTo">The value to convert data into.</typeparam>
-public abstract class ValueConverter<TFrom, TTo> : IValueConverter {
+public abstract class ValueConverter<TFrom, TTo> : NotifyPropertyChange, IValueConverter {
 
   /// <summary>
   /// Indicates whether the <see cref="ValueConverter{TFrom, TTo}"/> supports forwards conversions (from type <typeparamref name="TFrom"/> to type <typeparamref name="TTo"/>).

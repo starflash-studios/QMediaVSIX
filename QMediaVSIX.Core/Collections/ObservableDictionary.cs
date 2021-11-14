@@ -1,5 +1,17 @@
-﻿using System.ComponentModel;
+﻿#region Copyright (C) 2017-2021  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
+#endregion
 
 namespace QMediaVSIX.Core.Collections;
 
@@ -137,7 +149,7 @@ public class ObservableDictionary<TKey, TValue> : List<ObservableKeyValuePair<TK
 		OnKeyAdded(OKVP.Key);
 	}
 
-	public new void AddRange( IEnumerable<ObservableKeyValuePair<TKey, TValue>> OKVPairs ) => AddRange(OKVPairsArr: OKVPairs.ToArray());
+	public new void AddRange( IEnumerable<ObservableKeyValuePair<TKey, TValue>> OKVPairs ) => AddRange(OKVPairs.ToArray());
 
 	public void AddRange( params ObservableKeyValuePair<TKey, TValue>[] OKVPairsArr ) {
 		//Debug.WriteLine("LinkE");
@@ -148,7 +160,7 @@ public class ObservableDictionary<TKey, TValue> : List<ObservableKeyValuePair<TK
 		base.AddRange(OKVPairsArr);
 	}
 
-	public void AddRange( IEnumerable<KeyValuePair<TKey, TValue>> OKVPairs ) => AddRange(OKVPairsArr: OKVPairs.ToArray());
+	public void AddRange( IEnumerable<KeyValuePair<TKey, TValue>> OKVPairs ) => AddRange(OKVPairs.ToArray());
 
 	public void AddRange( params KeyValuePair<TKey, TValue>[] OKVPairsArr ) {
 		bool PreEmpt( KeyValuePair<TKey, TValue> KVP ) => ContainsKey(KVP.Key);
@@ -158,7 +170,7 @@ public class ObservableDictionary<TKey, TValue> : List<ObservableKeyValuePair<TK
 		base.AddRange(OKVPairsArr.Select(MakeLinkedPair));
 	}
 
-	public void AddRange( IEnumerable<(TKey Key, TValue Value)> TuplePairs ) => AddRange(TuplePairsArr: TuplePairs.ToArray());
+	public void AddRange( IEnumerable<(TKey Key, TValue Value)> TuplePairs ) => AddRange(TuplePairs.ToArray());
 
 	public void AddRange( params (TKey Key, TValue Value)[] TuplePairsArr ) {
 		bool PreEmpt( (TKey Key, TValue _) Tuple ) => ContainsKey(Tuple.Key);

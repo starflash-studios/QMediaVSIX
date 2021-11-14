@@ -29,15 +29,15 @@ namespace QMediaVSIX.ToolWindows;
 /// </remarks>
 [Guid("ed2a8b26-604a-47cd-b2f4-a5aebe54583d")]
 public sealed class VolumeMixerToolWindow : ToolWindowPane {
-  /// <summary>
-  /// Initialises a new instance of the <see cref="VolumeMixerToolWindow"/> class.
-  /// </summary>
-  public VolumeMixerToolWindow() : base(null) {
-    Caption = "VolumeMixerToolWindow";
+    /// <summary>
+    /// Initialises a new instance of the <see cref="VolumeMixerToolWindow"/> class.
+    /// </summary>
+    public VolumeMixerToolWindow() : base(null) {
+          Caption = "Volume Mixer";
 
-    // This is the user control hosted by the tool window; Note that, even if this class implements IDisposable,
-    // we are not calling Dispose on this object. This is because ToolWindowPane calls Dispose on
-    // the object returned by the Content property.
-    Content = new VolumeMixerToolWindowControl();
-  }
+          // This is the user control hosted by the tool window; Note that, even if this class implements IDisposable,
+          // we are not calling Dispose on this object. This is because ToolWindowPane calls Dispose on
+          // the object returned by the Content property.
+          Content = new VolumeMixerToolWindowControl();
+    }
 }

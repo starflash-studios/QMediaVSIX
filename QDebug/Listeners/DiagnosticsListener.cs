@@ -1,19 +1,22 @@
 ﻿#region Copyright (C) 2017-2021  Starflash Studios
-
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License (Version 3.0)
 // as published by the Free Software Foundation.
 // 
 // More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
-
 #endregion
 
+#region Using Directives
+
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
 using EnvDTE80;
+
+#endregion
 
 namespace QDebug.Listeners;
 
@@ -65,7 +68,7 @@ public class DiagnosticsListener : IDebugListener {
 	}
 
 	/// <inheritdoc />
-	public void Break() => System.Diagnostics.Debugger.Break();
+	public void Break() => Debugger.Break();
 
 	/// <summary>
 	/// Determines whether clearing of Visual Studio's output window is enabled.
@@ -105,7 +108,7 @@ public class DiagnosticsListener : IDebugListener {
 
 		IMoniker[] Monikers = new IMoniker[1];
 
-		Marshal.ThrowExceptionForHR(CreateBindCtx(Reserved: 0, Ppbc: out IBindCtx BindCtx));
+		Marshal.ThrowExceptionForHR(CreateBindCtx(0, out IBindCtx BindCtx));
 
 		BindCtx.GetRunningObjectTable(out IRunningObjectTable? RunningObjectTable);
 

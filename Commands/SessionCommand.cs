@@ -21,15 +21,6 @@ namespace QMediaVSIX.Commands;
 internal abstract class SessionCommand<T> : SimpleCommand<T> where T : SimpleCommand<T> {
     /// <inheritdoc />
     protected SessionCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) {
-        //MediaSessionManager.CurrentSessionChanged += ( _, MS, MSE ) => {
-        //    if ( MSE is not null ) {
-        //        MSE.PropertyChanged -= OnCurrentSessionPropertyChanged;
-        //    }
-        //    if ( MS is not null ) {
-        //        MS.PropertyChanged += OnCurrentSessionPropertyChanged;
-        //    }
-        //    OnCurrentSessionChanged();
-        //};
         SessionCommandManager.RunWhenInitialised( I => {
             I.PropertyChanged += ( _, E ) => {
                 switch ( E.PropertyName ) {

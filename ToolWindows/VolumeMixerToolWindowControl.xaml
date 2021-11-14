@@ -4,10 +4,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
     xmlns:toolWindows="clr-namespace:QMediaVSIX.ToolWindows"
-    Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
-    Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
+    xmlns:env="clr-namespace:QMediaVSIX.Environment"
+    xmlns:utilities="clr-namespace:QMediaVSIX.Environment.Utilities"
+    xmlns:converters="clr-namespace:QMediaVSIX.Converters"
+    Background="{DynamicResource {x:Static env:Brushes.ToolWindowBackground}}"
+    d:Background="#1F1F1F"
+    Foreground="{DynamicResource {x:Static env:Brushes.ToolWindowText}}"
+    d:Foreground="#FFFFFF"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="300"
@@ -25,11 +29,32 @@
                    HorizontalAlignment="Center" />
         <ListView x:Name="LV"
                   Grid.Row="1"
-                  Background="Transparent">
+                  Background="Transparent"
+                  BorderBrush="Transparent"
+                  AlternationCount="2">
+            <ListView.Resources>
+                <utilities:BindingProxy x:Key="TWB" Data="{DynamicResource {x:Static env:Brushes.ToolWindowBackground}}" />
+                <converters:ColourBrightnessContrastConverter x:Key="ColBrtContConv" IncreaseAmount="8" />
+            </ListView.Resources>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="HorizontalContentAlignment"
                             Value="Stretch" />
+                    <Style.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex"
+                                 Value="0">
+                            <Setter Property="Background"
+                                    Value="{Binding Source={StaticResource TWB}, Path=Data, Converter={StaticResource ColBrtContConv}, Mode=OneWay}"
+                                    d:Value="#272727">
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex"
+                                 Value="1">
+                            <Setter Property="Background"
+                                    Value="{DynamicResource {x:Static env:Brushes.ToolWindowBackground}}"
+                                    d:Value="#1F1F1F" />
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>

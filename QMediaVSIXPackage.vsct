@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <Extern href="stdidcmd.h" />
     <Extern href="vsshlids.h" />
 
@@ -12,36 +14,49 @@
                     <!-- -->
                     <ButtonText>Test Toolbar (BT)</ButtonText>
                     <!-- The name that appears under Add/Remove Buttons dialog -->
-                    <CommandName>Playback Controls (QMediaVSIX)</CommandName>
+                    <CommandName>Media Playback Controls</CommandName>
                 </Strings>
             </Menu>
             <Menu guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="Controller" priority="0x0102" type="MenuController">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup"/>
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
                 <CommandFlag>DynamicVisibility</CommandFlag>
                 <Strings>
                     <ButtonText>Play</ButtonText>
                 </Strings>
             </Menu>
-            <Menu guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatController" priority="0x0204" type="MenuController">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup"/>
+            <Menu guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="pauseStopController" priority="0x0202"
+                  type="MenuController">
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
                 <CommandFlag>TextChanges</CommandFlag>
                 <CommandFlag>TextIsAnchorCommand</CommandFlag>
                 <Strings>
-                    <ButtonText>MC BT</ButtonText>
-                    <CommandName>CN BT</CommandName>
+                    <ButtonText>PauStp BT</ButtonText>
+                    <CommandName>Pause / Stop</CommandName>
+                </Strings>
+            </Menu>
+            <Menu guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatController" priority="0x0204"
+                  type="MenuController">
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
+                <CommandFlag>TextChanges</CommandFlag>
+                <CommandFlag>TextIsAnchorCommand</CommandFlag>
+                <Strings>
+                    <ButtonText>ShfRpt BT</ButtonText>
+                    <CommandName>Shuffle / Repeat Single / Repeat List</CommandName>
                 </Strings>
             </Menu>
         </Menus>
-        
+
         <Buttons>
-            <Button guid="guidQMediaVSIXPackageToolWindowCmdSet" id="cmdidVolumeMixerToolWindowCommand" priority="0x0100" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidVolumeMixerToolWindowCommand"
+                    priority="0x0100" type="Button">
                 <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
                 <Icon guid="guidImages" id="bmpVolumeMixer" />
                 <Strings>
                     <ButtonText>Volume Mixer</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidSkipPreviousCommand" priority="0x0100" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidSkipPreviousCommand" priority="0x0100"
+                    type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
                 <Icon guid="guidImages" id="bmpSkipPrevious" />
                 <Strings>
@@ -49,16 +64,16 @@
                 </Strings>
             </Button>
             <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidPlayCommand" priority="0x0101">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ControllerGroup"/>
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ControllerGroup" />
                 <CommandFlag>DynamicItemStart</CommandFlag>
                 <CommandFlag>DynamicVisibility</CommandFlag>
                 <CommandFlag>TextChanges</CommandFlag>
                 <Strings>
-                    <ButtonText>ERR - NV</ButtonText>
+                    <ButtonText>--Placeholder--</ButtonText>
                 </Strings>
             </Button>
             <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidPlayAnchorCommand" priority="0x0102">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ControllerGroup"/>
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ControllerGroup" />
                 <Icon guid="guidImages" id="bmpPlay" />
                 <CommandFlag>NoShowOnMenuController</CommandFlag>
                 <CommandFlag>FixMenuController</CommandFlag>
@@ -66,42 +81,55 @@
                     <ButtonText>Play</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidPauseCommand" priority="0x0202" type="Button">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidPauseCommand" priority="0x0202"
+                    type="Button">
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="pauseStopControllerGroup" />
                 <Icon guid="guidImages" id="bmpPause" />
                 <Strings>
                     <ButtonText>Pause</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidSkipNextCommand" priority="0x0203" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidStopCommand" priority="0x0203" type="Button">
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="pauseStopControllerGroup" />
+                <Icon guid="guidImages" id="bmpStop" />
+                <Strings>
+                    <ButtonText>Stop</ButtonText>
+                </Strings>
+            </Button>
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidSkipNextCommand" priority="0x0204"
+                    type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
                 <Icon guid="guidImages" id="bmpSkipNext" />
                 <Strings>
                     <ButtonText>Skip Next</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidShuffleCommand" priority="0x0204" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidShuffleCommand" priority="0x0205"
+                    type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatControllerGroup" />
                 <Icon guid="guidImages" id="bmpShuffle" />
                 <Strings>
                     <ButtonText>Shuffle</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidRepeatSingleCommand" priority="0x0205" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidRepeatSingleCommand" priority="0x0206"
+                    type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatControllerGroup" />
                 <Icon guid="guidImages" id="bmpRepeatSingle" />
                 <Strings>
                     <ButtonText>Repeat Single</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidRepeatListCommand" priority="0x0206" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidRepeatListCommand" priority="0x0207"
+                    type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatControllerGroup" />
                 <Icon guid="guidImages" id="bmpRepeat" />
                 <Strings>
                     <ButtonText>Repeat List</ButtonText>
                 </Strings>
             </Button>
-            <Button guid="guidQMediaVSIXPackageToolWindowCmdSet" id="cmdidVolumeMixerToolWindowCommand" priority="0x0207" type="Button">
+            <Button guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="cmdidVolumeMixerToolWindowCommand"
+                    priority="0x0208" type="Button">
                 <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ToolbarGroup" />
                 <Icon guid="guidImages" id="bmpVolumeMixer" />
                 <Strings>
@@ -113,7 +141,8 @@
         <!--<Combos/>-->
 
         <Bitmaps>
-            <Bitmap guid="guidImages" href="Resources\Commands16.png" usedList="bmpPlay, bmpPause, bmpSkipPrevious, bmpSkipNext, bmpShuffle, bmpRepeat, bmpVolumeMax, bmpVolumeMute, bmpRepeatSingle, bmpVolumeMixer" />
+            <Bitmap guid="guidImages" href="Resources\Commands16.png"
+                    usedList="bmpPlay, bmpPause, bmpSkipPrevious, bmpSkipNext, bmpShuffle, bmpRepeat, bmpVolumeMax, bmpVolumeMute, bmpRepeatSingle, bmpVolumeMixer, bmpStop" />
         </Bitmaps>
 
         <Groups>
@@ -126,11 +155,15 @@
             </Group>
 
             <Group guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="ControllerGroup" priority="0x0800">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="Controller"/>
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="Controller" />
             </Group>
 
             <Group guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatControllerGroup" priority="0x0000">
-                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatController"/>
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="shuffleRepeatController" />
+            </Group>
+
+            <Group guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="pauseStopControllerGroup" priority="0x0000">
+                <Parent guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="pauseStopController" />
             </Group>
         </Groups>
     </Commands>
@@ -142,7 +175,7 @@
     </CommandPlacements>-->
 
     <VisibilityConstraints>
-        <VisibilityItem guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="Controller" context="guidNotViewSourceMode"/>
+        <VisibilityItem guid="guidQMediaVSIXPackageToolbarItemCmdSet" id="Controller" context="guidNotViewSourceMode" />
     </VisibilityConstraints>
 
     <Symbols>
@@ -159,33 +192,37 @@
             <IDSymbol name="bmpVolumeMute" value="8" />
             <IDSymbol name="bmpRepeatSingle" value="9" />
             <IDSymbol name="bmpVolumeMixer" value="10" />
+            <IDSymbol name="bmpStop" value="11" />
         </GuidSymbol>
 
-        <GuidSymbol name="guidQMediaVSIXPackageToolWindowCmdSet" value="{f69ab04e-226e-425f-8f7c-4ea38da690a8}">
-            <IDSymbol name="VolumeMixerCommandId" value="0x0100" />
-            <IDSymbol value="257" name="cmdidVolumeMixerToolWindowCommand" />
-        </GuidSymbol>
-    
         <GuidSymbol name="guidQMediaVSIXPackageToolbarItemCmdSet" value="{a36c982e-236d-489b-8703-7e1fc268d77c}">
             <IDSymbol value="4128" name="MyMenuGroup" />
+            <IDSymbol name="VolumeMixerCommandId" value="0x0100" />
+            <IDSymbol value="257" name="cmdidVolumeMixerToolWindowCommand" />
             <IDSymbol value="0x1000" name="Toolbar" />
             <IDSymbol value="0x1050" name="ToolbarGroup" />
             <!--<IDSymbol value="256"  name="cmdidPlayCommand" />-->
             <IDSymbol value="4129" name="cmdidSkipPreviousCommand" />
             <IDSymbol value="4130" name="cmdidSkipNextCommand" />
-            <IDSymbol value="4177" name="cmdidPauseCommand" />
-            <IDSymbol value="4178" name="shuffleRepeatController"/>
-            <IDSymbol value="4179" name="shuffleRepeatControllerGroup"/>
+            <!-- -->
+            <IDSymbol value="4150" name="pauseStopController" />
+            <IDSymbol value="4151" name="pauseStopControllerGroup" />
+            <IDSymbol value="4152" name="cmdidPauseCommand" />
+            <IDSymbol value="4153" name="cmdidStopCommand" />
+            <!--<IDSymbol value="4176" name="cmdidPauseCommand" />-->
+            <!--<IDSymbol value="4177" name="cmdidStopCommand" />-->
+            <IDSymbol value="4178" name="shuffleRepeatController" />
+            <IDSymbol value="4179" name="shuffleRepeatControllerGroup" />
             <IDSymbol value="4180" name="cmdidShuffleCommand" />
             <IDSymbol value="4181" name="cmdidRepeatSingleCommand" />
             <IDSymbol value="4182" name="cmdidRepeatListCommand" />
             <!--<IDSymbol value="5000" name="cmdidSessionComboCommand" />-->
             <!--<IDSymbol value="5001" name="cmdidSessionComboGetList" />-->
             <!--<IDSymbol value="6000" name="cmdidSessionButton"/>-->
-            <IDSymbol value="5997" name="ControllerGroup"/>
-            <IDSymbol value="5998" name="Controller"/>
-            <IDSymbol value="5999" name="cmdidPlayAnchorCommand"/>
+            <IDSymbol value="5997" name="ControllerGroup" />
+            <IDSymbol value="5998" name="Controller" />
+            <IDSymbol value="5999" name="cmdidPlayAnchorCommand" />
             <IDSymbol value="6000" name="cmdidPlayCommand" />
-    </GuidSymbol>
-  </Symbols>
+        </GuidSymbol>
+    </Symbols>
 </CommandTable>

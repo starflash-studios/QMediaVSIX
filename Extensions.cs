@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 
+using QMediaVSIX.Core;
 using QMediaVSIX.Core.Collections;
 
 #endregion
@@ -364,5 +365,13 @@ public static class Extensions {
             }
         }
         return -1;
+    }
+
+    public static IEnumerable<int> CountUntil(this int Min, int Max, bool IncludeMin = true, bool IncludeMax = true ) {
+        int Mn = IncludeMin ? Min : Min + 1;
+        int Mx = IncludeMax ? Max + 1 : Max;
+        for ( int I = Mn; I < Mx; I++ ) {
+            yield return I;
+        }
     }
 }

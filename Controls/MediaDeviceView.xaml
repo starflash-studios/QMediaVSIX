@@ -13,6 +13,7 @@
                               d:DesignWidth="300"
                               d:DataContext="{d:DesignInstance controls:MediaDeviceViewModel}">
     <UserControl.Resources>
+        <converters:StringTruncateConverter x:Key="TooltipTruncateToThirty" MaxChars="30"/>
         <converters:MultipleConverters x:Key="VolumeToTextConverter">
             <converters:FloatToPercentConverter />
             <converters:IntToStringConverter />
@@ -230,6 +231,17 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </UserControl.Resources>
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="{Binding DisplayName, Converter={StaticResource TooltipTruncateToThirty}, Mode=OneWay}"
+                      IsEnabled="False" />
+            <Separator />
+            <MenuItem Header="Hide (Once)"
+                      Click="Context_HideOnce_Click" />
+            <MenuItem Header="Hide (Toggle)"
+                      Click="Context_HideToggle_Click" />
+        </ContextMenu>
+    </UserControl.ContextMenu>
     <SelectiveScrollingGrid Margin="5">
         <SelectiveScrollingGrid.ColumnDefinitions>
             <ColumnDefinition Width="32" />
@@ -246,7 +258,8 @@
                       Background="Transparent"
                       Foreground="Transparent"
                       BorderThickness="0"
-                      Opacity="0.2">
+                      Opacity="0.2"
+                      ToolTip="{Binding DisplayName, Mode=OneWay}">
             <ToggleButton.Effect>
                 <effects:InvertEffect />
             </ToggleButton.Effect>
@@ -268,7 +281,7 @@
                 </Image.Effect>
             </Image>
         </Grid>
-        <DockPanel Grid.Column="2">
+        <DockPanel Grid.Column="2" HorizontalAlignment="Stretch">
             <TextBlock Text="{Binding DisplayName, Mode=OneWay}"
                        d:Text="This is some stupidly long named application"
                        HorizontalAlignment="Center"
