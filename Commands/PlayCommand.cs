@@ -45,10 +45,9 @@ internal sealed class PlayCommand : SimpleCommand<PlayCommand> {
             Sessions.RemoveAt(Sessions.FindIndex(Tp => Tp.Session == S));
         };
 
-        //CurrentChosenOption = MediaSessionManager.Current switch {
-        //    { } C => MediaSessionManager.Sessions.TryGetIndexOf(C, out int I) ? (uint)I + 1u : 0u,
-        //    _     => 0u
-        //};
+        CurrentChosenOption = MediaSessionManager.Current switch { { } C => MediaSessionManager.Sessions.TryGetIndexOf(C, out int I) ? (uint)I + 1u : 0u,
+            _ => 0u
+        };
         CurrentChosenOption = 0u;
     }
 
@@ -72,16 +71,17 @@ internal sealed class PlayCommand : SimpleCommand<PlayCommand> {
         }
 
         int In = Sessions.FindIndex(Tp => Tp.Name == DMC.Text);
+        // ReSharper disable once ConvertSwitchStatementToSwitchExpression
         switch (In) {
             case > 0:
                 CurrentChosenOption = (uint)In;
-                SessionCommandManager.SetActiveFromCommand(Sessions[In].Session);
+                //SessionCommandManager.SetActiveFromCommand(Sessions[In].Session);
                 break;
             //case 0:
             //case <= 0:
             default:
                 CurrentChosenOption = 0;
-                SessionCommandManager.SetActiveFromCommand(null);
+                //SessionCommandManager.SetActiveFromCommand(null);
                 break;
         }
     }
@@ -123,8 +123,10 @@ internal sealed class PlayCommand : SimpleCommand<PlayCommand> {
         get => _CurrentChosenOption;
         set { 
             if ( value != _CurrentChosenOption ) {
+                Debug.WriteLine($"Changed to {value}");
                 RaisePropertyChanging();
                 _CurrentChosenOption = value;
+                SessionCommandManager.SetActiveFromCommand(Sessions[(int)value].Session);
                 RaisePropertyChanged();
                 switch ( CurrentChosen ) {
                     case { } C: //set button enabled relative to whether the status is playing or not
@@ -137,6 +139,8 @@ internal sealed class PlayCommand : SimpleCommand<PlayCommand> {
                         SetCommandDisabled();
                         break;
                 }
+            } else {
+                Debug.WriteLine($"Equal change ignored (wanted from: {_CurrentChosenOption} to {value})");
             }
         }
     }
@@ -145,8 +149,8 @@ internal sealed class PlayCommand : SimpleCommand<PlayCommand> {
 
     public void ChangeChosenOption( MediaSession? Session ) =>
         CurrentChosenOption = Session switch {
-            { } S when MediaSessionManager.Sessions.GetIndexOf(S) is var In => (uint)In,
-            _                                                               => 0
+            { } S when Sessions.FindIndex(T => T.Session == S) is var In => (uint)In,
+            _                                                            => 0u
         };
 
     // ReSharper disable once ReplaceAutoPropertyWithComputedProperty

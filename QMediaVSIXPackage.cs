@@ -20,6 +20,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using QMediaVSIX.Commands;
 using QMediaVSIX.Core.MediaSource;
+using QMediaVSIX.Core.MediaSource.Software;
 using QMediaVSIX.ToolWindows;
 
 using ReactiveUI;
@@ -97,21 +98,34 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
         //await SimpleCommandExtensions.InitializeAllInAssemblyAsync(this);
         await InstanceProviderAttribute.ConstructAllInstanceTypesAsync();
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
-        //Debug.WriteLine("]]]This is the latest I can get[[[");
-        //SessionCommandManager.Active = null;
+
         if ( await ServiceProvider.GetServiceAsync(typeof(DTE)) is DTE Dte ) {
             void UpdateCommands( Window _, Window __ ) {
                 Debug.WriteLine("]]]Updating Commands[[[");
-                SessionCommandManager.Active = null;
+                if ( MediaSessionManager.Current is { } C ) {
+                    if (PlayCommand.Instance is { } PC ) {
+                        Debug.WriteLine("]]]Updated through instance.[[[");
+                        PC.ChangeChosenOption(C);
+                    } else {
+                        Debug.WriteLine("]]]Updated through property.[[[");
+                        SessionCommandManager.Active = C;
+                    }
+                } else {
+                    SessionCommandManager.Active = null;
+                }
                 Dte.Events.WindowEvents.WindowActivated -= UpdateCommands;
             }
 
             Dte.Events.WindowEvents.WindowActivated += UpdateCommands;
         }
-        //await PlayCommand.InitializeAsync(this);
     }
 
     IAsyncServiceProvider ServiceProvider => this;
+
+    //TODO: Pause command as menu controller (pause/stop)
+    //TODO:     - make play more generic? menu item as subclass?
+    //TODO: Other commands (either in 'Additional Media Controls' toolbar, or just as raw commands only)
+    //TODO: Playback position slider (In toolbar? if not, at least ToolWindow?)
 
     #endregion
 }

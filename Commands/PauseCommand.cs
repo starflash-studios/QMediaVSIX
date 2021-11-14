@@ -27,9 +27,12 @@ internal sealed class PauseCommand : SessionCommand<PauseCommand> {
     public PauseCommand( AsyncPackage Package, OleMenuCommandService CommandService ) : base(Package, CommandService) { }
 
     public override void OnCurrentSessionChanged() {
+        //Debug.WriteLine("PauseOCSC");
         if ( SessionCommandManager.Active is { } A ) {
-            ChangeEnableable(Package, new CommandID(CommandSet, CommandId), A.IsPauseEnabled);
+            //Debug.WriteLine($">ACanPause:{A.IsPauseEnabled}||{A.IsPlayPauseToggleEnabled}");
+            ChangeEnableable(Package, new CommandID(CommandSet, CommandId), A.IsPauseEnabled || A.IsPlayPauseToggleEnabled);
         } else {
+            //Debug.WriteLine(">Base");
             base.OnCurrentSessionChanged();
         }
     }

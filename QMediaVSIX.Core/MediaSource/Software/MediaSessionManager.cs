@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 
 using QMediaVSIX.Core.Collections;
 
@@ -124,6 +125,23 @@ public static class MediaSessionManager {
 		Sessions.KeyAdded += KeyAdded;
 		Sessions.KeyRemoved += KeyRemoved;
 		InitAsync();
+	}
+
+	public static void OnNextPropertyChange( PropertyChangedEventHandler Handler ) {
+		void OnPropChange(object Sender, PropertyChangedEventArgs E) {
+			lock ( Sessions ) {
+				foreach ( (_, MediaSession Session) in Sessions ) {
+					Session.PropertyChanged -= Handler;
+					Session.PropertyChanged -= OnPropChange;
+				}
+			}
+		}
+		lock ( Sessions ) {
+			foreach ( (_, MediaSession Session) in Sessions ) {
+				Session.PropertyChanged += OnPropChange;
+				Session.PropertyChanged += Handler;
+			}
+		}
 	}
 
 	static async void InitAsync() {

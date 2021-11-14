@@ -31,6 +31,10 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 		Session.TimelinePropertiesChanged += Session_TimelinePropertiesChanged;
 
 		Identifier = GetIdentifier(Session);
+
+		RunAsyncMethod(UpdateMedia);
+		UpdatePlaybackInfo();
+		UpdateTimelineProperties();
 	}
 
 	#region Background Asynchronous Delegators
@@ -118,7 +122,9 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 
 	#endregion
 
-	void Session_TimelinePropertiesChanged( WMCSession Sender, TimelinePropertiesChangedEventArgs Args ) {
+	void Session_TimelinePropertiesChanged( WMCSession Sender, TimelinePropertiesChangedEventArgs Args ) => UpdateTimelineProperties();
+
+	void UpdateTimelineProperties() {
 		TimelineProperties = Session.GetTimelineProperties();
 		EndTime = TimelineProperties.EndTime;
 		LastUpdatedTime = TimelineProperties.LastUpdatedTime;
@@ -245,14 +251,17 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 
 	#endregion
 
-	void Session_PlaybackInfoChanged( WMCSession Sender, PlaybackInfoChangedEventArgs Args ) {
-		PlaybackInfo = Sender.GetPlaybackInfo();
+	void Session_PlaybackInfoChanged( WMCSession Sender, PlaybackInfoChangedEventArgs Args ) => UpdatePlaybackInfo();
+
+
+	void UpdatePlaybackInfo() {
+		PlaybackInfo = Session.GetPlaybackInfo();
 		//---
-		SetValue(ref _AutoRepeatMode,  PlaybackInfo.AutoRepeatMode,  nameof(AutoRepeatMode));
+		SetValue(ref _AutoRepeatMode, PlaybackInfo.AutoRepeatMode, nameof(AutoRepeatMode));
 		Controls = PlaybackInfo.Controls;
 		SetValue(ref _IsShuffleActive, PlaybackInfo.IsShuffleActive, nameof(IsShuffleActive));
-		SetValue(ref _PlaybackRate,    PlaybackInfo.PlaybackRate,    nameof(PlaybackRate));
-		SetValue(ref _PlaybackStatus,  PlaybackInfo.PlaybackStatus,  nameof(PlaybackStatus));
+		SetValue(ref _PlaybackRate, PlaybackInfo.PlaybackRate, nameof(PlaybackRate));
+		SetValue(ref _PlaybackStatus, PlaybackInfo.PlaybackStatus, nameof(PlaybackStatus));
 		PlaybackType = PlaybackInfo.PlaybackType;
 	}
 
@@ -544,8 +553,10 @@ public class MediaSession : NotifyPropertyChange, IMediaSession {
 
 	#endregion
 
-	async void Session_MediaPropertiesChanged( WMCSession Sender, MediaPropertiesChangedEventArgs Args ) {
-		MediaProperties = await Sender.TryGetMediaPropertiesAsync();
+	async void Session_MediaPropertiesChanged( WMCSession Sender, MediaPropertiesChangedEventArgs Args ) => await UpdateMedia();
+
+	async Task UpdateMedia() {
+		MediaProperties = await Session.TryGetMediaPropertiesAsync();
 		AlbumArtist = MediaProperties.AlbumArtist;
 		AlbumTitle = MediaProperties.AlbumTitle;
 		AlbumTrackCount = MediaProperties.AlbumTrackCount;

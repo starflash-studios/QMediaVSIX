@@ -35,7 +35,7 @@ public class SessionCommandManager : NotifyPropertyChange {
                 _Active = value;
                 return;
             }
-            if ( value is null || value != _Active ) {
+            //if ( value is null || value != _Active ) {
                 Instance.RaisePropertyChanging();
                 Debug.WriteLine($"Active session changed to {value?.ToString() ?? "<NULL>"}");
                 _Active = value;
@@ -45,9 +45,9 @@ public class SessionCommandManager : NotifyPropertyChange {
                 }
 
                 Instance.RaisePropertyChanged();
-            } else {
-                Debug.WriteLine("Session was already the same. Ignoring.");
-            }
+            //} else {
+            //    Debug.WriteLine("Session was already the same. Ignoring.");
+            //}
         }
     }
 

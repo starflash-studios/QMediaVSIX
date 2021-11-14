@@ -59,7 +59,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Collections\FauxFirstList.cs" />
-    <Compile Include="Commands\SessionComboCommand.cs" />
     <Compile Include="Commands\SessionPlaybackCommand.cs" />
     <Compile Include="Commands\PauseCommand.cs" />
     <Compile Include="Commands\RepeatListCommand.cs" />
@@ -67,7 +66,7 @@
     <Compile Include="Commands\ShuffleCommand.cs" />
     <Compile Include="Commands\PlayCommand.cs" />
     <Compile Include="Commands\ShuffleRepeatControllerGroupCommand.cs" />
-    <Compile Include="Commands\TestDynamicItemMenuCommand.cs" />
+    <Compile Include="Commands\PlayItemMenuCommand.cs" />
     <Compile Include="Commands\PlayAnchorCommand.cs" />
     <Compile Include="Types\AsynchronousInstancedType.cs" />
     <Compile Include="Types\InstancedType.cs" />
