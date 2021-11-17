@@ -260,27 +260,19 @@
                       Foreground="Transparent"
                       BorderThickness="0"
                       Opacity="0.2"
-                      ToolTip="{Binding DisplayName, Mode=OneWay}">
-            <ToggleButton.Effect>
-                <effects:InvertEffect />
-            </ToggleButton.Effect>
-        </ToggleButton>
+                      ToolTip="{Binding DisplayName, Mode=OneWay}" />
         <Grid Grid.Column="0">
             <Image Source="{Binding BindingImage, Mode=OneWay}"
                    d:Source="/QMediaVSIX;component/Resources/imageres_15.ico"
                    Stretch="Uniform"
                    IsHitTestVisible="False"
                    Opacity="{Binding Mute, Converter={StaticResource IsMutedToAppIconOpacityConverter}, Mode=OneWay}" />
-            <Image Source="/QMediaVSIX;component/Resources/Individual/VolumeMute.png"
+            <Image Source="/QMediaVSIX;component/Resources/Individual/UI_VolumeMin.png"
                    IsHitTestVisible="False"
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch"
                    MaxWidth="35"
-                   Visibility="{Binding Mute, Converter={StaticResource IsMutedToOverlayIconVisibilityConverter}, Mode=OneWay}">
-                <Image.Effect>
-                    <effects:InvertEffect />
-                </Image.Effect>
-            </Image>
+                   Visibility="{Binding Mute, Converter={StaticResource IsMutedToOverlayIconVisibilityConverter}, Mode=OneWay}"/>
         </Grid>
         <DockPanel Grid.Column="2" HorizontalAlignment="Stretch">
             <TextBlock Text="{Binding DisplayName, Mode=OneWay}"

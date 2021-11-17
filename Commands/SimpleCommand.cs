@@ -109,13 +109,15 @@ internal abstract class SimpleCommand : NotifyPropertyChange {
     internal bool ChangeEnableable( bool EnableCmd ) => ChangeEnableable(Package, new CommandID(SelfCommandSet, SelfCommandId), EnableCmd);
 
     public static bool ChangeEnableable( AsyncPackage Package, CommandID CmdID, bool EnableCmd ) {
-        OleMenuCommandService Mcs = Package.GetService<IMenuCommandService, OleMenuCommandService>();
-        MenuCommand? MC = Mcs.FindCommand(CmdID);
-        if ( MC is not null ) {
-            MC.Enabled = EnableCmd;
-            return true;
+        if ( Package.GetService<IMenuCommandService, OleMenuCommandService>()  is { } Mcs ) {
+            if ( Mcs.FindCommand(CmdID) is { } MC ) {
+                MC.Enabled = EnableCmd;
+                return true;
+            }
+            Debug.WriteLine($"MenuCommand was unable to be found for {CmdID}");
+        } else {
+            Debug.WriteLine($"OleMenuCommandService was unable to be retrieved. Is this running in a UI thread?");
         }
-        Debug.WriteLine($"MenuCommand was unable to be found for {CmdID}");
         return false;
     }
 }

@@ -94,7 +94,7 @@ public static class MediaDeviceManager {
 
 	static readonly Dictionary<DataFlow, List<Role>> _AddedEndpoints = new Dictionary<DataFlow, List<Role>>();
 
-	internal static void TryAddEndpoint(DataFlow F, Role R ) {
+	internal static void TryAddEndpoint( DataFlow F, Role R ) {
 		if ( _AddedEndpoints.ContainsKey(F) ) {
 			if ( _AddedEndpoints[F].Contains(R) ) {
 				Debug.WriteLine($"Audio Endpoint {F}::{R} already added, ignoring.");
@@ -114,6 +114,7 @@ public static class MediaDeviceManager {
 			using ( MMDevice? Device = Enumerator.GetDefaultAudioEndpoint(F, R) ) {
 				//Debug.WriteLine("B");
 				using ( AudioSessionManager2 SessionManager = AudioSessionManager2.FromMMDevice(Device) ) {
+					Debug.WriteLine($"\tAdding device {Device} >> {SessionManager}");
 					//Debug.WriteLine("C");
 					SessionManager.SessionCreated += (_, E) => {
 						Add(E.NewSession, F, R);
@@ -123,7 +124,9 @@ public static class MediaDeviceManager {
 						//Debug.WriteLine("E");
 						// ReSharper disable once LoopCanBePartlyConvertedToQuery
 						foreach ( AudioSessionControl Control in SessionEnumerator ) {
+							//Debug.WriteLine($"\t\tAdding control {Control.DisplayName} ({Control.IconPath})");
 							//Debug.WriteLine("F");
+							Debug.WriteLine($"\t\tFeck you {Control.DisplayName} -- {Control.IconPath}");
 							Add(Control, F, R);
 						}
 					}
@@ -133,16 +136,20 @@ public static class MediaDeviceManager {
 	}
 
 	internal static void Add( AudioSessionControl ASC, DataFlow Flow, Role Role ) {
+		Debug.WriteLine($"Add called on {ASC}, {Flow}, {Role}");
 		AudioSessionControl2 AS = ASC.QueryInterface<AudioSessionControl2>();
 		Guid Identifier = MediaDevice.GetIdentifier(AS);
 		if ( !Devices.ContainsKey(Identifier) ) {
 			MediaDevice New = new MediaDevice(ASC, AS, Flow, Role);
 			Devices.Add(Identifier, New);
-			ASC.SessionDisconnected += (_, _) => {
+			ASC.SessionDisconnected += ( _, _ ) => {
 				Devices.Remove(Identifier);
 				OnDeviceDisconnected(New);
 			};
+			Debug.WriteLine($"Adding control {Identifier} :: {New}");
 			OnDeviceConnected(New, Identifier);
+		} else {
+			Debug.WriteLine($"Previously added control: {Identifier}");
 		}
 	}
 

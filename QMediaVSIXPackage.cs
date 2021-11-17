@@ -20,6 +20,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using QMediaVSIX.Commands;
 using QMediaVSIX.Core.MediaSource;
+using QMediaVSIX.Core.MediaSource.Hardware;
 using QMediaVSIX.Core.MediaSource.Software;
 using QMediaVSIX.ToolWindows;
 using QMediaVSIX.Types;
@@ -93,6 +94,9 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
             //Debug.WriteLine("On background thread.");
             MediaSourceManager.EnableEcosystems = false;
             MediaSourceManager.Initialise();
+            MediaDeviceManager.AcceptedFlows.Add(CSCore.CoreAudioAPI.DataFlow.Capture);
+            MediaDeviceManager.AcceptedRoles.Add(CSCore.CoreAudioAPI.Role.Console);
+            MediaDeviceManager.AcceptedRoles.Add(CSCore.CoreAudioAPI.Role.Communications);
             //Debug.WriteLine("Initialised listeners.");
         }, CancellationToken);
         await JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken);
@@ -116,6 +120,10 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
                     SessionCommandManager.Active = null;
                 }
                 Dte.Events.WindowEvents.WindowActivated -= UpdateCommands;
+
+                //MediaDeviceManager.AcceptedFlows.Add(CSCore.CoreAudioAPI.DataFlow.Capture);
+                //MediaDeviceManager.AcceptedRoles.Add(CSCore.CoreAudioAPI.Role.Console);
+                //MediaDeviceManager.AcceptedRoles.Add(CSCore.CoreAudioAPI.Role.Communications);
             }
 
             Dte.Events.WindowEvents.WindowActivated += UpdateCommands;
@@ -124,8 +132,6 @@ public sealed class QMediaVSIXPackage : AsyncPackage {
 
     IAsyncServiceProvider ServiceProvider => this;
 
-    //TODO: Pause command as menu controller (pause/stop)
-    //TODO:     - make play more generic? menu item as subclass?
     //TODO: Other commands (either in 'Additional Media Controls' toolbar, or just as raw commands only)
     //TODO: Playback position slider (In toolbar? if not, at least ToolWindow?)
 

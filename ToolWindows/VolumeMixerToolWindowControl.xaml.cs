@@ -8,6 +8,8 @@
 
 #region Using Directives
 
+using System.Security.Cryptography;
+
 using Microsoft.VisualStudio.Shell;
 
 using QMediaVSIX.Controls;
@@ -32,6 +34,7 @@ public partial class VolumeMixerToolWindowControl {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             MediaSourceManager.Initialise();
             MediaDeviceManager.DeviceConnected += (S, _) => {
+                Debug.WriteLine($"Looking {S}");
                 MediaDeviceView MDV = new MediaDeviceView { Device = S };
                 LV.Items.Add(MDV);
             };
@@ -43,6 +46,7 @@ public partial class VolumeMixerToolWindowControl {
                 }
             };
             foreach ( (_, MediaDevice Dev) in MediaDeviceManager.Devices ) {
+                Debug.WriteLine($"Pushing {Dev}");
                 MediaDeviceView MDV = new MediaDeviceView { Device = Dev };
                 LV.Items.Add(MDV);
             }

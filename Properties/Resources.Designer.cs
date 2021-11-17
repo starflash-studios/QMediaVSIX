@@ -113,9 +113,19 @@ namespace QMediaVSIX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Repeat {
+        internal static System.Drawing.Bitmap RepeatList {
             get {
-                object obj = ResourceManager.GetObject("Repeat", resourceCulture);
+                object obj = ResourceManager.GetObject("RepeatList", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap RepeatSingle {
+            get {
+                object obj = ResourceManager.GetObject("RepeatSingle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,6 +163,26 @@ namespace QMediaVSIX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Stop {
+            get {
+                object obj = ResourceManager.GetObject("Stop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap UI_VolumeMin {
+            get {
+                object obj = ResourceManager.GetObject("UI_VolumeMin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap VolumeMax {
             get {
                 object obj = ResourceManager.GetObject("VolumeMax", resourceCulture);
@@ -163,9 +193,9 @@ namespace QMediaVSIX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap VolumeMute {
+        internal static System.Drawing.Bitmap VolumeMin {
             get {
-                object obj = ResourceManager.GetObject("VolumeMute", resourceCulture);
+                object obj = ResourceManager.GetObject("VolumeMin", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
